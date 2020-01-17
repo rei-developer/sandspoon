@@ -13,7 +13,7 @@ const router = new Router()
 const Data = require('./src/Data')
 const DB = require('./src/DB')
 
-const VERSION = '1.0.0'
+const VERSION = '1.0.1'
 const PORT = 50000
 
 router.get('/', (ctx, next) => {
