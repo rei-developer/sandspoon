@@ -50,7 +50,7 @@ async function start() {
                 Data.loadRanks()
             }
         }, 1000 * 300)
-        http.createServer().listen(80)
+        http.createServer().listen(3001)
         new Server().run(PORT)
         console.log('server is running.')
     } catch (e) {
