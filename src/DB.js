@@ -6,12 +6,12 @@ const pool = mysql.createPool({
     port: 3306,
     user: 'root',
     password: config.SECRET,
-    database: 'oninomori',
+    database: 'sandspoon',
     connectionLimit: 100
 })
 
 module.exports = {
-    async query(...args)  {
+    async query(...args) {
         const conn = await pool.getConnection()
         try {
             return await conn.query(...args)
@@ -21,7 +21,7 @@ module.exports = {
             conn.release()
         }
     },
-    async LoadPortals (id) {
+    async LoadPortals(id) {
         try {
             return await this.query('SELECT * FROM portals WHERE place = ?', [id])
         } catch (e) {
