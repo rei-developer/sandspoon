@@ -1,0 +1,49 @@
+{
+	"1": [
+		{
+			"name": "알바생 유즈하",
+			"place": 80,
+			"x": 6,
+			"y": 6,
+			"graphics": "Yuzuha",
+			"collider": false,
+			"action": { "command": "mania", "arguments": { "fixed": true, "message": ["하이타이"]} }
+		},
+		{
+			"name": "집나간 마니아",
+			"place": 79,
+			"x": 30,
+			"y": 62,
+			"graphics": "Mania",
+			"collider": false,
+			"action": { "command": "mania", "arguments": { "fixed": false, "message": ["돌아다니는 수탉들을 열심히 몽둥이질하다 보면 보석을 얻을 수 있지..."]} }
+		},
+		{
+			"name": "인질이 된 청담",
+			"place": 79,
+			"x": 33,
+			"y": 58,
+			"graphics": "catman",
+			"collider": false,
+			"action": { "command": "mania", "arguments": { "fixed": true, "message": ["인질 모드에서는 인간들은 죽으면 감옥에 갇히고 말지.", "인간들은 화살표를 따라가면 감옥이 있으니 가능할 때마다 구출해줘야해.", "오니들은 인간들이 구출하지 못하도록 막거나 모든 인간을 잡아야해."]} }
+		},
+		{
+			"name": "방화광 무오",
+			"place": 79,
+			"x": 35,
+			"y": 58,
+			"graphics": "orange",
+			"collider": false,
+			"action": { "command": "mania", "arguments": { "fixed": true, "message": ["인게임 플레이 도중 나가게 되면 자신의 레벨에서 10을 곱하고, 100을 더한 값만큼 삭감되며 탈주 수치가 상승하게 되니 유의하시기 바라요."]} }
+		},
+		{
+			"name": "감염된 소먹어라",
+			"place": 79,
+			"x": 37,
+			"y": 58,
+			"graphics": "ao",
+			"collider": false,
+			"action": { "command": "mania", "arguments": { "fixed": true, "message": ["생존 모드에서는 시작과 동시에 몇몇 인간들이 감염되서 오니로 바뀌지.", "오니들에게 잡히면 똑같이 오니가 되버리니 도망가야해.", "마지막까지 생존하면 생존자들의 승리고 그렇지 못하면 오니들의 승리야."]}}
+		}
+	]
+}

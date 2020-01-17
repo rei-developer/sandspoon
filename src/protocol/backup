@@ -1,0 +1,581 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
+using System.Text;
+using LitJson;
+using System.Collections;
+using UnityEngine.UI;
+using static CharacterManager;
+
+public class GameScene : MonoBehaviour
+{
+    private NetworkController networkCtl;
+
+    [SerializeField]
+    private CameraController cameraCtl;
+    [SerializeField]
+    private Tilemap tilemap;
+    [SerializeField]
+    private CharacterManager players;
+    [SerializeField]
+    private CharacterManager events;
+    [SerializeField]
+    private SoundManager SM;
+    [SerializeField]
+    private GameDisplay gameDisplay;
+    [SerializeField]
+    private GameState gameState;
+    [SerializeField]
+    private GameResult gameResult;
+    [SerializeField]
+    private GamePref gamePref;
+    [SerializeField]
+    private GameObject chatToggle;
+
+#if UNITY_EDITOR
+    [SerializeField]
+    private InputField testInput;
+#endif
+    [SerializeField]
+    private ChatList chatList;
+
+    private int oniCount;
+
+    private TouchScreenKeyboard keyboard;
+
+    public void EnterRoom(byte type) => networkCtl.Send(Packet.ToServer.ENTER_ROOM, new byte[] { type });
+    public void Reward(byte type) => networkCtl.Send(Packet.ToServer.REWARD, new byte[] { type });
+    public void Escape(byte type) => networkCtl.Send(Packet.ToServer.ESCAPE, new byte[] { type });
+    public void Chat(string message) => networkCtl.Send(Packet.ToServer.CHAT, Encoding.UTF8.GetBytes(message));
+
+    private void Awake() => networkCtl = FindObjectOfType<NetworkController>();
+
+    public void OpenKeyboard()
+    {
+#if UNITY_EDITOR
+        Chat(testInput.text);
+        testInput.text = string.Empty;
+#endif
+        keyboard = TouchScreenKeyboard.Open(string.Empty, TouchScreenKeyboardType.Default);
+    }
+
+    IEnumerator ListenKeyboardChat()
+    {
+        var wait = new WaitForSeconds(0.2f);
+
+        while (true)
+        {
+            if (!ReferenceEquals(keyboard, null) && keyboard.done && !keyboard.text.Equals(string.Empty))
+            {
+                Chat(keyboard.text);
+                keyboard.text = string.Empty;
+            }
+
+            yield return wait;
+        }
+    }
+
+    private void Start()
+    {
+        chatList.Clear();
+        ResourceManager.RemoveAll();
+        Resources.UnloadUnusedAssets();
+
+        GC.Collect();
+
+        StartCoroutine(ListenKeyboardChat());
+
+        var localPlayer = players.Spawn(User.uuid);
+        localPlayer.gameObject.AddComponent<LocalPlayerInput>();
+        localPlayer.ui.SetName("<color=#FFC90E>" + User.name + "</color>");
+        localPlayer.ui.SetGrade(User.level);
+        localPlayer.controller.SomeOrder = 1;
+
+        EnterRoom(User.mode);
+
+        networkCtl.Init();
+
+        networkCtl.On("SYSTEM_MESSAGE", (JsonData data) =>
+        {
+            var text = (string)data["text"];
+            chatList.Add(null, text);
+        });
+
+        networkCtl.On("INFORM_MESSAGE", (JsonData data) =>
+        {
+            gameState.Inform(data["text"].ToString());
+        });
+
+        networkCtl.On("NOTICE_MESSAGE", (JsonData data) =>
+        {
+            gameState.Notice(data["text"].ToString(), 5.0f);
+        });
+
+        networkCtl.On("CHAT_MESSAGE", (JsonData data) =>
+        {
+            var index = (int)data["index"];
+            var type = (int)data["type"];
+            var text = (string)data["text"];
+
+            Character c = null;
+
+            switch (type) {
+                case 1:
+                    c = players.Get(index);
+                    break;
+                case 2:
+                    c = events.Get(index);
+                    break;
+            }
+
+            if (!ReferenceEquals(c, null))
+                c.ui.Show(text);
+
+            chatList.Add((string)data["name"], text);
+        });
+
+        networkCtl.On("PORTAL", (JsonData data) =>
+        {
+            players.DestroyFilter(User.uuid);
+            events.DestroyAll();
+            
+            var direction = data["dir"];
+
+            localPlayer.controller.Look((int)direction["x"], (int)direction["y"]);
+            localPlayer.controller.SetPosition((int)data["x"], (int)data["y"]);
+            localPlayer.controller.UpdatePosition();
+
+            tilemap.LoadMap((int)data["place"]);
+
+            cameraCtl.SetRange(tilemap.Width, tilemap.Height);
+            cameraCtl.Follow = localPlayer.controller.transform;
+
+            SM.setBGS(tilemap.bgs);
+            SM.playBGS();
+
+            GC.Collect();
+        });
+
+        networkCtl.On("REMOVE_GAME_OBJECT", (JsonData data) =>
+        {
+
+            var type = (int)data["type"];
+            var index = (int)data["index"];
+
+            switch (type)
+            {
+                case 1:
+                    players.Destroy(index);
+                    break;
+                case 2:
+                    events.Destroy(index);
+                    break;
+            }
+        });
+
+        networkCtl.On("CREATE_GAME_OBJECT", (JsonData data) =>
+        {
+            var type = (int)data["type"];
+            var index = (int)data["index"];
+            var direction = data["dir"];
+
+            Character c = null;
+
+            switch (type)
+            {
+                case 1:
+                    c = players.Spawn(index);
+                    c.ui.SetName((string)data["name"]);
+
+                    var level = (int)data["level"];
+                    if (level <= 0)
+                        c.ui.ToggleGrade(false);
+                    else
+                        c.ui.SetGrade((int)data["level"]);
+
+                    c.ui.SetTeam((int)data["team"]);
+
+                    break;
+                case 2:
+                    c = events.Spawn(index);
+                    c.ui.SetName("<color=#B5E61D>" + (string)data["name"] + "</color>");
+                    break;
+            }
+
+            if (data.Keys.Contains("coll") && (bool)data["coll"])
+                c.gameObject.layer = LayerMask.NameToLayer("Collider Object");
+            else
+                c.gameObject.layer = LayerMask.NameToLayer("Object");
+
+            c.controller.Look((int)direction["x"], (int)direction["y"]);
+            c.controller.SetPosition((int)data["x"], (int)data["y"]);
+            c.controller.SetAnimation((string)data["graphics"]);
+
+        });
+
+        networkCtl.On("SET_GRAPHICS", (JsonData data) =>
+        {
+            var index = (int)data["index"];
+            var type = (int)data["type"];
+
+            Character c = null;
+
+            switch (type)
+            {
+                case 1:
+                    c = players.Get(index);
+                    break;
+                case 2:
+                    c = events.Get(index);
+                    break;
+            }
+
+            if (!ReferenceEquals(c, null))
+                c.controller.SetAnimation((string)data["graphics"]);
+        });
+
+        networkCtl.On("PLAY_SOUND", (JsonData data) =>
+        {
+            SM.setSE((string)data["name"]);
+            SM.playSE();
+        });
+
+        networkCtl.On("SET_GAME_TEAM", (JsonData data) =>
+        {
+            User.team = (int)data["team"];
+            localPlayer.ui.SetTeam(User.team);
+        });
+
+        networkCtl.On("MODE_DATA", (JsonData data) =>
+        {
+            gameState.Load(data);
+        });
+
+        networkCtl.On("DEAD_ANIMATION", (JsonData data) =>
+        {
+            gameDisplay.PlayGameover();
+        });
+
+        networkCtl.On("ENTER_WARDROBE", (JsonData data) =>
+        {
+            gameDisplay.setTansu(true);
+            localPlayer.gameObject.GetComponent<LocalPlayerInput>().SetMovable(false);
+            SM.setBGS("017-Creature01");
+            SM.playBGS();
+            SM.setAndPlayTempBGM("Breath");
+            SM.playBGM();
+        });
+
+        networkCtl.On("LEAVE_WARDROBE", (JsonData data) =>
+        {
+            gameDisplay.setTansu(false);
+            localPlayer.gameObject.GetComponent<LocalPlayerInput>().SetMovable(true);
+            SM.setBGS(tilemap.bgs);
+            SM.playBGS();
+            SM.setAndPlayOrgBGM("Breath");
+        });
+
+        networkCtl.On("SWITCH_LIGHT", (JsonData data) =>
+        {
+            if ((bool)data["active"])
+                gameDisplay.SetColor(0.0f);
+            else
+                gameDisplay.SetColor(0.75f);
+        });
+
+        networkCtl.On("QUIT_GAME", (JsonData data) =>
+        {
+            Application.Quit();
+        });
+
+        /*
+        networkCtl.On("chat", (JsonData data) =>
+        {
+            var index = (int)data["index"];
+            var type = (int)data["type"];
+            var text = (string)data["text"];
+
+            Character c;
+
+            if (type == 1)
+                c = players.Get(index);
+            else
+                c = events.Get(index);
+
+            if (!ReferenceEquals(c, null))
+                c.ui.Show(text);
+
+            chatList.Add((string)data["name"], text);
+        });
+
+        networkCtl.On("system", (JsonData data) =>
+        {
+            var text = (string)data["text"];
+            chatList.Add(null, text);
+        });
+
+        networkCtl.On("notice", (JsonData data) =>
+        {
+            gameState.Notice(data["text"].ToString(), 5.0f);
+            if (!data.Keys.Contains("sound")) return;
+            SM.setSE((string)data["sound"]);
+            SM.playSE();
+        });
+
+        networkCtl.On("inform", (JsonData data) =>
+        {
+            gameState.Inform(data["text"].ToString());
+        });
+
+        networkCtl.On("userdata", (JsonData data) =>
+        {
+            if (data.Keys.Contains("level"))
+            {
+                User.level = (int)data["level"];
+                localPlayer.ui.SetGrade(User.level);
+            }
+            if (data.Keys.Contains("team"))
+            {
+                User.team = (int)data["team"];
+                localPlayer.ui.SetTeam(User.team);
+            }
+        });
+
+        networkCtl.On("draw", (JsonData data) =>
+        {
+            var type = (int)data["type"];
+            var index = (int)data["index"];
+            var movement = data["movement"];
+            var direction = movement["direction"];
+
+            Character c;
+            if (type == 1)
+                c = players.Spawn(index);
+            else
+                c = events.Spawn(index);
+
+            if (data.Keys.Contains("coll") && (bool)data["coll"])
+                c.gameObject.layer = LayerMask.NameToLayer("Collider Object");
+            else
+                c.gameObject.layer = LayerMask.NameToLayer("Object");
+
+            if (type == 2)
+                c.ui.SetName("<color=#B5E61D>" + (string)data["name"] + "</color>");
+            else
+                c.ui.SetName((string)data["name"]);
+
+            if (type == 1)
+            {
+                var level = (int)data["level"];
+                if (level <= 0)
+                    c.ui.ToggleGrade(false);
+                else
+                    c.ui.SetGrade((int)data["level"]);
+
+                c.ui.SetTeam((int)data["team"]);
+            }
+            
+            if (type == 3)
+                c.controller.SetUnderFoot();
+
+            c.controller.Look((int)direction["x"], (int)direction["y"]);
+            c.controller.SetPosition((int)movement["x"], (int)movement["y"]);
+            c.controller.SetAnimation((string)data["graphics"]);
+
+        });
+
+        networkCtl.On("setGraphics", (JsonData data) =>
+        {
+            var index = (int)data["index"];
+            var type = (int)data["type"];
+
+            Character c;
+            if (type == 1)
+                c = players.Get(index);
+            else
+                c = events.Get(index);
+
+            if (!ReferenceEquals(c, null))
+                c.controller.SetAnimation((string)data["graphics"]);
+        });
+
+        networkCtl.On("remove", (JsonData data) =>
+        {
+            var type = (int)data["type"];
+            var index = (int)data["index"];
+
+            if (type == 1)
+                players.Destroy(index);
+            else
+                events.Destroy(index);
+        });
+
+        networkCtl.On("gameInfo", (JsonData data) => gameState.Load(data));
+
+        networkCtl.On("portal", (JsonData data) =>
+        {
+
+            players.DestroyFilter(User.uuid);
+            events.DestroyAll();
+
+            var movement = data["movement"];
+            var direction = movement["direction"];
+
+            localPlayer.controller.Look((int)direction["x"], (int)direction["y"]);
+            localPlayer.controller.SetPosition((int)movement["x"], (int)movement["y"]);
+            localPlayer.controller.UpdatePosition();
+
+            tilemap.LoadMap((int)data["place"]);
+            
+            cameraCtl.SetRange(tilemap.Width, tilemap.Height);
+            cameraCtl.Follow = localPlayer.controller.transform;
+
+            SM.setBGS(tilemap.bgs);
+            SM.playBGS();
+
+            GC.Collect();
+        });
+
+        networkCtl.On("light", (JsonData data) =>
+        {
+            var stat = (int)data["stat"];
+
+            if (data.Keys.Contains("sound"))
+                SM.setSE((string)data["sound"]);
+            if (stat < 1)
+                gameDisplay.SetColor(0.75f);
+            else
+                gameDisplay.SetColor(0.0f);
+
+        });
+
+        networkCtl.On("sound", (JsonData data) =>
+        {
+            var type = data.Keys.Contains("type") ? (int)data["type"] : 0;
+            var name = (string)data["name"];
+
+            if (type == 1)
+            {
+                SM.setBGM(name);
+                SM.playBGM();
+            }
+            else if (type == 2)
+            {
+                SM.setBGS(name);
+                SM.playBGS();
+            }
+            else
+            {
+                SM.setSE(name);
+                SM.playSE();
+            }
+        });
+
+        networkCtl.On("tansu", (JsonData data) =>
+        {
+            gameDisplay.setTansu(true);
+            localPlayer.gameObject.GetComponent<LocalPlayerInput>().SetMovable(false);
+            SM.setBGS("017-Creature01");
+            SM.playBGS();
+            SM.setAndPlayTempBGM("Breath");
+            SM.playBGM();
+
+        });
+    
+        networkCtl.On("trans", (JsonData data) =>
+        {
+            var type = data.Keys.Contains("stat") ? (int)data["stat"] : 0;
+            gameDisplay.setTansu(false);
+            localPlayer.gameObject.GetComponent<LocalPlayerInput>().SetMovable(true);
+            SM.setBGS(tilemap.bgs);
+            SM.playBGS();
+            SM.setAndPlayOrgBGM("Breath");
+        });
+
+        networkCtl.On("gameover", (JsonData data) => gameDisplay.PlayGameover());
+
+        networkCtl.On("result", (JsonData data) => gameResult.Load(data));
+
+#if UNITY_ANDROID
+        networkCtl.On("vibrate", (JsonData data) => Handheld.Vibrate());
+#endif
+        
+        networkCtl.On("quit", (JsonData data) => Application.Quit());
+
+        networkCtl.On("close", (JsonData data) => gamePref.ServerClose());
+
+        networkCtl.On("refresh", (JsonData data) =>
+        {
+            var movement = data["movement"];
+            var direction = movement["direction"];
+
+            localPlayer.controller.Look((int)direction["x"], (int)direction["y"]);
+            localPlayer.controller.SetPosition((int)movement["x"], (int)movement["y"]);
+        });
+        */
+
+#if UNITY_ANDROID
+        networkCtl.On("VIBRATE", (JsonData data) => Handheld.Vibrate());
+#endif
+        networkCtl.CloseHandler = () =>
+        {
+            gamePref.ServerClose();
+        };
+
+        networkCtl.StateHandler = (byte[] data) =>
+        {
+
+            for (var i = 0; i < data[1]; i++)
+            {
+                var offset = 2 + i * 11;
+
+                Character c;
+
+                if (data[offset] == 1)
+                {
+                    c = players.Get(BitConverter.ToInt32(data, offset + 1));
+
+                    if (ReferenceEquals(c, null) || ReferenceEquals(c, localPlayer)) continue;
+
+                }
+                else
+                {
+                    c = events.Get(BitConverter.ToInt32(data, offset + 1));
+
+                    if (ReferenceEquals(c, null)) continue;
+                }
+
+                var x = BitConverter.ToInt16(data, offset + 5);
+                var y = BitConverter.ToInt16(data, offset + 7);
+                var dx = (sbyte)(data[offset + 9]);
+                var dy = (sbyte)(data[offset + 10]);
+
+                c.controller.LerpMove(dx, dy, x, y);
+
+            }
+        };
+    }
+
+    private bool exitFlag = false;
+
+    private void EscapeTimeOut()
+    {
+        exitFlag = false;
+    }
+
+    public void ExitGame()
+    {
+        Escape(0);
+        SceneManager.LoadScene("Lobby");
+    }
+
+    public void QuitGame() => Application.Quit();
+
+    public void ChatToggle(bool flag = false)
+    {
+        chatList.gameObject.SetActive(flag);
+        chatToggle.SetActive(!flag);
+        SM.setSE(flag ? "Clap2" : "Clap1");
+        SM.playSE();
+    }
+}
