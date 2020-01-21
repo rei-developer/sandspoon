@@ -9,7 +9,7 @@ const STATE_GAME = 1
 const STATE_RESULT = 3
 
 module.exports = class InfectMode {
-    constructor (roomId) {
+    constructor(roomId) {
         this.roomId = roomId
         this.redTeam = []
         this.blueTeam = []
@@ -32,7 +32,7 @@ module.exports = class InfectMode {
         }
     }
 
-    getJSON () {
+    getJSON() {
         return {
             map: this.map,
             mode: ModeType.INFECT,
@@ -44,7 +44,7 @@ module.exports = class InfectMode {
         }
     }
 
-    moveToBase (self) {
+    moveToBase(self) {
         switch (this.map) {
             case MapType.ASYLUM:
                 self.teleport(21, 9, 7)
@@ -76,7 +76,7 @@ module.exports = class InfectMode {
         }
     }
 
-    join (self) {
+    join(self) {
         self.game = this.gameObject()
         switch (this.state) {
             case STATE_READY:
@@ -97,19 +97,19 @@ module.exports = class InfectMode {
         self.publish(Serialize.ModeData(this))
     }
 
-    drawAkari (self) {
+    drawAkari(self) {
         if (self.game.team === TeamType.BLUE)
             self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
     }
 
-    drawEvents (self) {
+    drawEvents(self) {
         const { events } = this.room.places[self.place]
         for (const event of events) {
             self.send(Serialize.CreateGameObject(event))
         }
     }
 
-    drawUsers (self) {
+    drawUsers(self) {
         let selfHide = false
         const sameMapUsers = this.room.sameMapUsers(self.place)
         for (const user of sameMapUsers) {
@@ -139,8 +139,8 @@ module.exports = class InfectMode {
             user.send(Serialize.CreateGameObject(self, selfHide))
         }
     }
-    
-    attack (self, target) {
+
+    attack(self, target) {
         if (self.game.team === TeamType.BLUE) return true
         if (self.game.team === target.game.team) return false
         if (target.game.vaccine) {
@@ -181,12 +181,12 @@ module.exports = class InfectMode {
         return true
     }
 
-    doAction (self, event) {
+    doAction(self, event) {
         event.doAction(self)
         return true
     }
 
-    leave (self) {
+    leave(self) {
         switch (self.game.team) {
             case TeamType.RED:
                 this.redTeam.splice(this.redTeam.indexOf(self), 1)
@@ -204,7 +204,7 @@ module.exports = class InfectMode {
         self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
     }
 
-    gameObject () {
+    gameObject() {
         return {
             team: TeamType.BLUE,
             spawnTime: 10,
@@ -218,23 +218,23 @@ module.exports = class InfectMode {
         }
     }
 
-    publishToRed (data) {
+    publishToRed(data) {
         for (const red of this.redTeam) {
             red.send(data)
         }
     }
 
-    publishToBlue (data) {
+    publishToBlue(data) {
         for (const blue of this.blueTeam) {
             blue.send(data)
         }
     }
 
-    sameMapRedTeam (place) {
+    sameMapRedTeam(place) {
         return this.redTeam.filter(red => red.place === place)
     }
 
-    result (winner) {
+    result(winner) {
         this.state = STATE_RESULT
         const slice = this.room.users.slice(0)
         for (const user of slice) {
@@ -265,26 +265,24 @@ module.exports = class InfectMode {
             if (exp < 100) exp = 100
             if (coin < 50) coin = 50
             const rank = ranks.indexOf(red) + 1
-            const reward = coin + "\n GOLD" + exp + " EXP"
             red.reward.exp = exp
             red.reward.coin = coin
-            red.send(Serialize.ResultGame(winner, rank, persons, mission, reward))
+            red.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
         for (const blue of this.blueTeam) {
-           const mission = "생존" + (blue.state === PlayerState.Tansu ? " (장농)" : "")
-           let exp = 100 + blue.score.sum
-           let coin = 50 + parseInt(blue.score.sum / 2)
-           if (exp < 100) exp = 100
-           if (coin < 50) coin = 50
-           const rank = ranks.indexOf(blue) + 1
-           const reward = coin + "\n GOLD" + exp + " EXP"
-           blue.reward.exp = exp
-           blue.reward.coin = coin
-           blue.send(Serialize.ResultGame(winner, rank, persons, mission, reward))
+            const mission = "생존" + (blue.state === PlayerState.Tansu ? " (장농)" : "")
+            let exp = 100 + blue.score.sum
+            let coin = 50 + parseInt(blue.score.sum / 2)
+            if (exp < 100) exp = 100
+            if (coin < 50) coin = 50
+            const rank = ranks.indexOf(blue) + 1
+            blue.reward.exp = exp
+            blue.reward.coin = coin
+            blue.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
     }
 
-    update () {
+    update() {
         if (++this.tick % 10 === 0) {
             this.tick = 0
             switch (this.state) {
@@ -333,7 +331,7 @@ module.exports = class InfectMode {
                         this.room.publish(Serialize.PlaySound('chopper'))
                         this.supplyCount = 30 + parseInt(Math.random() * 30)
                     }
-                    if (this.redTeam.length > 2) --this.supplyCount
+                    if (this.redTeam.length > 2)--this.supplyCount
                     if (this.redTeam.length === 0) this.result(TeamType.BLUE)
                     else if (this.blueTeam.length === 0) this.result(TeamType.RED)
                     else if (this.count === 5) this.room.publish(Serialize.PlaySound('Second'))

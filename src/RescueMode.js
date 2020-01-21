@@ -10,7 +10,7 @@ const STATE_GAME = 1
 const STATE_RESULT = 3
 
 module.exports = class RescueMode {
-    constructor (roomId) {
+    constructor(roomId) {
         this.roomId = roomId
         this.redTeam = []
         this.blueTeam = []
@@ -34,7 +34,7 @@ module.exports = class RescueMode {
         }
     }
 
-    getJSON () {
+    getJSON() {
         return {
             map: this.map,
             mode: ModeType.RESCUE,
@@ -45,8 +45,8 @@ module.exports = class RescueMode {
             persons: this.score.red
         }
     }
-    
-    moveToBase (self) {
+
+    moveToBase(self) {
         switch (this.map) {
             case MapType.ASYLUM:
                 if (self.game.team === TeamType.RED) self.teleport(29, 9, 19)
@@ -87,7 +87,7 @@ module.exports = class RescueMode {
         }
     }
 
-    moveToPrison (self) {
+    moveToPrison(self) {
         switch (this.map) {
             case MapType.ASYLUM:
                 self.teleport(13, 11, 15)
@@ -118,8 +118,8 @@ module.exports = class RescueMode {
                 break
         }
     }
-    
-    moveToKickOut (self) {
+
+    moveToKickOut(self) {
         switch (this.map) {
             case MapType.ASYLUM:
                 self.teleport(19, 9, 8)
@@ -151,7 +151,7 @@ module.exports = class RescueMode {
         }
     }
 
-    join (self) {
+    join(self) {
         self.game = this.gameObject()
         self.setGraphics(self.blueGraphics)
         this.blueTeam.push(self)
@@ -170,20 +170,20 @@ module.exports = class RescueMode {
         self.publish(Serialize.ModeData(this))
     }
 
-    drawAkari (self) {
+    drawAkari(self) {
         if (self.game.team === TeamType.BLUE) {
             self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
         }
     }
 
-    drawEvents (self) {
+    drawEvents(self) {
         const { events } = this.room.places[self.place]
         for (const event of events) {
             self.send(Serialize.CreateGameObject(event))
         }
     }
 
-    drawUsers (self) {
+    drawUsers(self) {
         let selfHide = false
         const sameMapUsers = this.room.sameMapUsers(self.place)
         for (const user of sameMapUsers) {
@@ -205,7 +205,7 @@ module.exports = class RescueMode {
         }
     }
 
-    attack (self, target) {
+    attack(self, target) {
         if (self.game.team === TeamType.BLUE) return true
         if (self.game.team === target.game.team) return false
         if (target.game.caught) return true
@@ -234,19 +234,19 @@ module.exports = class RescueMode {
         return true
     }
 
-    doAction (self, event) {
+    doAction(self, event) {
         event.doAction(self)
         return true
     }
 
-    leave (self) {
+    leave(self) {
         switch (self.game.team) {
             case TeamType.RED:
                 this.redTeam.splice(this.redTeam.indexOf(self), 1)
                 break
             case TeamType.BLUE:
                 this.blueTeam.splice(this.blueTeam.indexOf(self), 1)
-                if (self.game.caught) --this.score.red
+                if (self.game.caught)--this.score.red
                 break
         }
         self.game = {}
@@ -258,7 +258,7 @@ module.exports = class RescueMode {
         self.publish(Serialize.UpdateModeUserCount(this.score.red))
     }
 
-    gameObject () {
+    gameObject() {
         return {
             team: TeamType.BLUE,
             spawnTime: 10,
@@ -271,23 +271,23 @@ module.exports = class RescueMode {
         }
     }
 
-    publishToRed (data) {
+    publishToRed(data) {
         for (const red of this.redTeam) {
             red.send(data)
         }
     }
 
-    publishToBlue (data) {
+    publishToBlue(data) {
         for (const blue of this.blueTeam) {
             blue.send(data)
         }
     }
 
-    sameMapRedTeam (place) {
+    sameMapRedTeam(place) {
         return this.redTeam.filter(red => red.place === place)
     }
 
-    result (winner) {
+    result(winner) {
         this.state = STATE_RESULT
         const slice = this.room.users.slice(0)
         for (const user of slice) {
@@ -310,26 +310,24 @@ module.exports = class RescueMode {
             if (exp < 100) exp = 100
             if (coin < 50) coin = 50
             const rank = ranks.indexOf(red) + 1
-            const reward = coin + " GOLD\n" + exp + " EXP"
             red.reward.exp = exp
             red.reward.coin = coin
-            red.send(Serialize.ResultGame(winner, rank, persons, mission, reward))
+            red.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
         for (const blue of this.blueTeam) {
-           const mission = "구출 " + blue.score.rescue + " (" + blue.score.rescueCombo + "콤보)\n수감 " + (blue.score.death + blue.score.deathForWardrobe)
-           let exp = 100 + blue.score.sum
-           let coin = 50 + parseInt(blue.score.sum / 2)
-           if (exp < 100) exp = 100
-           if (coin < 50) coin = 50
-           const rank = ranks.indexOf(blue) + 1
-           const reward = coin + " GOLD\n" + exp + " EXP"
-           blue.reward.exp = exp
-           blue.reward.coin = coin
-           blue.send(Serialize.ResultGame(winner, rank, persons, mission, reward))
+            const mission = "구출 " + blue.score.rescue + " (" + blue.score.rescueCombo + "콤보)\n수감 " + (blue.score.death + blue.score.deathForWardrobe)
+            let exp = 100 + blue.score.sum
+            let coin = 50 + parseInt(blue.score.sum / 2)
+            if (exp < 100) exp = 100
+            if (coin < 50) coin = 50
+            const rank = ranks.indexOf(blue) + 1
+            blue.reward.exp = exp
+            blue.reward.coin = coin
+            blue.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
     }
 
-    update () {
+    update() {
         if (++this.tick % 10 === 0) {
             this.tick = 0
             switch (this.state) {

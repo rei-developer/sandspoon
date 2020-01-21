@@ -15,7 +15,7 @@ global.User = (function () {
         index: 0
     }
     return class User extends Character {
-        constructor (socket, verify, admin = 1) {
+        constructor(socket, verify, admin = 1) {
             super()
             this.type = 1
             this.index = 0
@@ -35,7 +35,8 @@ global.User = (function () {
             this.maxExp = this.getMaxExp()
             this.coin = 1000000
             this.cash = 0
-            this.escape = 0
+            this.win = 0
+            this.lose = 0
             this.kill = 0
             this.death = 0
             this.assist = 0
@@ -43,6 +44,7 @@ global.User = (function () {
             this.rescue = 0
             this.rescueCombo = 0
             this.survive = 0
+            this.escape = 0
             this.redGraphics = 'ao'
             this.blueGraphics = 'Someok'
             this.memo = ''
@@ -53,9 +55,9 @@ global.User = (function () {
             this.tempReboot = false
             this.clan = null
             return (async () => {
-                if (verify === 'test')  {
+                if (verify === 'test') {
                     // this.verify = { id: 110409668035092753325, loginType: 0}
-                    this.verify = { id: 113049585880204162131, loginType: 0}
+                    this.verify = { id: 113049585880204162131, loginType: 0 }
                     await this.loadUserData()
                     return this
                 }
@@ -64,12 +66,12 @@ global.User = (function () {
             })()
         }
 
-        setUpLevel (value = 1) {
+        setUpLevel(value = 1) {
             this.level += value
             this.maxExp = this.getMaxExp()
         }
-    
-        setUpExp (value) {
+
+        setUpExp(value) {
             if (this.level > 99) return
             this.exp = Math.max(this.exp + value, 0)
             while (this.exp >= this.maxExp) {
@@ -78,27 +80,27 @@ global.User = (function () {
             }
         }
 
-        getMaxExp () {
+        getMaxExp() {
             return (Math.pow(this.level, 2) * (this.level * 5)) + 200
         }
 
-        static get users () {
+        static get users() {
             return _static.users
         }
 
-        static get index () {
+        static get index() {
             return _static.index
         }
 
-        static set index (value) {
+        static set index(value) {
             _static.index = value
         }
 
-        static getByUser (user) {
+        static getByUser(user) {
             return User.users.find((u) => u === user)
         }
 
-        static async create (socket, verify) {
+        static async create(socket, verify) {
             if (User.users.some((u) => u.verify.id === verify.id && u.verify.loginType === verify.loginType)) return
             if (verify === 'test') {
                 const user = await new User(socket, verify, 1)
@@ -110,20 +112,20 @@ global.User = (function () {
             return user
         }
 
-        static add (user) {
+        static add(user) {
             user.index = ++User.index
             User.users.push(user)
         }
 
-        static removeByUser (user) {
+        static removeByUser(user) {
             User.users.splice(User.users.indexOf(user), 1)
         }
 
-        static removeByIndex (index) {
+        static removeByIndex(index) {
             User.users.splice(index, 1)
         }
-        
-        async loadUserData () {
+
+        async loadUserData() {
             const user = await DB.FindUserByOauth(this.verify.id, this.verify.loginType)
             if (!user || !user.name) throw new Error('존재하지 않는 계정입니다. : ' + user)
             const clanMember = await DB.FindMyClanByUserId(user.id)
@@ -138,7 +140,8 @@ global.User = (function () {
             this.maxExp = this.getMaxExp()
             this.coin = user.coin
             this.cash = user.cash
-            this.escape = user.escape
+            this.win = user.win
+            this.lose = user.lose
             this.kill = user.kill
             this.death = user.death
             this.assist = user.assist
@@ -146,6 +149,7 @@ global.User = (function () {
             this.rescue = user.rescue
             this.rescueCombo = user.rescue_combo
             this.survive = user.survive
+            this.escape = user.escape
             this.redGraphics = user.red_graphics
             this.blueGraphics = user.blue_graphics
             this.memo = user.memo
@@ -153,7 +157,7 @@ global.User = (function () {
             this.admin = user.admin
         }
 
-        async createClan (name) {
+        async createClan(name) {
             if (this.clanId) return
             if (this.coin < 10000) return
             if (name.length < 1 || name.length > 12) return
@@ -162,7 +166,7 @@ global.User = (function () {
             const clan = await Clan.create(this.id, name)
             if (clan) {
                 this.coin -= 10000
-                this.clan = clan 
+                this.clan = clan
                 let members = []
                 for (let i = 0; i < this.clan.members.length; ++i) {
                     const memberId = this.clan.members[i]
@@ -173,13 +177,13 @@ global.User = (function () {
             }
         }
 
-        async inviteClan (name) {
+        async inviteClan(name) {
             if (!this.clan) return
             if (this.clan.masterId !== this.id) return
-            this.clan.invite(this.id, name)        
+            this.clan.invite(this.id, name)
         }
 
-        async joinClan (id) {
+        async joinClan(id) {
             if (this.clan) return
             if (await Clan.get(id).enter(this.id)) {
                 this.clan = Clan.get(id)
@@ -187,11 +191,11 @@ global.User = (function () {
             }
         }
 
-        async cancelClan (id) {
+        async cancelClan(id) {
             DB.DeleteInviteClan(id)
         }
 
-        async kickClan (id) {
+        async kickClan(id) {
             if (!this.clan) return
             if (this.clan.masterId !== this.id) return
             if (this.clan.masterId == id) return
@@ -202,7 +206,7 @@ global.User = (function () {
             this.getClan()
         }
 
-        async getClan () {
+        async getClan() {
             if (!this.clan) {
                 this.send(Serialize.GetClan())
                 const invites = await DB.GetInviteClans(this.id)
@@ -222,7 +226,7 @@ global.User = (function () {
             this.send(Serialize.GetClan(this.clan, members))
         }
 
-        async leaveClan () {
+        async leaveClan() {
             if (!this.clan) return
             if (this.clan.masterId === this.id && this.clan.members.length > 1) return
             this.clan.leave(this.id)
@@ -230,7 +234,7 @@ global.User = (function () {
             this.send(Serialize.GetClan())
         }
 
-        async tempSkinBuy () {
+        async tempSkinBuy() {
             if (this.coin < 5000) return
 
             const skins = [
@@ -254,25 +258,25 @@ global.User = (function () {
             this.send(Serialize.TempSkinBuy(this.blueGraphics, this.coin))
         }
 
-        setState (state) {
+        setState(state) {
             this.state = PlayerState[state]
         }
 
-        setGraphics (graphics) {
+        setGraphics(graphics) {
             this.graphics = graphics
             this.publishToMap(Serialize.SetGraphics(this))
         }
 
-        turn (x, y) {
+        turn(x, y) {
             this.state.turn(this, x, y)
         }
 
-        move (x, y, timestamp) {
+        move(x, y, timestamp) {
             this.timestamp = timestamp
             this.state.move(this, x, -y)
         }
 
-        chat (message) {
+        chat(message) {
             if (this.command(message)) return
             const room = Room.get(this.roomId)
             if (!room) return
@@ -294,7 +298,7 @@ global.User = (function () {
             }
 
             console.log(this.name + '(#' + this.roomId + '@' + this.place + '): ' + message)
-       
+
             switch (room.type) {
                 case RoomType.GAME:
                     if (this.game.team === TeamType.RED) this.redChat(message)
@@ -306,13 +310,13 @@ global.User = (function () {
             }
         }
 
-        command (message) {
+        command(message) {
             if (this.admin === 0) return false
             if (message.substring(0, 1) === '#') {
                 this.notice(Serialize.SystemMessage('<color=#EFE4B0>@[' + (this.admin === 1 ? '운영자' : '개발자') + '] ' + this.name + ': ' + message.substring(1) + '</color>'))
                 return true
             }
-            
+
             const piece = message.split(',')
             let name
             let target
@@ -406,7 +410,7 @@ global.User = (function () {
             return true
         }
 
-        async ban (user, name, description, days) {
+        async ban(user, name, description, days) {
             if (user) {
                 await DB.InsertBlock(user.verify.loginType, user.verify.id, user.verify.uuid, description, days)
                 user.send(Serialize.QuitGame())
@@ -422,17 +426,17 @@ global.User = (function () {
             }
         }
 
-        redChat (message) {
+        redChat(message) {
             this.publish(Serialize.ChatMessage(this.type, this.index, `<color=#ED1C24>${this.name}</color>`, message))
         }
 
-        blueChat (message) {
+        blueChat(message) {
             if (this.game.caught) this.publishToMap(Serialize.ChatMessage(this.type, this.index, `<color=#808080>${this.name}</color>`, message))
             else this.publish(Serialize.ChatMessage(this.type, this.index, `<color=#00A2E8>${this.name}</color>`, message))
         }
 
 
-        entry (type = RoomType.GAME) {
+        entry(type = RoomType.GAME) {
             if (this.roomId) return
             this.timestamp = 0
             this.speedhackrate = 0
@@ -441,20 +445,20 @@ global.User = (function () {
 
             let room = Room.available(type)
             if (!room) room = Room.create(type)
-            room.join(this)           
+            room.join(this)
         }
 
-        leave () {
+        leave() {
             if (!this.roomId) return
             Room.get(this.roomId).leave(this)
         }
 
-        hit () {
+        hit() {
             if (!this.roomId) return
             Room.get(this.roomId).hit(this)
         }
 
-        portal (place, x, y, dx = 0, dy = 0) {
+        portal(place, x, y, dx = 0, dy = 0) {
             this.timestamp = 0
             this.broadcastToMap(Serialize.RemoveGameObject(this))
             this.place = place
@@ -464,12 +468,12 @@ global.User = (function () {
             this.send(Serialize.Portal(place, x, y, this.direction))
         }
 
-        teleport (place, x, y) {
+        teleport(place, x, y) {
             if (!this.roomId) return
             Room.get(this.roomId).teleport(this, place, x, y)
         }
 
-        result (ad) {
+        result(ad) {
             if (!this.game.result) return
             switch (ad) {
                 case 1:
@@ -484,7 +488,7 @@ global.User = (function () {
             this.game.result = false
         }
 
-        getJSON () {
+        getJSON() {
             return {
                 index: this.index,
                 type: this.type,
@@ -497,41 +501,41 @@ global.User = (function () {
             }
         }
 
-        async disconnect () {
+        async disconnect() {
             this.leave()
             User.removeByUser(this)
             if (!await DB.UpdateUser(this))
                 logger.log('저장 실패 ' + JSON.stringify(user.getJSON()))
         }
 
-        send (data) {
+        send(data) {
             if (this.socket.readyState === 1)
                 this.socket.send(data)
         }
 
-        notice (data) {
+        notice(data) {
             const users = User.users
             for (const user of users) {
                 user.send(data)
             }
         }
 
-        publish (data) {
+        publish(data) {
             if (!this.roomId) return
             Room.get(this.roomId).publish(data)
         }
 
-        broadcast (data) {
+        broadcast(data) {
             if (!this.roomId) return
             Room.get(this.roomId).broadcast(this, data)
         }
 
-        broadcastToMap (data) {
+        broadcastToMap(data) {
             if (!this.roomId) return
             Room.get(this.roomId).broadcastToMap(this, data)
         }
 
-        publishToMap (data) {
+        publishToMap(data) {
             if (!this.roomId) return
             Room.get(this.roomId).publishToMap(this.place, data)
         }

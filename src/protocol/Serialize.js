@@ -15,13 +15,15 @@ my.UserData = function (user) {
     packet.maxExp = user.maxExp
     packet.coin = user.coin
     packet.cash = user.cash
-    packet.escape = user.escape
+    packet.win = user.win
+    packet.lose = user.lose
     packet.kill = user.kill
     packet.death = user.death
     packet.assist = user.assist
     packet.blast = user.blast
     packet.rescue = user.rescue
     packet.survive = user.survive
+    packet.escape = user.escape
     packet.graphics = user.graphics
     packet.redGraphics = user.redGraphics
     packet.blueGraphics = user.blueGraphics
@@ -195,14 +197,15 @@ my.DeadAnimation = function () {
     return JSON.stringify(packet)
 }
 
-my.ResultGame = function (winner, rank, persons, mission, reward) {
+my.ResultGame = function (winner, rank, persons, mission, exp, coin) {
     const packet = {}
     packet._head = ToClient.RESULT_GAME
     packet.winner = winner
     packet.rank = rank
     packet.persons = persons
     packet.mission = mission
-    packet.reward = reward
+    packet.exp = exp
+    packet.coin = coin
     return JSON.stringify(packet)
 }
 

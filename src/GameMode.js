@@ -5,7 +5,7 @@ const InfectMode = require('./InfectMode')
 const Event = require('./Event')
 
 module.exports = class GameMode {
-    constructor (roomId) {
+    constructor(roomId) {
         this.roomId = roomId
         this.map = MapType.TATAMI //MapType.ASYLUM + parseInt(Math.random() * MapType.DESERT)
         this.count = 0
@@ -29,7 +29,7 @@ module.exports = class GameMode {
         }
     }
 
-    moveToBase (self) {
+    moveToBase(self) {
         switch (this.map) {
             case MapType.ASYLUM:
                 self.teleport(2, 8, 13)
@@ -61,29 +61,29 @@ module.exports = class GameMode {
         }
     }
 
-    join (self) {
+    join(self) {
         self.game = {}
         self.setGraphics(self.blueGraphics)
         this.moveToBase(self)
     }
 
-    leave (self) {
+    leave(self) {
         self.game = {}
         self.setGraphics(self.blueGraphics)
     }
 
-    drawAkari (self) {
+    drawAkari(self) {
         self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
     }
 
-    drawEvents (self) {
+    drawEvents(self) {
         const { events } = this.room.places[self.place]
         for (const event of events) {
             self.send(Serialize.CreateGameObject(event))
         }
     }
 
-    drawUsers (self) {
+    drawUsers(self) {
         const sameMapUsers = this.room.sameMapUsers(self.place)
         for (const user of sameMapUsers) {
             if (self === user) continue
@@ -92,17 +92,17 @@ module.exports = class GameMode {
         }
     }
 
-    attack (self, target) {
+    attack(self, target) {
         return true
     }
 
-    doAction (self, event) {
+    doAction(self, event) {
         event.doAction(self)
         return true
     }
 
-    update () {
-        if (this.room.users.length >= 4) {
+    update() {
+        if (this.room.users.length >= 1) {
             const mode = ModeType.RESCUE + parseInt(Math.random() * ModeType.INFECT)
             switch (mode) {
                 case ModeType.RESCUE:
