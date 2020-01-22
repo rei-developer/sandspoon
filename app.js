@@ -2,24 +2,22 @@ require('./src/User')
 require('./src/Room')
 require('./src/Clan')
 
-const lex = require('greenlock-koa').create({
-    version: 'draft-11',
-    configDir: '/etc/letsencrypts',
-    server: 'production', //'https://acme-v02-staging.api.letsencrypt.org/directory',
+const lex = require('greenlock-express').create({
+    version: 'draft-11', // 버전2
+    configDir: '/etc/letsencrypt', // 또는 ~/letsencrypt/etc
+    server: 'https://acme-staging-v02.api.letsencrypt.org/directory',
     approveDomains: (opts, certs, cb) => {
         if (certs) {
-            opts.domains = ['sandspoon.com']
+            opts.domains = ['sandspoon.com'];
         } else {
-            opts.email = 'sandspoons@gmail.com'
-            opts.agreeTos = true
+            opts.email = 'sandspoons@gmail.com';
+            opts.agreeTos = true;
         }
-        cb(null, { options: opts, certs })
+        cb(null, { options: opts, certs });
     },
-    communityMember: true,
-    configDir: require('os').homedir() + '/acme/etc',
     renewWithin: 81 * 24 * 60 * 60 * 1000,
-    renewBy: 80 * 24 * 60 * 60 * 1000
-})
+    renewBy: 80 * 24 * 60 * 60 * 1000,
+});
 const http = require('http')
 const https = require('https')
 const Koa = require('koa')
