@@ -22,6 +22,7 @@ const lex = require('greenlock-koa').create({
 })
 
 const https = require('https')
+const http = require('http')
 const Koa = require('koa')
 const Router = require('koa-router')
 const bodyparser = require('koa-bodyparser')
@@ -74,6 +75,7 @@ async function start() {
             }
         }, 1000 * 300)
         https.createServer(lex.httpsOptions, lex.middleware(app.callback())).listen(443)
+        http.createServer(lex.middleware(require('redirect-https')())).listen(80)
         new Server().run(PORT)
         console.log('server is running.')
     } catch (e) {
