@@ -7,7 +7,7 @@ const https = require('https')
 const filtering = require('./filtering-text')
 
 const OAUTH_ID = {
-    GOOGLE: '858070377759-k02uj1uemkrka8g4d4567io60ub4pt81.apps.googleusercontent.com'
+    GOOGLE: '112494846092-ar8ml4nm16mr7bhd3cekb87846fr5k0e.apps.googleusercontent.com'
 }
 
 const LOGIN_TYPE = {
