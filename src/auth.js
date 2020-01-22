@@ -121,8 +121,6 @@ router.post('/verify/register', async (ctx, next) => {
 
 router.post('/verify/google', async (ctx, next) => {
     try {
-        console.log("서버에 오기는 하니?")
-
         const { token, uuid } = ctx.request.body
         const blocked = await blockedUser(uuid)
         if (blocked) return ctx.body = { status: 'BLOCKED', date: blocked.date, description: blocked.description }
