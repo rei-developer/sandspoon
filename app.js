@@ -5,7 +5,7 @@ require('./src/Clan')
 const lex = require('greenlock-koa').create({
     version: 'draft-11',
     configDir: '/etc/letsencrypts',
-    server: 'https://acme-staging-v02.api.letsencrypt.org/directory',
+    server: 'https://acme-v02-staging.api.letsencrypt.org/directory',
     approveDomains: (opts, certs, cb) => {
         if (certs) {
             opts.domains = ['sandspoon.com']
@@ -20,9 +20,8 @@ const lex = require('greenlock-koa').create({
     renewWithin: 81 * 24 * 60 * 60 * 1000,
     renewBy: 80 * 24 * 60 * 60 * 1000
 })
-
-const https = require('https')
 const http = require('http')
+const https = require('https')
 const Koa = require('koa')
 const Router = require('koa-router')
 const bodyparser = require('koa-bodyparser')
@@ -33,15 +32,11 @@ const router = new Router()
 const Data = require('./src/Data')
 const DB = require('./src/DB')
 
-const VERSION = '0.2.2'
+const VERSION = '0.5.8'
 const PORT = 50000
 
 router.get('/', (ctx, next) => {
     ctx.body = VERSION
-})
-
-router.get('/terms', (ctx, next) => {
-    ctx.body = "이용약관"
 })
 
 app.use(bodyparser())
