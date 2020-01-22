@@ -5,7 +5,7 @@ require('./src/Clan')
 const lex = require('greenlock-koa').create({
     version: 'draft-11',
     configDir: '/etc/letsencrypts',
-    server: 'https://acme-v02-staging.api.letsencrypt.org/directory',
+    server: 'production', //'https://acme-v02-staging.api.letsencrypt.org/directory',
     approveDomains: (opts, certs, cb) => {
         if (certs) {
             opts.domains = ['sandspoon.com']
@@ -15,8 +15,8 @@ const lex = require('greenlock-koa').create({
         }
         cb(null, { options: opts, certs })
     },
-    //communityMember: true,
-    //configDir: require('os').homedir() + '/acme/etc',
+    communityMember: true,
+    configDir: require('os').homedir() + '/acme/etc',
     renewWithin: 81 * 24 * 60 * 60 * 1000,
     renewBy: 80 * 24 * 60 * 60 * 1000
 })
