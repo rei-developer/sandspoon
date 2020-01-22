@@ -15,8 +15,8 @@ const lex = require('greenlock-koa').create({
         }
         cb(null, { options: opts, certs })
     },
-    communityMember: true,
-    configDir: require('os').homedir() + '/acme/etc',
+    //communityMember: true,
+    //configDir: require('os').homedir() + '/acme/etc',
     renewWithin: 81 * 24 * 60 * 60 * 1000,
     renewBy: 80 * 24 * 60 * 60 * 1000
 })
