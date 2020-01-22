@@ -25,29 +25,39 @@ const https = require('https')
 const Koa = require('koa')
 const Router = require('koa-router')
 const bodyparser = require('koa-bodyparser')
-const Data = require('./src/Data')
-const DB = require('./src/DB')
 const Server = require('./src/Server')
-const auth = require('./src/api/auth')
-const androidpublisher = require('./src/api/androidpublisher')
+const auth = require('./src/auth')
 const app = new Koa()
 const router = new Router()
+const Data = require('./src/Data')
+const DB = require('./src/DB')
 
-const VERSION = '0.2.1'
+const VERSION = '0.2.2'
 const PORT = 50000
 
-router.get('/', ctx => {
+router.get('/', (ctx, next) => {
     ctx.body = VERSION
+})
+
+router.get('/terms', (ctx, next) => {
+    ctx.body = "이용약관"
 })
 
 app.use(bodyparser())
     .use(router.routes())
     .use(auth.routes())
-    .use(androidpublisher.routes())
 
 const Logger = require('./Logger')
 global.logger = new Logger('[INFO]', true)
 
+async function test() {
+    try {
+        throw new Error('hihi')
+    } catch (e) {
+        console.error(e)
+        throw e
+    }
+}
 async function start() {
     try {
         await Data.loadData()
@@ -67,7 +77,6 @@ async function start() {
         new Server().run(PORT)
         console.log('server is running.')
     } catch (e) {
-        console.log('A')
         console.log(e)
     }
 }
@@ -85,6 +94,7 @@ process.on('SIGINT', async () => {
     logger.writeFile('./log.txt')
     console.log('Caught interrupt signal.')
     process.exit()
+
 })
 
 start()
