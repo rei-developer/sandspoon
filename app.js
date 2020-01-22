@@ -1,7 +1,6 @@
-require('./src/Clan')
-require('./src/Item')
-require('./src/Room')
 require('./src/User')
+require('./src/Room')
+require('./src/Clan')
 
 const lex = require('greenlock-koa').create({
     version: 'draft-11',
