@@ -3,15 +3,15 @@ const { TeamType } = require('./const')
 const pix = require('./pix')
 
 class State {
-    constructor (args = {}) {}
+    constructor(args = {}) { }
 
-    doAction (context, self) {}
+    doAction(context, self) { }
 
-    update (context) {}
+    update(context) { }
 }
 
 class DoorState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.openSound = args['openSound'] || 'door03'
         this.closeSound = args['closeSound'] || 'door04'
         this.knockSound = args['knockSound'] || 'door06'
@@ -19,7 +19,7 @@ class DoorState {
         this.isAlive = true
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         const door = context
         if (this.isAlive) {
             if (this.isOpen) {
@@ -45,11 +45,11 @@ class DoorState {
 }
 
 class RescueState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.count = 0
     }
-    
-    doAction (context, self) {
+
+    doAction(context, self) {
         const { mode } = Room.get(context.roomId)
         if (self.game.team === TeamType.RED || self.game.caught) return
         if (!mode.caught) return self.send(Serialize.InformMessage('<color=#B5E61D>아직 인질을 구출할 수 없습니다.</color>'))
@@ -66,14 +66,14 @@ class RescueState {
         }
         mode.score.red = 0
         mode.caught = false
-        self.publish(Serialize.NoticeMessage(self.name + ' 인질 ' + count + '명 구출!'))
+        self.publish(Serialize.NoticeMessage('<color=red>' + self.name + '</color>' + ' 인질 <color=red>' + count + '명</color> 구출!'))
         self.publish(Serialize.PlaySound('Rescue'))
         self.publish(Serialize.UpdateModeUserCount(0))
         self.score.rescue += count
         ++self.score.rescueCombo
     }
 
-    update (context) {
+    update(context) {
         if (++this.count % 10 == 0) {
             const { mode } = Room.get(context.roomId)
             for (const red of mode.redTeam) {
@@ -97,11 +97,11 @@ class RescueState {
 }
 
 class TanaState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.toggle = false
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         const tana = context
         self.publishToMap(Serialize.PlaySound('Sha'))
         tana.move(this.toggle ? -1 : 1, 0)
@@ -110,11 +110,11 @@ class TanaState {
 }
 
 class ObstacleState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.moveSound = args['moveSound'] || '3'
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         const room = Room.get(context.roomId)
         if (!room) return
         self.publishToMap(Serialize.PlaySound(this.moveSound))
@@ -128,11 +128,11 @@ class ObstacleState {
 const PlayerState = require('./PlayerState')
 
 class AkariState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.count = 0
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         // if (self.game.team === TeamType.RED) return
         const room = Room.get(self.roomId)
         const light = room.akari(self.place)
@@ -144,7 +144,7 @@ class AkariState {
         }
     }
 
-    update (context) {
+    update(context) {
         if (++this.count % 4 == 0) {
             const room = Room.get(context.roomId)
             if (!room) return
@@ -163,11 +163,11 @@ class AkariState {
 }
 
 class TansuState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.users = []
     }
-    
-    doAction (context, self) {
+
+    doAction(context, self) {
         if (self.direction.x !== 0 || self.direction.y !== 1) return
         const room = Room.get(context.roomId)
         if (!room) return
@@ -214,7 +214,7 @@ const dr = [
 ]
 
 class ManiaState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.count = 0
         this.step = 0
         this.i = 0
@@ -223,12 +223,12 @@ class ManiaState {
         this.fixed = args['fixed']
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         this.msgCount = (++this.msgCount) % this.message.length
         self.send(Serialize.ChatMessage(context.type, context.index, context.name, this.message[this.msgCount]))
     }
 
-    update (context) {
+    update(context) {
         if (this.fixed) return
         const room = Room.get(context.roomId)
         if (!room) return
@@ -247,7 +247,7 @@ class ManiaState {
             context.y += dr[i][1]
         }
         this.count++
-        if (this.count % 500 == 0){
+        if (this.count % 500 == 0) {
             this.msgCount = (++this.msgCount) % this.message.length
             context.publishToMap(Serialize.ChatMessage(context.type, context.index, context.name, this.message[this.msgCount]))
         }
@@ -256,7 +256,7 @@ class ManiaState {
 }
 
 class RabbitState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.count = 0
         this.step = 0
         this.i = 0
@@ -265,17 +265,17 @@ class RabbitState {
         this.fixed = args['fixed']
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         const room = Room.get(context.roomId)
         if (!room) return
-        
+
         self.publish(Serialize.NoticeMessage(self.name + ' 토깽이 사냥!'))
         self.publish(Serialize.PlaySound('Eat'))
         context.publishToMap(Serialize.RemoveGameObject(context))
         room.removeEvent(context)
     }
 
-    update (context) {
+    update(context) {
         if (this.fixed) return
         const room = Room.get(context.roomId)
         if (!room) return
@@ -299,17 +299,17 @@ class RabbitState {
 }
 
 class BoxState {
-    constructor (args = {}) {
+    constructor(args = {}) {
 
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         const room = Room.get(context.roomId)
         if (!room) return
         const { mode } = room
         if (self.game.team === TeamType.BLUE) {
-            if(self.game.vaccine)
-                return self.send(Serialize.InformMessage('<color=red>이미 보급품을 사용중입니다..</color>' ))
+            if (self.game.vaccine)
+                return self.send(Serialize.InformMessage('<color=red>이미 보급품을 사용중입니다..</color>'))
             self.game.vaccine = true
             self.publish(Serialize.NoticeMessage('생존자 ' + self.name + (pix.maker(self.name) ? '가' : '이') + ' 보급품 획득!'))
         } else {
@@ -329,7 +329,7 @@ class BoxState {
 }
 
 class EvelevatorState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.openSound = args['openSound'] || 'eopen'
         this.closeSound = args['closeSound'] || 'eclose'
         this.OppenGraphic = args['OppenGraphic'] || 'blank'
@@ -339,7 +339,7 @@ class EvelevatorState {
         this.count = 0
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         if (!this.inside || !this.target) return
         self.teleport(this.target.place, this.target.x, this.target.y)
     }
@@ -360,7 +360,7 @@ class EvelevatorState {
         context.publishToMap(Serialize.CreateGameObject(context))
     }
 
-    update (context) {
+    update(context) {
         if (++this.count % 3 === 0 && this.target) {
             for (const u of Room.get(context.roomId).places[context.place].users) {
                 if (u.x === context.x && u.y === context.y)
@@ -371,7 +371,7 @@ class EvelevatorState {
 }
 
 class EvelevatorInsideState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.state = 0 // 0 is Open 1  is closing 2 is moving 3 is waiting
         this.passive = true
         this.inDoor = null
@@ -383,7 +383,7 @@ class EvelevatorInsideState {
         this.floor = '0'
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         if (this.state === 0) {
             this.passive = false
             let r = parseInt(Math.random() * (this.floorMax))
@@ -400,14 +400,14 @@ class EvelevatorInsideState {
         }
     }
 
-    pushButton(context,target){
+    pushButton(context, target) {
         if (!Room.get(context.roomId) || this.state != 0) return
         context.publishToMap(Serialize.InformMessage('<color=#B5E61D>' + target + '층이 눌렸습니다. 엘레베이터 문이 닫힙니다.</color>'))
 
         this.state = 1
         let outDoor
 
-        for (const keys in this.outerIds){
+        for (const keys in this.outerIds) {
             if (!this.outDoors[keys])
                 this.outDoors[keys] = Room.get(context.roomId).places[this.outerIds[keys]].events.find((e) => e.state instanceof EvelevatorState)
             if (keys === this.floor) {
@@ -421,31 +421,31 @@ class EvelevatorInsideState {
         }, 1200)
     }
 
-    closeDoor(context, outDoor){
+    closeDoor(context, outDoor) {
         if (!Room.get(context.roomId) || this.state != 1) return
 
         this.state = 2
 
         if (outDoor)
-            outDoor.state.changeState(outDoor,false)
+            outDoor.state.changeState(outDoor, false)
         if (!this.inDoor)
             this.inDoor = Room.get(context.roomId).places[this.innerId].events.find((e) => e.state instanceof EvelevatorState)
 
-        this.inDoor.state.changeState(this.inDoor,false)
+        this.inDoor.state.changeState(this.inDoor, false)
         context.publishToMap(Serialize.PlaySound(this.moveSound))
-        
+
         setTimeout(() => {
             this.openDoor(context)
         }, 8000)
     }
 
-    openDoor(context){
+    openDoor(context) {
         if (!Room.get(context.roomId) || this.state != 2) return
 
         this.state = 3
         let outDoor = this.outDoors[this.floor]
 
-        outDoor.state.changeState(outDoor,true)
+        outDoor.state.changeState(outDoor, true)
         this.inDoor.state.changeState(this.inDoor, true, outDoor)
 
         outDoor.publishToMap(Serialize.InformMessage('<color=#B5E61D>엘레베이터 문이 열립니다.</color>'))
@@ -459,20 +459,20 @@ class EvelevatorInsideState {
 }
 
 class EvelevatorOutsideState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.elevatorId = args['elevId']
         this.floor = args['floor']
         this.elevatorEvent = null
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         if (!this.elevatorEvent)
             this.elevatorEvent = Room.get(context.roomId).places[this.elevatorId].events.find((e) => e.state instanceof EvelevatorInsideState)
-        
+
         const inside = this.elevatorEvent.state
         if (inside.state === 0) {
             if (inside.floor != this.floor)
-                inside.pushButton(this.elevatorEvent,this.floor)
+                inside.pushButton(this.elevatorEvent, this.floor)
         } else if (inside.state === 1) {
             self.send(Serialize.InformMessage('<color=#B5E61D>엘레베이터가 문이 닫히는 중이다.</color>'))
         } else if (inside.state === 2) {
@@ -480,12 +480,12 @@ class EvelevatorOutsideState {
         } else if (inside.floor != this.floor) {
             self.send(Serialize.InformMessage('<color=#B5E61D>엘레베이터가 ' + inside.floor + '층에 도착중이다.</color>'))
         }
-        
+
     }
 }
 
 class PowerDoorState {
-    constructor (args = {}) {
+    constructor(args = {}) {
         this.openSound = args['openSound'] || 'door03'
         this.closeSound = args['closeSound'] || 'door04'
         this.knockSound = args['knockSound'] || 'door06'
@@ -493,7 +493,7 @@ class PowerDoorState {
         this.hp = 0
     }
 
-    doAction (context, self) {
+    doAction(context, self) {
         const door = context
         if (this.isOpen) {
             if (self.game.team === TeamType.RED) return
@@ -506,7 +506,7 @@ class PowerDoorState {
             } else {
                 self.publishToMap(Serialize.PlaySound(this.knockSound))
                 this.hp++
-            }         
+            }
         } else {
             if (self.game.team === TeamType.RED && this.hp > 0) {
                 self.publishToMap(Serialize.PlaySound(this.knockSound))
@@ -538,9 +538,9 @@ module.exports = new Proxy({
     rabbit: RabbitState,
     box: BoxState,
     elevator: EvelevatorState,
-    elevin : EvelevatorInsideState,
-    elevout : EvelevatorOutsideState,
-    powerDoor : PowerDoorState
+    elevin: EvelevatorInsideState,
+    elevout: EvelevatorOutsideState,
+    powerDoor: PowerDoorState
 }, {
     get: function (target, name) {
         return target.hasOwnProperty(name) ? target[name] : State

@@ -1,2 +1,3 @@
 /node_modules
 /src/DB.js
+/src/config.json

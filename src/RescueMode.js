@@ -212,9 +212,9 @@ module.exports = class RescueMode {
         this.moveToPrison(target)
         target.game.caught = true
         target.send(Serialize.DeadAnimation())
-        self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 인질로 붙잡았다.'))
+        self.send(Serialize.NoticeMessage('<color=red>' + target.name + '</color>' + (pix.maker(target.name) ? '를' : '을') + ' 인질로 붙잡았다.'))
         self.send(Serialize.PlaySound('Eat'))
-        self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 인질로 붙잡혔다!'))
+        self.broadcast(Serialize.NoticeMessage('<color=red>' + target.name + '</color>' + (pix.maker(target.name) ? '가' : '이') + ' 인질로 붙잡혔다!'))
         self.broadcast(Serialize.PlaySound('Shock'))
         switch (target.state) {
             case PlayerState.Tansu:

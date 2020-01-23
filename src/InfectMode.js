@@ -162,7 +162,7 @@ module.exports = class InfectMode {
         this.blueTeam.splice(this.blueTeam.indexOf(target), 1)
         self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
         self.send(Serialize.PlaySound('Eat'))
-        self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 감염되어 ' + (this.blueTeam.length > 0 ? this.blueTeam.length + '명 생존...' : '전멸.')))
+        self.broadcast(Serialize.NoticeMessage('<color=red>' + target.name + '</color>' + (pix.maker(target.name) ? '가' : '이') + ' 감염되어 <color=red>' + (this.blueTeam.length > 0 ? this.blueTeam.length + '명</color> 생존...' : '전멸</color>')))
         self.broadcast(Serialize.PlaySound('Shock'))
         self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
         switch (target.state) {
