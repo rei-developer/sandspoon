@@ -1,4 +1,6 @@
 {
+    "PORT": 50001,
+    "VERSION": "0.3.8",
     "SECRET": "Hitomi847400#$",
     "KEY": "$Emakdkekwk+ckeoIYNdjYYyzakwKW"
 }

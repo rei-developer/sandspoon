@@ -12,9 +12,10 @@ const app = new Koa()
 const router = new Router()
 const Data = require('./src/Data')
 const DB = require('./src/DB')
+const config = require('./src/config')
 
-const VERSION = '0.2.8'
-const PORT = 50000
+const PORT = config.PORT
+const VERSION = config.VERSION
 
 router.get('/', (ctx, next) => {
     ctx.body = VERSION

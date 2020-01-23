@@ -6,6 +6,8 @@ const router = new Router()
 const https = require('https')
 const filtering = require('./filtering-text')
 
+const VERSION = config.VERSION
+
 const OAUTH_ID = {
     GOOGLE: '112494846092-ar8ml4nm16mr7bhd3cekb87846fr5k0e.apps.googleusercontent.com'
 }
@@ -121,7 +123,8 @@ router.post('/verify/register', async (ctx, next) => {
 
 router.post('/verify/google', async (ctx, next) => {
     try {
-        const { token, uuid } = ctx.request.body
+        const { token, uuid, version } = ctx.request.body
+        if (version !== VERSION) return ctx.body = { status: 'NOT_UPDATED', version: VERSION }
         const blocked = await blockedUser(uuid)
         if (blocked) return ctx.body = { status: 'BLOCKED', date: blocked.date, description: blocked.description }
         const verify = await verifyGoogle(token)
