@@ -4,17 +4,17 @@ global.Clan = (function () {
     const _static = {
         clans: {},
     }
-    
+
     return class Clan {
-        static get clans () {
+        static get clans() {
             return _static.clans
         }
 
-        static add (clan) {
+        static add(clan) {
             Clan.clans[clan.id] = clan
         }
 
-        static async create (userId, clanname) {
+        static async create(userId, clanname) {
             const clanData = await DB.CreateClan(userId, clanname)
             if (clanData) {
                 const clan = new Clan(clanData.insertId, userId, clanname)
@@ -23,28 +23,53 @@ global.Clan = (function () {
                 return clan
             }
         }
-     
+
         static get(id) {
             return Clan.clans[id]
         }
 
-        constructor (id = 0, masterId = 0, name = '', level = 0, exp = 0, coin = 0, regdate = 0, members = []) {
+        constructor(
+            id = 0,
+            masterId = 0,
+            name = '',
+            level1_name = '',
+            level2_name = '',
+            level3_name = '',
+            level4_name = '',
+            level5_name = '',
+            notice = '',
+            level = 0,
+            exp = 0,
+            coin = 0,
+            regdate = 0,
+            condition = 0,
+            members = []
+        ) {
             this.id = id
             this.masterId = masterId
             this.name = name
+            this.level1_name = level1_name
+            this.level2_name = level2_name
+            this.level3_name = level3_name
+            this.level4_name = level4_name
+            this.level5_name = level5_name
+            this.notice = notice
             this.level = level
             this.exp = exp
             this.coin = coin
             this.regdate = regdate
+            this.condition = condition
             this.members = members
             this.room = null
         }
-        
+
         async invite(userId, targetName) {
             const target = await DB.FindUserByName(targetName)
             if (target && target.id) {
-                if (this.members.find(m => m.id === target.id)) return
-                if (await DB.FindMyClanByUserId(target.id)) return
+                if (this.members.find(m => m.id === target.id))
+                    return
+                if (await DB.FindMyClanByUserId(target.id))
+                    return
                 await DB.InviteClan(this.id, userId, target.id)
             }
         }

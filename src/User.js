@@ -170,7 +170,7 @@ global.User = (function () {
                 let members = []
                 for (let i = 0; i < this.clan.members.length; ++i) {
                     const memberId = this.clan.members[i]
-                    members.push(DB.FindUserById(memberId))
+                    members.push(DB.FindUserClanInfoById(memberId))
                 }
                 members = await Promise.all(members)
                 this.send(Serialize.GetClan(this.clan, members))
@@ -219,7 +219,7 @@ global.User = (function () {
             let members = []
             for (let i = 0; i < this.clan.members.length; ++i) {
                 const memberId = this.clan.members[i]
-                members.push(DB.FindUserById(memberId))
+                members.push(DB.FindUserClanInfoById(memberId))
             }
 
             members = await Promise.all(members)
@@ -427,12 +427,14 @@ global.User = (function () {
         }
 
         redChat(message) {
-            this.publish(Serialize.ChatMessage(this.type, this.index, `<color=#ED1C24>${this.name}</color>`, message))
+            this.publish(Serialize.ChatMessage(this.type, this.index, `<color=#00A2E8>${this.name}</color>`, message))
         }
 
         blueChat(message) {
-            if (this.game.caught) this.publishToMap(Serialize.ChatMessage(this.type, this.index, `<color=#808080>${this.name}</color>`, message))
-            else this.publish(Serialize.ChatMessage(this.type, this.index, `<color=#00A2E8>${this.name}</color>`, message))
+            if (this.game.caught)
+                this.publishToMap(Serialize.ChatMessage(this.type, this.index, `<color=#808080>${this.name}</color>`, message))
+            else
+                this.publish(Serialize.ChatMessage(this.type, this.index, `<color=#00A2E8>${this.name}</color>`, message))
         }
 
 

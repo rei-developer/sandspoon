@@ -50,6 +50,27 @@ module.exports = {
             console.error(e)
         }
     },
+    async FindUserClanInfoById(id) {
+        try {
+            const [row] = await this.query(
+                `SELECT
+                    u.id,
+                    u.name,
+                    u.level,
+                    u.blue_graphics avatar,
+                    u.updated,
+                    cm.level clanLevel,
+                    cm.exp clanExp,
+                    cm.coin clanCoin
+                FROM users u
+                LEFT JOIN clan_members cm ON cm.user_id = u.id
+                WHERE u.id = ?`
+                , [id])
+            return row
+        } catch (e) {
+            console.error(e)
+        }
+    },
     async FindUserByOauth(uid, loginType) {
         try {
             const [row] = await this.query("SELECT * FROM users WHERE uid = ? AND login_type = ?", [uid, loginType])
@@ -113,7 +134,7 @@ module.exports = {
         try {
             await conn.beginTransaction()
             const row = await conn.query('INSERT INTO clans (master_id, name) VALUES (?, ?)', [masterId, clanname])
-            await conn.query('INSERT INTO clan_members (clan_id, user_id) VALUES (?, ?)', [row.insertId, masterId])
+            await conn.query('INSERT INTO clan_members (clan_id, user_id, level) VALUES (?, ?, ?)', [row.insertId, masterId, 5])
             await conn.commit()
             return row
         } catch (e) {

@@ -11,13 +11,13 @@ module.exports = (function () {
         rankKeys: []
     }
     return class Data {
-        static async loadData () {
+        static async loadData() {
             await Data.loadMaps(257)
             await Data.loadRanks()
             await Data.loadClans()
         }
 
-        static async loadMaps (count) {
+        static async loadMaps(count) {
             console.log('맵 로딩중...')
 
             for (let i = 1; i <= count; ++i) {
@@ -28,13 +28,28 @@ module.exports = (function () {
             console.log('맵 로딩 완료.')
         }
 
-        static async loadClans () {
+        static async loadClans() {
             console.log('클랜 로딩중...')
 
             const clans = await DB.LoadClans()
             for (let i = 0; i < clans.length; ++i) {
                 const clanData = clans[i]
-                const clan = new Clan(clanData.id, clanData.master_id, clanData.name, clanData.level, clanData.exp, clanData.coin, new Date(clanData.regdate))
+                const clan = new Clan(
+                    clanData.id,
+                    clanData.master_id,
+                    clanData.name,
+                    clanData.level1_name,
+                    clanData.level2_name,
+                    clanData.level3_name,
+                    clanData.level4_name,
+                    clanData.level5_name,
+                    clanData.notice,
+                    clanData.level,
+                    clanData.exp,
+                    clanData.coin,
+                    new Date(clanData.regdate),
+                    clanData.condition
+                )
                 const clanmembers = await DB.GetClanMembers(clan.id)
 
                 for (let j = 0; j < clanmembers.length; ++j) {
@@ -46,9 +61,9 @@ module.exports = (function () {
             console.log('클랜 로딩 완료.')
         }
 
-        static async loadRanks () {
+        static async loadRanks() {
             console.log('랭킹 로딩중...')
-            
+
             let users = await DB.LoadRanks()
             let rankNum = 0
             for (const user of users) {
@@ -58,8 +73,8 @@ module.exports = (function () {
 
             console.log('랭킹 로딩 완료.')
         }
-        
-        static get rank () {
+
+        static get rank() {
             return _static.rank
         }
 
@@ -118,7 +133,7 @@ module.exports = (function () {
 
         static async loadRanks () {
             console.log('랭킹 로딩중...')
-            
+
             let users = await DB.LoadRanks()
             let rankNum = 0
             for (const user of users) {
@@ -128,7 +143,7 @@ module.exports = (function () {
 
             console.log('랭킹 로딩 완료.')
         }
-        
+
         static get rank () {
             return _static.rank
         }

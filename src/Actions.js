@@ -66,7 +66,7 @@ class RescueState {
         }
         mode.score.red = 0
         mode.caught = false
-        self.publish(Serialize.NoticeMessage('<color=red>' + self.name + '</color>' + ' 인질 <color=red>' + count + '명</color> 구출!'))
+        self.publish(Serialize.NoticeMessage(self.name + ' 인질 ' + count + '명 구출!'))
         self.publish(Serialize.PlaySound('Rescue'))
         self.publish(Serialize.UpdateModeUserCount(0))
         self.score.rescue += count

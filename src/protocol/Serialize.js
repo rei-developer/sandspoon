@@ -173,12 +173,27 @@ my.GetClan = function (clan, members = []) {
     if (packet.hasClan) {
         packet.name = clan.name
         packet.level = clan.level
+        packet.level1_name = clan.level1_name
+        packet.level2_name = clan.level2_name
+        packet.level3_name = clan.level3_name
+        packet.level4_name = clan.level4_name
+        packet.level5_name = clan.level5_name
+        packet.notice = clan.notice
+        packet.level = clan.level
         packet.exp = clan.exp
+        packet.coin = clan.coin
+        packet.regdate = clan.regdate
+        packet.condition = clan.condition
         packet.masterId = clan.masterId
         packet.members = members.map(m => ({
             id: m.id,
+            avatar: m.avatar,
+            level: m.level,
             name: m.name,
-            level: m.level
+            clanLevel: m.clanLevel,
+            clanExp: m.clanExp,
+            clanCoin: m.clanCoin,
+            updated: m.updated
         }))
     }
     return JSON.stringify(packet)
