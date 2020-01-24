@@ -114,6 +114,22 @@ module.exports = {
             console.error(e)
         }
     },
+    async UpdateClanOption(clanId, data) {
+        try {
+            await this.query('UPDATE clans SET `notice` = ?, `level1_name` = ?, `level2_name` = ?, `level3_name` = ?, `level4_name` = ?, `level5_name` = ? WHERE `id` = ?', [
+                data.notice,
+                data.level[0],
+                data.level[1],
+                data.level[2],
+                data.level[3],
+                data.level[4],
+                clanId
+            ])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
     async FindMyClanByUserId(id) {
         try {
             const [row] = await this.query('SELECT * FROM clan_members WHERE user_id = ?', [id])

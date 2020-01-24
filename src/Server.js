@@ -25,12 +25,12 @@ function heartbeat() {
 }
 
 module.exports = class Server {
-    constructor () {
+    constructor() {
         this.io = {}
         this.test = 0
     }
 
-    run (port) {
+    run(port) {
         this.port = port
         this.io = new WebSocket.Server({ port })
         this.io.on('connection', async (ws, req) => await this.onConnect(ws, req))
@@ -58,11 +58,11 @@ module.exports = class Server {
         }, UPDATE_INTERVAL)
         return this
     }
-    
-    async onConnect (socket, req) {
+
+    async onConnect(socket, req) {
         socket.isAlive = true
         socket.on('pong', heartbeat)
-        
+
         heartbeat.bind(this)()
 
         try {
@@ -92,7 +92,7 @@ module.exports = class Server {
         }
     }
 
-    onMessage (socket) {
+    onMessage(socket) {
         const { user } = socket
         const handler = {}
 
@@ -109,9 +109,9 @@ module.exports = class Server {
             const view = new DataView(data.buffer)
             const x = view.getInt8(0)
             const y = view.getInt8(1)
-            const type =  view.getUint8(2)
+            const type = view.getUint8(2)
             const timestamp = view.getFloat32(3, true)
-            
+
             if (type === 0)
                 user.turn(x, y, timestamp)
             else
@@ -144,12 +144,12 @@ module.exports = class Server {
         handler[ToServer.LEAVE_CLAN] = async () => {
             user.leaveClan()
         }
-        
+
         handler[ToServer.JOIN_CLAN] = async data => {
             const int32 = new Int32Array(data.buffer)
             user.joinClan(int32[0])
         }
-        
+
         handler[ToServer.CANCEL_CLAN] = async data => {
             const int32 = new Int32Array(data.buffer)
             user.cancelClan(int32[0])
@@ -158,7 +158,7 @@ module.exports = class Server {
         handler[ToServer.INVITE_CLAN] = async data => {
             user.inviteClan(utf8.decode(data))
         }
-        
+
         handler[ToServer.KICK_CLAN] = async data => {
             const int32 = new Int32Array(data.buffer)
             user.kickClan(int32[0])
@@ -168,10 +168,14 @@ module.exports = class Server {
             user.tempSkinBuy()
         }
 
+        handler[ToServer.SET_OPTION_CLAN] = async data => {
+            user.setOptionClan(JSON.parse(utf8.decode(data)))
+        }
+
         return handler
     }
 
-    async onDisconnect (socket) {
+    async onDisconnect(socket) {
         try {
             const { user } = socket
             user.disconnect()

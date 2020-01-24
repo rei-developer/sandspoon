@@ -17,6 +17,7 @@ module.exports = {
         'CANCEL_CLAN',
         'JOIN_CLAN',
         'KICK_CLAN',
-        'TEMP_SKIN_BUY'
+        'TEMP_SKIN_BUY',
+        'SET_OPTION_CLAN'
     )
 }

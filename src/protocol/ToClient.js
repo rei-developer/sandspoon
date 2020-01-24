@@ -27,6 +27,7 @@ module.exports = {
         'SWITCH_LIGHT',
         'QUIT_GAME',
         'UPDATE_MODE_SCORE',
-        'TEMP_SKIN_BUY'
+        'TEMP_SKIN_BUY',
+        'SET_OPTION_CLAN'
     )
 }

@@ -234,6 +234,15 @@ global.User = (function () {
             this.send(Serialize.GetClan())
         }
 
+        async setOptionClan(data) {
+            if (!this.clan) return
+            //if (this.clan.masterId !== this.id) return
+            data.notice = data.notice.replace(/<br>/g, '\n')
+            this.clan.setOption(data)
+            await DB.UpdateClanOption(this.clan.id, data)
+            this.getClan()
+        }
+
         async tempSkinBuy() {
             if (this.coin < 5000) return
 

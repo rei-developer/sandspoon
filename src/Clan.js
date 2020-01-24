@@ -100,5 +100,21 @@ global.Clan = (function () {
                 }
             }
         }
+
+        async setLevel(userId, level = 1) {
+            const findIndex = this.members.indexOf(userId)
+            if (findIndex !== -1) {
+
+            }
+        }
+
+        setOption(data) {
+            this.notice = data.notice
+            this.level1_name = data.level[0]
+            this.level2_name = data.level[1]
+            this.level3_name = data.level[2]
+            this.level4_name = data.level[3]
+            this.level5_name = data.level[4]
+        }
     }
 })()
