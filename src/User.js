@@ -30,10 +30,10 @@ global.User = (function () {
             this.id = 0
             this.rank = 0
             this.name = '테스트'
-            this.level = 80
+            this.level = 1
             this.exp = 0
             this.maxExp = this.getMaxExp()
-            this.coin = 1000000
+            this.coin = 0
             this.cash = 0
             this.win = 0
             this.lose = 0
@@ -46,17 +46,15 @@ global.User = (function () {
             this.survive = 0
             this.escape = 0
             this.redGraphics = 'ao'
-            this.blueGraphics = 'Someok'
+            this.blueGraphics = 'Mania'
             this.memo = ''
             this.lastChatTime = new Date()
             this.alert = 0
             this.admin = admin
             this.timestamp = 0
-            this.tempReboot = false
             this.clan = null
             return (async () => {
                 if (verify === 'test') {
-                    // this.verify = { id: 110409668035092753325, loginType: 0}
                     this.verify = { id: 113049585880204162131, loginType: 0 }
                     await this.loadUserData()
                     return this

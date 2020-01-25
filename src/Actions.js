@@ -28,7 +28,7 @@ class DoorState {
                 door.move(-1, 0)
                 this.isOpen = false
             } else {
-                const max = self.game.team === TeamType.RED ? 25 : 0
+                const max = self.game.team === TeamType.RED ? 10 : 0
                 let r = parseInt(Math.random() * max)
                 if (r === 0) {
                     self.publishToMap(Serialize.PlaySound(this.openSound))
@@ -85,7 +85,7 @@ class RescueState {
                         red.game.hp = 100
                         red.send(Serialize.InformMessage('<color=red>인질구출 스위치에서 벗어나지 않아 강제로 추방되었습니다.</color>'))
                     } else {
-                        red.game.hp -= 35
+                        red.game.hp -= 40
                         red.send(Serialize.InformMessage('<color=red>인질구출 스위치에서 벗어나세요!!!!</color>'))
                         red.send(Serialize.PlaySound('Warn'))
                     }

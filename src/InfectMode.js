@@ -196,10 +196,6 @@ module.exports = class InfectMode {
                 break
         }
         self.game = {}
-        if (!self.tempReboot) {
-            self.escape++
-            if (self.level >= 5) self.setUpExp(-200)
-        }
         self.setGraphics(self.blueGraphics)
         self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
     }
@@ -320,7 +316,7 @@ module.exports = class InfectMode {
                         const newObjects = require('../Assets/Mods/Eve000.json')[1]
                         for (const object of newObjects) {
                             const event = new Event(this.roomId, object)
-                            const blue = pix.sample(this.blueTeam, 1)[0]
+                            const blue = pix.sample(this.blueTeam.filter(u => u.state !== PlayerState.Tansu), 1)[0]
                             if (!blue) continue
                             event.place = blue.place
                             event.x = blue.x

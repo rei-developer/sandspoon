@@ -82,7 +82,6 @@ async function start() {
 process.on('SIGINT', async () => {
     const users = User.users
     for (const user of users) {
-        user.tempReboot = true
         if (await DB.UpdateUser(user))
             logger.log(user.name + ' 저장 완료')
         else {

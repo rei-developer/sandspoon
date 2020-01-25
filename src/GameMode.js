@@ -11,8 +11,6 @@ module.exports = class GameMode {
         this.count = 0
         this.type = 0
         this.room = Room.get(this.roomId)
-
-        const range = 6
         const objects = require('../Assets/Mods/Eve000.json')[3]
         for (const object of objects) {
             const range = 3

@@ -125,7 +125,7 @@ module.exports = class RescueMode {
                 self.teleport(19, 9, 8)
                 break
             case MapType.TATAMI:
-                self.teleport(49, 17, 10)
+                self.teleport(47, 17, 6)
                 break
             case MapType.GON:
                 self.teleport(72, 15, 8)
@@ -250,10 +250,6 @@ module.exports = class RescueMode {
                 break
         }
         self.game = {}
-        if (!self.tempReboot) {
-            self.escape++
-            if (self.level >= 5) self.setUpExp(-200)
-        }
         self.setGraphics(self.blueGraphics)
         self.publish(Serialize.UpdateModeUserCount(this.score.red))
     }
@@ -370,7 +366,7 @@ module.exports = class RescueMode {
                                     user.game.hp = 100
                                     user.send(Serialize.InformMessage('<color=red>지속적인 게임 플레이 방해로 본진으로 추방되었습니다.</color>'))
                                 } else {
-                                    user.game.hp -= 20
+                                    user.game.hp -= 40
                                     user.send(Serialize.InformMessage('<color=red>경고!!! 포탈 주변을 막지 마십시오.</color>'))
                                     user.send(Serialize.PlaySound('Warn'))
                                 }

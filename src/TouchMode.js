@@ -177,10 +177,6 @@ module.exports = class InfectMode {
                 break
         }
         self.game = {}
-        if (!self.tempReboot) {
-            self.escape++
-            self.setUpExp(-((self.level * 10) + 100))
-        }
         self.setGraphics(self.blueGraphics)
         self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
     }

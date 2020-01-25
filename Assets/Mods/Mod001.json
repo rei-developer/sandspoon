@@ -1,5 +1,5 @@
 {
-	"1":[	
+	"1": [
 		{
 			"name": "구출",
 			"place": 13,
@@ -7,7 +7,20 @@
 			"y": 12,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 13,
+			"x": 11,
+			"y": 15,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -16,10 +29,12 @@
 			"y": 23,
 			"graphics": "blank",
 			"collider": false,
-			"action": { "command": "mania", "arguments": { 
-				"fixed": true, 
-				"message": [
-					"X를 눌러 JOY를 표하십시오"
+			"action": {
+				"command": "mania",
+				"arguments": {
+					"fixed": true,
+					"message": [
+						"X를 눌러 JOY를 표하십시오"
 					]
 				}
 			}
@@ -31,8 +46,10 @@
 			"y": 9,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
-		},		
+			"action": {
+				"command": ""
+			}
+		},
 		{
 			"name": "",
 			"place": 2,
@@ -40,7 +57,9 @@
 			"y": 16,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -49,7 +68,9 @@
 			"y": 9,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -58,7 +79,9 @@
 			"y": 8,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -67,7 +90,9 @@
 			"y": 13,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -76,7 +101,9 @@
 			"y": 15,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -85,7 +112,9 @@
 			"y": 13,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -94,7 +123,9 @@
 			"y": 17,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -103,7 +134,9 @@
 			"y": 10,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -112,7 +145,9 @@
 			"y": 12,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -121,7 +156,9 @@
 			"y": 13,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -130,7 +167,9 @@
 			"y": 11,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -139,9 +178,10 @@
 			"y": 13,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
-
 		{
 			"name": "",
 			"place": 17,
@@ -149,8 +189,13 @@
 			"y": 15,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator", "arguments":{"inside" : true}}
-		},		
+			"action": {
+				"command": "elevator",
+				"arguments": {
+					"inside": true
+				}
+			}
+		},
 		{
 			"name": "엘레베이터 버튼",
 			"place": 17,
@@ -158,12 +203,17 @@
 			"y": 15,
 			"graphics": "blank",
 			"collider": true,
-			"action": { 
-				"command": "elevin", 
-				"arguments": { 
-					"elevId" : 17, 
-					"outerId" : {"1" : "1", "2" : "9", "3" : "12", "4" : "22"}
-				} 
+			"action": {
+				"command": "elevin",
+				"arguments": {
+					"elevId": 17,
+					"outerId": {
+						"1": "1",
+						"2": "9",
+						"3": "12",
+						"4": "22"
+					}
+				}
 			}
 		},
 		{
@@ -173,8 +223,10 @@
 			"y": 9,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator"}
-		},	
+			"action": {
+				"command": "elevator"
+			}
+		},
 		{
 			"name": "1층 엘레베이터",
 			"place": 1,
@@ -182,7 +234,13 @@
 			"y": 9,
 			"graphics": "blank",
 			"collider": true,
-			"action": { "command": "elevout", "arguments": { "elevId" :17, "floor" : "1"} }
+			"action": {
+				"command": "elevout",
+				"arguments": {
+					"elevId": 17,
+					"floor": "1"
+				}
+			}
 		},
 		{
 			"name": "",
@@ -191,8 +249,10 @@
 			"y": 9,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator"}
-		},	
+			"action": {
+				"command": "elevator"
+			}
+		},
 		{
 			"name": "2층 엘레베이터",
 			"place": 9,
@@ -200,7 +260,13 @@
 			"y": 9,
 			"graphics": "blank",
 			"collider": true,
-			"action": { "command": "elevout", "arguments": { "elevId" :17, "floor" : "2"} }
+			"action": {
+				"command": "elevout",
+				"arguments": {
+					"elevId": 17,
+					"floor": "2"
+				}
+			}
 		},
 		{
 			"name": "",
@@ -209,8 +275,10 @@
 			"y": 9,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator"}
-		},	
+			"action": {
+				"command": "elevator"
+			}
+		},
 		{
 			"name": "3층 엘레베이터",
 			"place": 12,
@@ -218,7 +286,13 @@
 			"y": 9,
 			"graphics": "blank",
 			"collider": true,
-			"action": { "command": "elevout", "arguments": { "elevId" :17, "floor" : "3"} }
+			"action": {
+				"command": "elevout",
+				"arguments": {
+					"elevId": 17,
+					"floor": "3"
+				}
+			}
 		},
 		{
 			"name": "",
@@ -227,8 +301,10 @@
 			"y": 11,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator"}
-		},	
+			"action": {
+				"command": "elevator"
+			}
+		},
 		{
 			"name": "4층 엘레베이터",
 			"place": 22,
@@ -236,7 +312,13 @@
 			"y": 11,
 			"graphics": "blank",
 			"collider": true,
-			"action": { "command": "elevout", "arguments": { "elevId" :17, "floor" : "4"} }
+			"action": {
+				"command": "elevout",
+				"arguments": {
+					"elevId": 17,
+					"floor": "4"
+				}
+			}
 		},
 		{
 			"name": "전화를 찾는 사람",
@@ -245,12 +327,14 @@
 			"y": 10,
 			"graphics": "blank",
 			"collider": true,
-			"action": { "command": "mania", "arguments": { 
-				"fixed": true, 
-				"message": [
-					"고자라니! 아니, 내가 고자라니! 이게 무슨 소리야!",
-					"에잇 고자라니!!! 내가, 내가 고자라니! ",
-					"이건 말도 안 돼… 말도 안 된다고허허허허…!"
+			"action": {
+				"command": "mania",
+				"arguments": {
+					"fixed": true,
+					"message": [
+						"고자라니! 아니, 내가 고자라니! 이게 무슨 소리야!",
+						"에잇 고자라니!!! 내가, 내가 고자라니! ",
+						"이건 말도 안 돼… 말도 안 된다고허허허허…!"
 					]
 				}
 			}
@@ -262,7 +346,7 @@
 			"y": 12,
 			"graphics": "tana_black",
 			"collider": true,
-			"action": { 
+			"action": {
 				"command": "tana"
 			}
 		},
@@ -273,7 +357,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -282,7 +368,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -291,7 +379,9 @@
 			"y": 17,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -300,7 +390,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -309,7 +401,9 @@
 			"y": 11,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -318,7 +412,9 @@
 			"y": 4,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -327,7 +423,9 @@
 			"y": 10,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -336,7 +434,9 @@
 			"y": 17,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -345,7 +445,9 @@
 			"y": 17,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -354,7 +456,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -363,7 +467,9 @@
 			"y": 11,
 			"graphics": "steel",
 			"collider": true,
-			"action": { "command": "powerDoor" }
+			"action": {
+				"command": "powerDoor"
+			}
 		},
 		{
 			"name": "",
@@ -372,7 +478,9 @@
 			"y": 11,
 			"graphics": "steel",
 			"collider": true,
-			"action": { "command": "powerDoor" }
+			"action": {
+				"command": "powerDoor"
+			}
 		},
 		{
 			"name": "",
@@ -381,7 +489,9 @@
 			"y": 11,
 			"graphics": "steel",
 			"collider": true,
-			"action": { "command": "powerDoor" }
+			"action": {
+				"command": "powerDoor"
+			}
 		},
 		{
 			"name": "",
@@ -390,7 +500,9 @@
 			"y": 19,
 			"graphics": "steel",
 			"collider": true,
-			"action": { "command": "powerDoor" }
+			"action": {
+				"command": "powerDoor"
+			}
 		},
 		{
 			"name": "",
@@ -399,7 +511,9 @@
 			"y": 19,
 			"graphics": "steel",
 			"collider": true,
-			"action": { "command": "powerDoor" }
+			"action": {
+				"command": "powerDoor"
+			}
 		},
 		{
 			"name": "",
@@ -408,7 +522,9 @@
 			"y": 11,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -417,7 +533,9 @@
 			"y": 9,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -426,7 +544,9 @@
 			"y": 4,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		}
 	],
 	"2": [
@@ -437,7 +557,20 @@
 			"y": 4,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 57,
+			"x": 19,
+			"y": 13,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -446,7 +579,9 @@
 			"y": 15,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -455,7 +590,9 @@
 			"y": 14,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -464,7 +601,9 @@
 			"y": 30,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -473,7 +612,9 @@
 			"y": 10,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -482,7 +623,9 @@
 			"y": 8,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -491,7 +634,9 @@
 			"y": 5,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -500,7 +645,9 @@
 			"y": 5,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -509,7 +656,9 @@
 			"y": 9,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -518,7 +667,9 @@
 			"y": 20,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -527,7 +678,9 @@
 			"y": 6,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -536,7 +689,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -545,7 +700,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -554,7 +711,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -563,7 +722,9 @@
 			"y": 9,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -572,7 +733,9 @@
 			"y": 4,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -581,7 +744,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -590,7 +755,9 @@
 			"y": 9,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -796,7 +963,20 @@
 			"y": 13,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 74,
+			"x": 14,
+			"y": 12,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -805,7 +985,9 @@
 			"y": 17,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -814,7 +996,9 @@
 			"y": 5,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -823,7 +1007,9 @@
 			"y": 27,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -832,7 +1018,9 @@
 			"y": 9,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -841,7 +1029,9 @@
 			"y": 9,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -850,7 +1040,9 @@
 			"y": 5,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -859,7 +1051,9 @@
 			"y": 5,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -868,7 +1062,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -877,7 +1073,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -886,7 +1084,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -895,7 +1095,9 @@
 			"y": 7,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -904,7 +1106,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -913,7 +1117,9 @@
 			"y": 19,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -922,7 +1128,9 @@
 			"y": 8,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -931,7 +1139,9 @@
 			"y": 25,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -940,7 +1150,9 @@
 			"y": 16,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -949,7 +1161,9 @@
 			"y": 16,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -958,7 +1172,9 @@
 			"y": 33,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -967,7 +1183,9 @@
 			"y": 18,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -976,7 +1194,9 @@
 			"y": 18,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		}
 	],
 	"4": [
@@ -987,7 +1207,20 @@
 			"y": 21,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 96,
+			"x": 7,
+			"y": 30,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -996,8 +1229,13 @@
 			"y": 13,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator", "arguments":{"inside" : true}}
-		},		
+			"action": {
+				"command": "elevator",
+				"arguments": {
+					"inside": true
+				}
+			}
+		},
 		{
 			"name": "엘레베이터 버튼",
 			"place": 105,
@@ -1005,12 +1243,16 @@
 			"y": 13,
 			"graphics": "blank",
 			"collider": true,
-			"action": { 
-				"command": "elevin", 
-				"arguments": { 
-					"elevId" : 105, 
-					"outerId" : {"1" : "94", "2" : "103", "3" : "89"}
-				} 
+			"action": {
+				"command": "elevin",
+				"arguments": {
+					"elevId": 105,
+					"outerId": {
+						"1": "94",
+						"2": "103",
+						"3": "89"
+					}
+				}
 			}
 		},
 		{
@@ -1020,8 +1262,10 @@
 			"y": 5,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator"}
-		},	
+			"action": {
+				"command": "elevator"
+			}
+		},
 		{
 			"name": "1층 엘레베이터",
 			"place": 94,
@@ -1029,7 +1273,13 @@
 			"y": 5,
 			"graphics": "blank",
 			"collider": true,
-			"action": { "command": "elevout", "arguments": { "elevId" :105, "floor" : "1"} }
+			"action": {
+				"command": "elevout",
+				"arguments": {
+					"elevId": 105,
+					"floor": "1"
+				}
+			}
 		},
 		{
 			"name": "",
@@ -1038,8 +1288,10 @@
 			"y": 9,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator"}
-		},	
+			"action": {
+				"command": "elevator"
+			}
+		},
 		{
 			"name": "2층 엘레베이터",
 			"place": 103,
@@ -1047,7 +1299,13 @@
 			"y": 9,
 			"graphics": "blank",
 			"collider": true,
-			"action": { "command": "elevout", "arguments": { "elevId" :105, "floor" : "2"} }
+			"action": {
+				"command": "elevout",
+				"arguments": {
+					"elevId": 105,
+					"floor": "2"
+				}
+			}
 		},
 		{
 			"name": "",
@@ -1056,8 +1314,10 @@
 			"y": 24,
 			"graphics": "ev02",
 			"collider": true,
-			"action": {"command": "elevator"}
-		},	
+			"action": {
+				"command": "elevator"
+			}
+		},
 		{
 			"name": "3층 엘레베이터",
 			"place": 89,
@@ -1065,7 +1325,13 @@
 			"y": 24,
 			"graphics": "blank",
 			"collider": true,
-			"action": { "command": "elevout", "arguments": { "elevId" :105, "floor" : "3"} }
+			"action": {
+				"command": "elevout",
+				"arguments": {
+					"elevId": 105,
+					"floor": "3"
+				}
+			}
 		},
 		{
 			"name": "",
@@ -1074,7 +1340,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1083,7 +1351,9 @@
 			"y": 7,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1092,7 +1362,9 @@
 			"y": 16,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1101,7 +1373,9 @@
 			"y": 6,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1110,7 +1384,9 @@
 			"y": 10,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1119,7 +1395,9 @@
 			"y": 7,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1128,7 +1406,9 @@
 			"y": 33,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1137,7 +1417,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1146,7 +1428,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1155,7 +1439,9 @@
 			"y": 11,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1164,7 +1450,9 @@
 			"y": 8,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1173,7 +1461,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1182,7 +1472,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1191,7 +1483,9 @@
 			"y": 30,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1200,7 +1494,9 @@
 			"y": 13,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1209,7 +1505,9 @@
 			"y": 11,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1218,7 +1516,9 @@
 			"y": 13,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1227,7 +1527,9 @@
 			"y": 21,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1236,7 +1538,9 @@
 			"y": 15,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		}
 	],
 	"5": [
@@ -1247,7 +1551,20 @@
 			"y": 4,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 122,
+			"x": 6,
+			"y": 12,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -1256,7 +1573,9 @@
 			"y": 9,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1265,7 +1584,9 @@
 			"y": 16,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1274,7 +1595,9 @@
 			"y": 6,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1283,7 +1606,9 @@
 			"y": 10,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1292,7 +1617,9 @@
 			"y": 11,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1301,7 +1628,9 @@
 			"y": 16,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1310,7 +1639,9 @@
 			"y": 12,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1319,7 +1650,9 @@
 			"y": 12,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1328,7 +1661,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1337,7 +1672,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1346,7 +1683,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1355,7 +1694,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1364,7 +1705,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1373,7 +1716,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1382,7 +1727,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1391,7 +1738,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1400,7 +1749,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1409,7 +1760,9 @@
 			"y": 8,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		}
 	],
 	"6": [
@@ -1420,7 +1773,20 @@
 			"y": 11,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 169,
+			"x": 13,
+			"y": 6,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -1429,7 +1795,9 @@
 			"y": 8,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1438,7 +1806,9 @@
 			"y": 8,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1447,7 +1817,9 @@
 			"y": 24,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1456,7 +1828,9 @@
 			"y": 18,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1465,7 +1839,9 @@
 			"y": 12,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1474,7 +1850,9 @@
 			"y": 14,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1483,7 +1861,9 @@
 			"y": 7,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1492,7 +1872,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1501,7 +1883,9 @@
 			"y": 15,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1510,7 +1894,9 @@
 			"y": 12,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1519,7 +1905,9 @@
 			"y": 13,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1528,7 +1916,9 @@
 			"y": 17,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1537,7 +1927,9 @@
 			"y": 15,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1546,7 +1938,9 @@
 			"y": 34,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		}
 	],
 	"7": [
@@ -1557,7 +1951,20 @@
 			"y": 12,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 191,
+			"x": 11,
+			"y": 7,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -1566,7 +1973,9 @@
 			"y": 6,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1575,7 +1984,9 @@
 			"y": 6,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1584,7 +1995,9 @@
 			"y": 11,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1593,7 +2006,9 @@
 			"y": 6,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1602,7 +2017,9 @@
 			"y": 11,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1611,7 +2028,9 @@
 			"y": 9,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1620,7 +2039,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1629,7 +2050,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1638,7 +2061,9 @@
 			"y": 12,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1647,7 +2072,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1656,7 +2083,9 @@
 			"y": 5,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1665,7 +2094,9 @@
 			"y": 8,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1674,7 +2105,9 @@
 			"y": 13,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1683,7 +2116,9 @@
 			"y": 8,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1692,7 +2127,9 @@
 			"y": 9,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1701,7 +2138,9 @@
 			"y": 12,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		}
 	],
 	"8": [
@@ -1712,7 +2151,20 @@
 			"y": 8,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 217,
+			"x": 31,
+			"y": 8,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -1721,7 +2173,9 @@
 			"y": 7,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1730,7 +2184,9 @@
 			"y": 7,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1739,7 +2195,9 @@
 			"y": 7,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1748,7 +2206,9 @@
 			"y": 7,
 			"graphics": "arrow2",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1757,7 +2217,9 @@
 			"y": 18,
 			"graphics": "arrow4",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1766,7 +2228,9 @@
 			"y": 18,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1775,7 +2239,9 @@
 			"y": 8,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1784,7 +2250,9 @@
 			"y": 17,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1793,7 +2261,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1802,7 +2272,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1811,7 +2283,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1820,7 +2294,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1829,7 +2305,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1838,7 +2316,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1847,7 +2327,9 @@
 			"y": 13,
 			"graphics": "steel",
 			"collider": true,
-			"action": { "command": "powerDoor" }
+			"action": {
+				"command": "powerDoor"
+			}
 		},
 		{
 			"name": "",
@@ -1856,10 +2338,12 @@
 			"y": 24,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		}
 	],
-	"9":[
+	"9": [
 		{
 			"name": "구출",
 			"place": 255,
@@ -1867,7 +2351,20 @@
 			"y": 5,
 			"graphics": "kinkob",
 			"collider": true,
-			"action": { "command": "rescue" }
+			"action": {
+				"command": "rescue"
+			}
+		},
+		{
+			"name": "",
+			"place": 255,
+			"x": 20,
+			"y": 17,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		},
 		{
 			"name": "",
@@ -1876,7 +2373,9 @@
 			"y": 16,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1885,7 +2384,9 @@
 			"y": 10,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1894,7 +2395,9 @@
 			"y": 10,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1903,7 +2406,9 @@
 			"y": 23,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1912,7 +2417,9 @@
 			"y": 9,
 			"graphics": "arrow6",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1921,7 +2428,9 @@
 			"y": 13,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1930,7 +2439,9 @@
 			"y": 16,
 			"graphics": "arrow8",
 			"collider": false,
-			"action": { "command": "" }
+			"action": {
+				"command": ""
+			}
 		},
 		{
 			"name": "",
@@ -1939,7 +2450,9 @@
 			"y": 13,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1948,7 +2461,9 @@
 			"y": 12,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1957,7 +2472,9 @@
 			"y": 17,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1966,7 +2483,9 @@
 			"y": 10,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1975,7 +2494,9 @@
 			"y": 18,
 			"graphics": "iron",
 			"collider": true,
-			"action": { "command": "door" }
+			"action": {
+				"command": "door"
+			}
 		},
 		{
 			"name": "",
@@ -1984,7 +2505,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -1993,7 +2516,9 @@
 			"y": 15,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -2002,7 +2527,9 @@
 			"y": 6,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -2011,7 +2538,9 @@
 			"y": 20,
 			"graphics": "tansu",
 			"collider": false,
-			"action": { "command": "tansu" }
+			"action": {
+				"command": "tansu"
+			}
 		},
 		{
 			"name": "",
@@ -2020,7 +2549,7 @@
 			"y": 19,
 			"graphics": "tana_black",
 			"collider": true,
-			"action": { 
+			"action": {
 				"command": "tana"
 			}
 		}
