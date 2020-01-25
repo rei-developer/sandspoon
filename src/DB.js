@@ -37,7 +37,7 @@ module.exports = {
     },
     async LoadRanks() {
         try {
-            return await this.query('SELECT name, level, exp, admin FROM users WHERE verify = 1 ORDER BY level DESC, exp DESC')
+            return await this.query('SELECT name, level, exp, admin FROM users WHERE verify = 1 ORDER BY point DESC')
         } catch (e) {
             console.error(e)
         }
@@ -89,13 +89,13 @@ module.exports = {
     },
     async UpdateUser(user) {
         try {
-            await this.query('UPDATE users SET `uuid` = ?, `level` = ?, `exp` = ?, `coin` = ?, `cash` = ?, `escape` = ?, `kill` = ?, `death` = ?, `assist` = ?, `blast` = ?, `rescue` = ?, `rescue_combo` = ?, `survive` = ?, `red_graphics` = ?, `blue_graphics` = ?, `memo` = ?, `last_chat` = ? WHERE `id` = ?', [
+            await this.query('UPDATE users SET `uuid` = ?, `level` = ?, `exp` = ?, `coin` = ?, `cash` = ?, `point` = ?, `kill` = ?, `death` = ?, `assist` = ?, `blast` = ?, `rescue` = ?, `rescue_combo` = ?, `survive` = ?, `escape` = ?, `red_graphics` = ?, `blue_graphics` = ?, `memo` = ?, `last_chat` = ? WHERE `id` = ?', [
                 user.verify.uuid,
                 user.level,
                 user.exp,
                 user.coin,
                 user.cash,
-                user.escape,
+                user.point,
                 user.kill,
                 user.death,
                 user.assist,
@@ -103,6 +103,7 @@ module.exports = {
                 user.rescue,
                 user.rescueCombo,
                 user.survive,
+                user.escape,
                 user.redGraphics,
                 user.blueGraphics,
                 user.memo,

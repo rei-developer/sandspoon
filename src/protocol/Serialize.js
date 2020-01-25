@@ -15,6 +15,7 @@ my.UserData = function (user) {
     packet.maxExp = user.maxExp
     packet.coin = user.coin
     packet.cash = user.cash
+    packet.point = user.point
     packet.win = user.win
     packet.lose = user.lose
     packet.kill = user.kill

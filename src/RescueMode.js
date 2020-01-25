@@ -308,6 +308,7 @@ module.exports = class RescueMode {
             const rank = ranks.indexOf(red) + 1
             red.reward.exp = exp
             red.reward.coin = coin
+            if (rank <= 3) red.reward.point = 4 - rank
             red.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
         for (const blue of this.blueTeam) {
@@ -319,6 +320,7 @@ module.exports = class RescueMode {
             const rank = ranks.indexOf(blue) + 1
             blue.reward.exp = exp
             blue.reward.coin = coin
+            if (rank <= 3) blue.reward.point = 4 - rank
             blue.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
     }
