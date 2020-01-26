@@ -1,8 +1,8 @@
-const Serialize = require('./protocol/Serialize')
-const Event = require('./Event')
+const Serialize = require('../protocol/Serialize')
+const Event = require('../Event')
 
 module.exports = class PlayGroundMode {
-    constructor (roomId) {
+    constructor(roomId) {
         this.roomId = roomId
         this.count = 20
         this.maxCount = this.count
@@ -16,33 +16,33 @@ module.exports = class PlayGroundMode {
         }
     }
 
-    moveToPlaza (self) {
+    moveToPlaza(self) {
         self.teleport(79, 30, 62)
     }
 
-    join (self) {
+    join(self) {
         self.game = {}
         self.setGraphics(self.blueGraphics)
         self.teleport(79, 30, 62)
     }
 
-    leave (self) {
+    leave(self) {
         self.game = {}
         self.setGraphics(self.blueGraphics)
     }
 
-    drawAkari (self) {
-        self.send(Serialize.SwitchLight(this.room.places[self.place].akari)) 
+    drawAkari(self) {
+        self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
     }
 
-    drawEvents (self) {
+    drawEvents(self) {
         const { events } = this.room.places[self.place]
         for (const event of events) {
             self.send(Serialize.CreateGameObject(event))
         }
     }
 
-    drawUsers (self) {
+    drawUsers(self) {
         const sameMapUsers = this.room.sameMapUsers(self.place)
         for (const user of sameMapUsers) {
             if (self === user) continue
@@ -51,16 +51,16 @@ module.exports = class PlayGroundMode {
         }
     }
 
-    attack (self, target) {
+    attack(self, target) {
         return true
     }
 
-    doAction (self, target) {
+    doAction(self, target) {
         target.doAction(self)
         return true
     }
 
-    spawnRabbit () {
+    spawnRabbit() {
         const range = 6
         const objects = require('../Assets/Mods/Eve000.json')[2]
         for (const object of objects) {
@@ -80,7 +80,7 @@ module.exports = class PlayGroundMode {
         this.room.publish(Serialize.PlaySound('Bikkuri'))
     }
 
-    update () {
+    update() {
         if (++this.tick % 10 === 0) {
             this.tick = 0
             const date = new Date()

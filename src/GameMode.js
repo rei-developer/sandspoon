@@ -1,7 +1,7 @@
 const Serialize = require('./protocol/Serialize')
 const { ModeType, MapType } = require('./const')
-const RescueMode = require('./RescueMode')
-const InfectMode = require('./InfectMode')
+const RescueMode = require('./mode/RescueMode')
+const InfectMode = require('./mode/InfectMode')
 const Event = require('./Event')
 
 module.exports = class GameMode {

@@ -2,7 +2,7 @@ const Serialize = require('./protocol/Serialize')
 const GameMap = require('./GameMap')
 const Place = require('./Place')
 const GameMode = require('./GameMode')
-const PlayGroundMode = require('./PlayGroundMode')
+const PlayGroundMode = require('./mode/PlayGroundMode')
 const { RoomType } = require('./const')
 
 global.Room = (function () {
@@ -11,41 +11,41 @@ global.Room = (function () {
         index: 0,
         empties: []
     }
-    
+
     return class Room {
-        static get rooms () {
+        static get rooms() {
             return _static.rooms
         }
 
-        static get index () {
+        static get index() {
             return _static.index
         }
 
-        static set index (value) {
+        static set index(value) {
             _static.index = value
         }
 
-        static get empties () {
+        static get empties() {
             return _static.empties
         }
 
-        static set empties (value) {
+        static set empties(value) {
             _static.empties = value
         }
 
-        static create (type = RoomType.PLAYGROUND) {
+        static create(type = RoomType.PLAYGROUND) {
             const room = new Room(type)
             Room.add(room)
             return room
         }
 
-        static add (room) {
+        static add(room) {
             room.index = Room.empties.shift() || ++Room.index
             Room.rooms[room.index] = room
             room.setting()
         }
 
-        static remove (room) {
+        static remove(room) {
             room.stop()
             Room.rooms[room.index] = null
             delete Room.rooms[room.index]
@@ -65,7 +65,7 @@ global.Room = (function () {
             return Room.rooms[id]
         }
 
-        constructor (type = RoomType.PLAYGROUND) {
+        constructor(type = RoomType.PLAYGROUND) {
             this.index = 0
             this.type = type
             this.users = []
@@ -83,64 +83,64 @@ global.Room = (function () {
             this.start()
         }
 
-        setting () {
+        setting() {
             switch (this.type) {
                 case RoomType.GAME:
-                this.mode = new GameMode(this.index)
-                break
+                    this.mode = new GameMode(this.index)
+                    break
                 case RoomType.PLAYGROUND:
-                this.mode = new PlayGroundMode(this.index)
-                break
+                    this.mode = new PlayGroundMode(this.index)
+                    break
             }
         }
 
-        addEvent (event) {
+        addEvent(event) {
             event.roomId = this.index
             event.index = this.nextEventUid++
             this.places[event.place].addEvent(event)
         }
 
-        removeEvent (event) {
+        removeEvent(event) {
             this.places[event.place].removeEvent(event)
             event.roomId = 0
         }
 
-        addUser (user) {
+        addUser(user) {
             user.roomId = this.index
             this.users.push(user)
-            this.places[user.place].addUser(user)            
-        }
-    
-        removeUser (user) {
-            this.users.splice(this.users.indexOf(user), 1)
-            this.places[user.place].removeUser(user)
-            user.roomId = 0            
+            this.places[user.place].addUser(user)
         }
 
-        changeMode (mode) {
+        removeUser(user) {
+            this.users.splice(this.users.indexOf(user), 1)
+            this.places[user.place].removeUser(user)
+            user.roomId = 0
+        }
+
+        changeMode(mode) {
             this.mode = new mode(this.index)
             for (const user of this.users) {
                 this.mode.join(user)
             }
         }
 
-        akari (place) {
+        akari(place) {
             return this.places[place].akari = !this.places[place].akari
         }
 
-        publish (data) {
+        publish(data) {
             for (const user of this.users) {
                 user.send(data)
             }
         }
 
-        broadcast (self, data) {
+        broadcast(self, data) {
             for (const user of this.users) {
                 if (user !== self) user.send(data)
             }
         }
 
-        broadcastToMap (self, data) {
+        broadcastToMap(self, data) {
             const { users } = this.places[self.place]
             for (const user of users) {
                 if (user === self) continue
@@ -148,18 +148,18 @@ global.Room = (function () {
             }
         }
 
-        publishToMap (place, data) {
+        publishToMap(place, data) {
             const { users } = this.places[place]
             for (const user of users) {
                 user.send(data)
             }
         }
 
-        sameMapUsers (place) {
+        sameMapUsers(place) {
             return this.places[place].users
         }
 
-        isPassable (place, x, y, d, collider = true) {
+        isPassable(place, x, y, d, collider = true) {
             if (collider) {
                 const { events } = this.places[place]
                 for (const event of events) {
@@ -171,21 +171,21 @@ global.Room = (function () {
             return GameMap.get(place).isPassable(x, y, d)
         }
 
-        portal (self) {
+        portal(self) {
             const portal = GameMap.get(self.place).getPortal(self.x, self.y)
             if (!portal) return
             this.teleport(self, portal.nextPlace, portal.nextX, portal.nextY, portal.nextDirX, portal.nextDirY)
             if (portal.sound) this.publishToMap(self.place, Serialize.PlaySound(portal.sound))
         }
 
-        teleport (self, place, x, y, dx = 0 , dy = 0) {
+        teleport(self, place, x, y, dx = 0, dy = 0) {
             this.places[self.place].removeUser(self)
             self.portal(place, x, y, dx, dy)
             this.places[self.place].addUser(self)
             this.draw(self)
         }
 
-        hit (self) {
+        hit(self) {
             const { users, events } = this.places[self.place]
             for (const user of users) {
                 if (!(self.x === user.x && self.y === user.y || self.x + self.direction.x === user.x && self.y - self.direction.y === user.y)) continue
@@ -197,23 +197,23 @@ global.Room = (function () {
             }
         }
 
-        canJoin () {
+        canJoin() {
             return this.users.length < this.max && !this.lock
         }
 
-        draw (self) {
+        draw(self) {
             this.mode.drawAkari(self)
             this.mode.drawEvents(self)
             this.mode.drawUsers(self)
         }
 
-        join (self) {
+        join(self) {
             this.addUser(self)
             this.mode.join(self)
             this.publish(Serialize.UpdateRoomUserCount(this.users.length))
         }
 
-        leave (self) {
+        leave(self) {
             this.mode.leave(self)
             this.removeUser(self)
             this.publishToMap(self.place, Serialize.RemoveGameObject(self))
@@ -221,21 +221,21 @@ global.Room = (function () {
             if (this.users.length <= 0) Room.remove(this)
         }
 
-        start () {
+        start() {
             if (this.isRunning) return
             this.isRunning = true
         }
 
-        pause () {
+        pause() {
             this.isRunning = false
         }
 
-        stop () {
+        stop() {
             if (!this.isRunning) return
             this.isRunning = false
         }
 
-        update () {
+        update() {
             if (!this.isRunning) return
             for (const place in this.places) {
                 this.places[place].update()

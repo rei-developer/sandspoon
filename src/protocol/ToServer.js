@@ -20,6 +20,7 @@ module.exports = {
         'TEMP_SKIN_BUY',
         'SET_OPTION_CLAN',
         'PAY_CLAN',
+        'DONATE_CLAN',
         'WITHDRAW_CLAN',
         'LEVEL_UP_CLAN',
         'MEMBER_INFO_CLAN',

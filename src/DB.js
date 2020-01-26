@@ -140,6 +140,14 @@ module.exports = {
             console.error(e)
         }
     },
+    async UpdateClanExp(clanId, exp) {
+        try {
+            await this.query('UPDATE clans SET `exp` = ? WHERE `id` = ?', [exp, clanId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
     async UpdateClanCoin(clanId, coin) {
         try {
             await this.query('UPDATE clans SET `coin` = ? WHERE `id` = ?', [coin, clanId])

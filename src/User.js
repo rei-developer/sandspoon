@@ -288,6 +288,21 @@ global.User = (function () {
             this.send(Serialize.UpdateClan(this.clan))
         }
 
+        async donateClan(data) {
+            if (!this.clan)
+                return
+            data = Number(data)
+            if (isNaN(data))
+                return this.send(Serialize.MessageClan('WRONG_NUMBER'))
+            if (data < 1)
+                return this.send(Serialize.MessageClan('BELOW_STANDARD'))
+            if (this.exp < data)
+                return this.send(Serialize.MessageClan('NOT_ENOUGH_EXP'))
+            this.clan.setUpExp(data)
+            this.setUpExp(-data)
+            this.send(Serialize.UpdateClan(this.clan))
+        }
+
         async withdrawClan(data) {
             if (!this.clan)
                 return
@@ -315,7 +330,7 @@ global.User = (function () {
                 return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
             if (this.clan.level >= 4)
                 return this.send(Serialize.MessageClan('HIGH_LEVEL'))
-            const cost = this.clan.level * 50000
+            const cost = (this.clan.level * this.clan.level) * 100000
             if (this.clan.coin < cost)
                 return this.send(Serialize.MessageClan('NOT_ENOUGH_CLAN_COIN'))
             this.clan.setUpCoin(-cost)

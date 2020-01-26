@@ -70,8 +70,6 @@ module.exports = class Server {
             const verify = token !== 'test' && await verifyToken(config.KEY, token) || 'test'
             const user = await User.create(socket, verify)
             if (!user) return
-            user.send(Serialize.UserData(user))
-            user.send(Serialize.ConnectionCount(User.users.length))
             socket.user = user
             console.log(user.name + ' 접속 (동시접속자: ' + User.users.length + '명)')
             const handler = this.onMessage(socket)
@@ -176,6 +174,10 @@ module.exports = class Server {
 
         handler[ToServer.PAY_CLAN] = async data => {
             user.payClan(utf8.decode(data))
+        }
+
+        handler[ToServer.DONATE_CLAN] = async data => {
+            user.donateClan(utf8.decode(data))
         }
 
         handler[ToServer.WITHDRAW_CLAN] = async data => {

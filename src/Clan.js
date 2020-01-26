@@ -107,6 +107,16 @@ global.Clan = (function () {
             await DB.UpdateClanLevel(this.id, this.level)
         }
 
+        async setUpExp(exp) {
+            this.exp += exp
+            await DB.UpdateClanExp(this.id, this.exp)
+        }
+
+        async setUpCoin(coin) {
+            this.coin += coin
+            await DB.UpdateClanCoin(this.id, this.coin)
+        }
+
         async setMemberLevel(userId, level) {
             const findIndex = this.members.indexOf(userId)
             if (findIndex !== -1) {
@@ -123,11 +133,6 @@ global.Clan = (function () {
                 await DB.UpdateClanMemberLevel(this.id, targetId, 5)
                 await DB.UpdateClanMasterLevel(this.id, targetId)
             }
-        }
-
-        async setUpCoin(coin) {
-            this.coin += coin
-            await DB.UpdateClanCoin(this.id, this.coin)
         }
 
         async setOption(data) {

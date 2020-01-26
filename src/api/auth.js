@@ -1,10 +1,10 @@
 const Router = require('koa-router')
 const jwt = require('jsonwebtoken')
-const config = require('./config')
-const DB = require('./DB')
+const config = require('../config')
+const DB = require('../DB')
 const router = new Router()
 const https = require('https')
-const filtering = require('./filtering-text')
+const filtering = require('../filtering-text')
 
 const VERSION = config.VERSION
 

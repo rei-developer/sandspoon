@@ -219,6 +219,7 @@ my.UpdateClan = function (clan) {
     const packet = {}
     packet._head = ToClient.UPDATE_CLAN
     packet.level = clan.level
+    packet.exp = clan.exp
     packet.coin = clan.coin
     return JSON.stringify(packet)
 }
