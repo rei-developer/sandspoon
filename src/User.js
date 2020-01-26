@@ -158,33 +158,49 @@ global.User = (function () {
         }
 
         async createClan(name) {
-            if (this.clanId) return
-            if (this.coin < 10000) return
-            if (name.length < 1 || name.length > 12) return
-            if (name.match(/[^가-힣a-zA-Z0-9]+/)) return
-            if (!filtering.check(name)) return
+            if (this.clanId)
+                return
+            if (this.coin < 10000)
+                return this.send(Serialize.MessageClan('NOT_ENOUGH_COIN'))
+            if (name.length < 1 || name.length > 12)
+                return this.send(Serialize.MessageClan('AN_IMPOSSIBLE_LENGTH'))
+            if (name.match(/[^가-힣a-zA-Z0-9]+/))
+                return this.send(Serialize.MessageClan('AN_IMPOSSIBLE_WORD'))
+            if (!filtering.check(name))
+                return this.send(Serialize.MessageClan('FILTERING'))
             const clan = await Clan.create(this.id, name)
-            if (clan) {
-                this.coin -= 10000
-                this.clan = clan
-                let members = []
-                for (let i = 0; i < this.clan.members.length; ++i) {
-                    const memberId = this.clan.members[i]
-                    members.push(DB.FindUserClanInfoById(memberId))
-                }
-                members = await Promise.all(members)
-                this.send(Serialize.GetClan(this.clan, members))
+            if (!clan)
+                return
+            this.coin -= 10000
+            this.clan = clan
+            let members = []
+            for (let i = 0; i < this.clan.members.length; ++i) {
+                const memberId = this.clan.members[i]
+                members.push(await DB.FindUserClanInfoById(memberId))
             }
+            members = await Promise.all(members)
+            this.send(Serialize.GetClan(this.clan, members))
         }
 
         async inviteClan(name) {
-            if (!this.clan) return
-            if (this.clan.masterId !== this.id) return
-            this.clan.invite(this.id, name)
+            if (!this.clan)
+                return
+            const member = await DB.FindUserClanInfoById(this.id)
+            if (!member)
+                return
+            if (member.clanLevel < 3)
+                return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
+            const memberCount = this.clan.members.length
+            if (memberCount >= 40)
+                return this.send(Serialize.MessageClan('FULL_MEMBER'))
+            if (memberCount >= this.clan.level * 10)
+                return this.send(Serialize.MessageClan('LOW_LEVEL'))
+            this.clan.invite(this, name)
         }
 
         async joinClan(id) {
-            if (this.clan) return
+            if (this.clan)
+                return
             if (await Clan.get(id).enter(this.id)) {
                 this.clan = Clan.get(id)
                 this.getClan()
@@ -192,13 +208,19 @@ global.User = (function () {
         }
 
         async cancelClan(id) {
-            DB.DeleteInviteClan(id)
+            await DB.DeleteInviteClan(id)
         }
 
         async kickClan(id) {
-            if (!this.clan) return
-            if (this.clan.masterId !== this.id) return
-            if (this.clan.masterId == id) return
+            if (!this.clan)
+                return
+            const member = await DB.FindUserClanInfoById(this.id)
+            if (!member)
+                return
+            if (member.clanLevel < 4)
+                return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
+            if (this.clan.masterId == id)
+                return this.send(Serialize.MessageClan('AN_INIMITABLE_MEMBER'))
             this.clan.leave(id)
             const findUser = User.users.find(u => u.id === id)
             if (findUser)
@@ -219,28 +241,140 @@ global.User = (function () {
             let members = []
             for (let i = 0; i < this.clan.members.length; ++i) {
                 const memberId = this.clan.members[i]
-                members.push(DB.FindUserClanInfoById(memberId))
+                members.push(await DB.FindUserClanInfoById(memberId))
             }
-
             members = await Promise.all(members)
             this.send(Serialize.GetClan(this.clan, members))
         }
 
         async leaveClan() {
-            if (!this.clan) return
-            if (this.clan.masterId === this.id && this.clan.members.length > 1) return
+            if (!this.clan)
+                return
+            if (this.clan.masterId === this.id) {
+                if (this.clan.members.length > 1)
+                    return this.send(Serialize.MessageClan('MEMBER_STILL_EXISTS'))
+                this.coin += this.clan.coin
+            }
             this.clan.leave(this.id)
             this.clan = null
             this.send(Serialize.GetClan())
         }
 
         async setOptionClan(data) {
-            if (!this.clan) return
-            //if (this.clan.masterId !== this.id) return
+            if (!this.clan)
+                return
+            const member = await DB.FindUserClanInfoById(this.id)
+            if (!member)
+                return
+            if (member.clanLevel < 4)
+                return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
             data.notice = data.notice.replace(/<br>/g, '\n')
             this.clan.setOption(data)
-            await DB.UpdateClanOption(this.clan.id, data)
             this.getClan()
+        }
+
+        async payClan(data) {
+            if (!this.clan)
+                return
+            data = Number(data)
+            if (isNaN(data))
+                return this.send(Serialize.MessageClan('WRONG_NUMBER'))
+            if (data < 1)
+                return this.send(Serialize.MessageClan('BELOW_STANDARD'))
+            if (this.coin < data)
+                return this.send(Serialize.MessageClan('NOT_ENOUGH_COIN'))
+            this.clan.setUpCoin(data)
+            this.coin -= data
+            this.send(Serialize.UpdateClan(this.clan))
+        }
+
+        async withdrawClan(data) {
+            if (!this.clan)
+                return
+            if (this.clan.masterId !== this.id)
+                return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
+            data = Number(data)
+            if (isNaN(data))
+                return this.send(Serialize.MessageClan('WRONG_NUMBER'))
+            if (data < 1)
+                return this.send(Serialize.MessageClan('BELOW_STANDARD'))
+            if (this.clan.coin < data)
+                return this.send(Serialize.MessageClan('NOT_ENOUGH_CLAN_COIN'))
+            this.clan.setUpCoin(-data)
+            this.coin += data
+            this.send(Serialize.UpdateClan(this.clan))
+        }
+
+        async levelUpClan() {
+            if (!this.clan)
+                return
+            const member = await DB.FindUserClanInfoById(this.id)
+            if (!member)
+                return
+            if (member.clanLevel < 4)
+                return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
+            if (this.clan.level >= 4)
+                return this.send(Serialize.MessageClan('HIGH_LEVEL'))
+            const cost = this.clan.level * 50000
+            if (this.clan.coin < cost)
+                return this.send(Serialize.MessageClan('NOT_ENOUGH_CLAN_COIN'))
+            this.clan.setUpCoin(-cost)
+            this.clan.setUpLevel()
+        }
+
+        async setUpMemberLevelClan(data) {
+            if (!this.clan)
+                return
+            const member = await DB.FindUserClanInfoById(this.id)
+            if (!member)
+                return
+            if (member.clanLevel < 4)
+                return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
+            if (this.id === data)
+                return this.send(Serialize.MessageClan('OWN_SELF'))
+            if (this.clan.masterId === data)
+                return this.send(Serialize.MessageClan('AN_INIMITABLE_MEMBER'))
+            const targetMember = await DB.FindUserClanInfoById(data)
+            if (!targetMember)
+                return
+            if (targetMember.clanLevel >= 4)
+                return this.send(Serialize.MessageClan('LEVEL_LIMIT'))
+            this.clan.setMemberLevel(data, targetMember.clanLevel + 1)
+            this.send(Serialize.GetClan())
+        }
+
+        async setDownMemberLevelClan(data) {
+            if (!this.clan)
+                return
+            const member = await DB.FindUserClanInfoById(this.id)
+            if (!member)
+                return
+            if (member.clanLevel < 4)
+                return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
+            if (this.id === data)
+                return this.send(Serialize.MessageClan('OWN_SELF'))
+            if (this.clan.masterId === data)
+                return this.send(Serialize.MessageClan('AN_INIMITABLE_MEMBER'))
+            const targetMember = await DB.FindUserClanInfoById(data)
+            if (!targetMember)
+                return
+            if (member.clanLevel === targetMember.clanLevel)
+                return this.send(Serialize.MessageClan('SAME_LEVEL_AS_ME'))
+            if (targetMember.clanLevel <= 1)
+                return this.send(Serialize.MessageClan('LEVEL_LIMIT'))
+            this.clan.setMemberLevel(data, targetMember.clanLevel - 1)
+            this.send(Serialize.GetClan())
+        }
+
+        async changeMasterClan(data) {
+            if (!this.clan)
+                return
+            if (this.clan.masterId !== this.id)
+                return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
+            if (this.id === data)
+                return this.send(Serialize.MessageClan('OWN_SELF'))
+            this.clan.changeMaster(this, data)
+            this.send(Serialize.GetClan())
         }
 
         async tempSkinBuy() {

@@ -70,6 +70,8 @@ module.exports = class Server {
             const verify = token !== 'test' && await verifyToken(config.KEY, token) || 'test'
             const user = await User.create(socket, verify)
             if (!user) return
+            user.send(Serialize.UserData(user))
+            user.send(Serialize.ConnectionCount(User.users.length))
             socket.user = user
             console.log(user.name + ' 접속 (동시접속자: ' + User.users.length + '명)')
             const handler = this.onMessage(socket)
@@ -170,6 +172,38 @@ module.exports = class Server {
 
         handler[ToServer.SET_OPTION_CLAN] = async data => {
             user.setOptionClan(JSON.parse(utf8.decode(data)))
+        }
+
+        handler[ToServer.PAY_CLAN] = async data => {
+            user.payClan(utf8.decode(data))
+        }
+
+        handler[ToServer.WITHDRAW_CLAN] = async data => {
+            user.withdrawClan(utf8.decode(data))
+        }
+
+        handler[ToServer.LEVEL_UP_CLAN] = async () => {
+            user.levelUpClan()
+        }
+
+        handler[ToServer.MEMBER_INFO_CLAN] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.send(Serialize.MemberInfoClan(int32[0]))
+        }
+
+        handler[ToServer.SET_UP_MEMBER_LEVEL_CLAN] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.setUpMemberLevelClan(int32[0])
+        }
+
+        handler[ToServer.SET_DOWN_MEMBER_LEVEL_CLAN] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.setDownMemberLevelClan(int32[0])
+        }
+
+        handler[ToServer.CHANGE_MASTER_CLAN] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.changeMasterClan(int32[0])
         }
 
         return handler

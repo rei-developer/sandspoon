@@ -58,10 +58,11 @@ module.exports = {
                     u.name,
                     u.level,
                     u.blue_graphics avatar,
-                    u.updated,
+                    date_format(u.updated, '%Y-%m-%d') updated,
                     cm.level clanLevel,
                     cm.exp clanExp,
-                    cm.coin clanCoin
+                    cm.coin clanCoin,
+                    date_format(cm.regdate, '%Y-%m-%d') clanRegdate
                 FROM users u
                 LEFT JOIN clan_members cm ON cm.user_id = u.id
                 WHERE u.id = ?`
@@ -126,6 +127,38 @@ module.exports = {
                 data.level[4],
                 clanId
             ])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async UpdateClanLevel(clanId, level) {
+        try {
+            await this.query('UPDATE clans SET `level` = ? WHERE `id` = ?', [level, clanId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async UpdateClanCoin(clanId, coin) {
+        try {
+            await this.query('UPDATE clans SET `coin` = ? WHERE `id` = ?', [coin, clanId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async UpdateClanMemberLevel(clanId, userId, level) {
+        try {
+            await this.query('UPDATE clan_members SET `level` = ? WHERE `clan_id` = ? AND `user_id` = ?', [level, clanId, userId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async UpdateClanMasterLevel(clanId, userId) {
+        try {
+            await this.query('UPDATE clans SET `master_id` = ? WHERE `id` = ?', [userId, clanId])
             return true
         } catch (e) {
             console.error(e)

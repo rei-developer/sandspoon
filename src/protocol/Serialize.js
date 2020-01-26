@@ -194,7 +194,8 @@ my.GetClan = function (clan, members = []) {
             clanLevel: m.clanLevel,
             clanExp: m.clanExp,
             clanCoin: m.clanCoin,
-            updated: m.updated
+            updated: m.updated,
+            clanRegdate: m.clanRegdate
         }))
     }
     return JSON.stringify(packet)
@@ -204,6 +205,28 @@ my.InviteClan = function (invites) {
     const packet = {}
     packet._head = ToClient.INVITE_CLAN
     packet.invites = invites
+    return JSON.stringify(packet)
+}
+
+my.MemberInfoClan = function (memberId) {
+    const packet = {}
+    packet._head = ToClient.MEMBER_INFO_CLAN
+    packet.id = memberId
+    return JSON.stringify(packet)
+}
+
+my.UpdateClan = function (clan) {
+    const packet = {}
+    packet._head = ToClient.UPDATE_CLAN
+    packet.level = clan.level
+    packet.coin = clan.coin
+    return JSON.stringify(packet)
+}
+
+my.MessageClan = function (status) {
+    const packet = {}
+    packet._head = ToClient.MESSAGE_CLAN
+    packet.status = status
     return JSON.stringify(packet)
 }
 

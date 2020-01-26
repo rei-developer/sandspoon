@@ -28,6 +28,9 @@ module.exports = {
         'QUIT_GAME',
         'UPDATE_MODE_SCORE',
         'TEMP_SKIN_BUY',
-        'SET_OPTION_CLAN'
+        'SET_OPTION_CLAN',
+        'MEMBER_INFO_CLAN',
+        'UPDATE_CLAN',
+        'MESSAGE_CLAN'
     )
 }

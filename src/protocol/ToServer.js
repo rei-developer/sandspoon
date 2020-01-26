@@ -18,6 +18,13 @@ module.exports = {
         'JOIN_CLAN',
         'KICK_CLAN',
         'TEMP_SKIN_BUY',
-        'SET_OPTION_CLAN'
+        'SET_OPTION_CLAN',
+        'PAY_CLAN',
+        'WITHDRAW_CLAN',
+        'LEVEL_UP_CLAN',
+        'MEMBER_INFO_CLAN',
+        'SET_UP_MEMBER_LEVEL_CLAN',
+        'SET_DOWN_MEMBER_LEVEL_CLAN',
+        'CHANGE_MASTER_CLAN'
     )
 }

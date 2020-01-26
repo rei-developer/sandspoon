@@ -1,3 +1,4 @@
+const Serialize = require('./protocol/Serialize')
 const DB = require('./DB')
 
 global.Clan = (function () {
@@ -32,13 +33,13 @@ global.Clan = (function () {
             id = 0,
             masterId = 0,
             name = '',
-            level1_name = '',
-            level2_name = '',
-            level3_name = '',
-            level4_name = '',
-            level5_name = '',
+            level1_name = '마스터',
+            level2_name = '부마스터',
+            level3_name = '간부',
+            level4_name = '클랜원',
+            level5_name = '신입',
             notice = '',
-            level = 0,
+            level = 1,
             exp = 0,
             coin = 0,
             regdate = 0,
@@ -63,15 +64,15 @@ global.Clan = (function () {
             this.room = null
         }
 
-        async invite(userId, targetName) {
+        async invite(user, targetName) {
             const target = await DB.FindUserByName(targetName)
-            if (target && target.id) {
-                if (this.members.find(m => m.id === target.id))
-                    return
-                if (await DB.FindMyClanByUserId(target.id))
-                    return
-                await DB.InviteClan(this.id, userId, target.id)
-            }
+            if (!target || !target.id)
+                return user.send(Serialize.MessageClan('NON_EXISTENT_USER'))
+            if (this.members.find(m => m.id === target.id))
+                return user.send(Serialize.MessageClan('ALREADY_EXISTING_MEMBER'))
+            if (await DB.FindMyClanByUserId(target.id))
+                return user.send(Serialize.MessageClan('ALREADY_SUBSCRIBED_MEMBER'))
+            await DB.InviteClan(this.id, user.id, target.id)
         }
 
         async enter(userId) {
@@ -94,27 +95,57 @@ global.Clan = (function () {
                 if (await DB.LeaveClan(userId)) {
                     this.members.splice(findIndex, 1)
                     if (!this.members.length) {
+                        await DB.DeleteClan(this.id)
                         delete Clan.clans[this.id]
-                        DB.DeleteClan(this.id)
                     }
                 }
             }
         }
 
-        async setLevel(userId, level = 1) {
+        async setUpLevel() {
+            this.level += 1
+            await DB.UpdateClanLevel(this.id, this.level)
+        }
+
+        async setMemberLevel(userId, level) {
             const findIndex = this.members.indexOf(userId)
             if (findIndex !== -1) {
-
+                this.members[findIndex].clanLevel = level
+                await DB.UpdateClanMemberLevel(this.id, userId, level)
             }
         }
 
-        setOption(data) {
+        async changeMaster(userId, targetId) {
+            const findIndex = this.members.indexOf(userId)
+            const findTargetIndex = this.members.indexOf(targetId)
+            if (findIndex !== -1 || findTargetIndex !== -1) {
+                this.members[findIndex].clanLevel = 2
+                this.members[findTargetIndex].clanLevel = 5
+                this.masterId = targetId
+                await DB.UpdateClanMemberLevel(this.id, userId, 2)
+                await DB.UpdateClanMemberLevel(this.id, targetId, 5)
+                await DB.UpdateClanMasterLevel(this.id, targetId)
+            }
+        }
+
+        async setUpCoin(coin) {
+            this.coin += coin
+            await DB.UpdateClanCoin(this.id, this.coin)
+        }
+
+        async setOption(data) {
             this.notice = data.notice
-            this.level1_name = data.level[0]
-            this.level2_name = data.level[1]
-            this.level3_name = data.level[2]
-            this.level4_name = data.level[3]
-            this.level5_name = data.level[4]
+            if (data.level[0] !== "")
+                this.level1_name = data.level[0]
+            if (data.level[1] !== "")
+                this.level2_name = data.level[1]
+            if (data.level[2] !== "")
+                this.level3_name = data.level[2]
+            if (data.level[3] !== "")
+                this.level4_name = data.level[3]
+            if (data.level[4] !== "")
+                this.level5_name = data.level[4]
+            await DB.UpdateClanOption(this.id, data)
         }
     }
 })()
