@@ -27,7 +27,7 @@ module.exports = class RescueMode {
         this.tick = 0
         this.state = STATE_READY
         this.room = Room.get(this.roomId)
-        const objects = require('../Assets/Mods/Mod' + ('' + 1).padStart(3, '0') + '.json')[this.map]
+        const objects = require('../../Assets/Mods/Mod' + ('' + 1).padStart(3, '0') + '.json')[this.map]
         for (const object of objects) {
             const event = new Event(this.roomId, object)
             this.room.addEvent(event)

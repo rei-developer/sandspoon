@@ -25,7 +25,7 @@ module.exports = class InfectMode {
         this.state = STATE_READY
         this.type = ModeType.INFECT
         this.room = Room.get(this.roomId)
-        const objects = require('../Assets/Mods/Mod' + ('' + 2).padStart(3, '0') + '.json')[this.map]
+        const objects = require('../../Assets/Mods/Mod' + ('' + 2).padStart(3, '0') + '.json')[this.map]
         for (const object of objects) {
             const event = new Event(this.roomId, object)
             this.room.addEvent(event)
@@ -292,7 +292,7 @@ module.exports = class InfectMode {
                     break
                 case STATE_GAME:
                     if (this.supplyCount === 0) {
-                        const newObjects = require('../Assets/Mods/Eve000.json')[1]
+                        const newObjects = require('../../Assets/Mods/Eve000.json')[1]
                         for (const object of newObjects) {
                             const event = new Event(this.roomId, object)
                             const rand = [

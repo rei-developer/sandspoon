@@ -9,7 +9,7 @@ module.exports = class PlayGroundMode {
         this.tick = 0
         this.type = 3
         this.room = Room.get(this.roomId)
-        const objects = require('../Assets/Mods/Mod' + ('' + 0).padStart(3, '0') + '.json')[1]
+        const objects = require('../../Assets/Mods/Mod' + ('' + 0).padStart(3, '0') + '.json')[1]
         for (const object of objects) {
             const event = new Event(this.roomId, object)
             this.room.addEvent(event)
@@ -62,7 +62,7 @@ module.exports = class PlayGroundMode {
 
     spawnRabbit() {
         const range = 6
-        const objects = require('../Assets/Mods/Eve000.json')[2]
+        const objects = require('../../Assets/Mods/Eve000.json')[2]
         for (const object of objects) {
             const range = 3
             for (let i = 0; i < 10; i++) {
