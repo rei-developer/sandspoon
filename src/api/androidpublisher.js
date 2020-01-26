@@ -12,7 +12,7 @@ let recentlyToken = ''
 
 async function createBilling({ userId, transactionId, productId, token, date }) {
     try {
-        await DB.query('INSERT INTO billings (userId, transactionId, productId, purchaseToken, purchaseDate) VALUES (?, ?, ?, ?, STR_TO_DATE(?, "%m/%d/%Y %H:%i:%s"))', [userId, transactionId, productId, token, date])
+        await DB.query('INSERT INTO billings (`userId`, `transactionId`, `productId`, `purchaseToken`, `purchaseDate`) VALUES (?, ?, ?, ?, STR_TO_DATE(?, "%m/%d/%Y %H:%i:%s"))', [userId, transactionId, productId, token, date])
     } catch (e) {
         throw e
     }
@@ -29,7 +29,7 @@ async function cashUser({ userId, productId }) {
             break
     }
     try {
-        await DB.query('UPDATE users SET cash = cash + ? WHERE id = ?', [value, userId])
+        await DB.query('UPDATE users SET `cash` = `cash` + ? WHERE `id` = ?', [value, userId])
     } catch (e) {
         console.log(e)
         throw e
@@ -82,18 +82,27 @@ router.get('/androidpublisher/validate_purchase', async ctx => {
         token,
         date
     } = ctx.query
+    console.log("A")
     const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}`
     const reqUrl = `${url}?access_token=${recentlyToken}`
+    console.log("B")
     try {
         const result = await new Promise((resolve, reject) => {
+            console.log("C")
             request.get(reqUrl, async (err, response, body) => {
                 if (err)
                     return ctx.body = { message: err, status: 'FAILED' }
+
+                console.log("D")
                 const data = JSON.parse(body)
+                console.log(data)
                 if (!data.orderId || data.orderId !== transactionId || data.purchaseState > 0)
                     return ctx.body = { message: '유효하지 않은 영수증입니다.', status: 'FAILED' }
+                console.log("E")
                 await createBilling({ userId, transactionId, productId, token, date })
+                console.log("F")
                 await cashUser({ userId, productId })
+                console.log("G")
                 resolve({ status: 'SUCCESS' })
             })
         })
