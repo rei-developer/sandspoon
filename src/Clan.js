@@ -110,7 +110,6 @@ global.Clan = (function () {
         async setMemberLevel(userId, level) {
             const findIndex = this.members.indexOf(userId)
             if (findIndex !== -1) {
-                this.members[findIndex].clanLevel = level
                 await DB.UpdateClanMemberLevel(this.id, userId, level)
             }
         }
@@ -119,8 +118,6 @@ global.Clan = (function () {
             const findIndex = this.members.indexOf(userId)
             const findTargetIndex = this.members.indexOf(targetId)
             if (findIndex !== -1 || findTargetIndex !== -1) {
-                this.members[findIndex].clanLevel = 2
-                this.members[findTargetIndex].clanLevel = 5
                 this.masterId = targetId
                 await DB.UpdateClanMemberLevel(this.id, userId, 2)
                 await DB.UpdateClanMemberLevel(this.id, targetId, 5)
