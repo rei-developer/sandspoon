@@ -182,7 +182,7 @@ module.exports = {
     },
     async GetClanMembers(clanId) {
         try {
-            return await this.query('SELECT * FROM clan_members WHERE clan_id = ?', [clanId])
+            return await this.query('SELECT * FROM clan_members WHERE clan_id = ? ORDER BY level DESC', [clanId])
         } catch (e) {
             console.error(e)
         }
