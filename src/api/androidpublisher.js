@@ -6,7 +6,7 @@ const router = new Router()
 
 const inn_client_id = '403199035553-ptrj3m550enl3jdskim8i5be8maua98f.apps.googleusercontent.com'
 const inn_client_secret = 'xsAkSHcdp0CuTnYnnor9vP5f'
-const inn_redirect_url = 'https://sandspoon.com/androidpublisher/exchange_token'
+const inn_redirect_url = 'https://www.sandspoon.com/androidpublisher/exchange_token'
 
 let recentlyToken = ''
 

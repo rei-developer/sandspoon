@@ -5,10 +5,10 @@ require('./src/Clan')
 const lex = require('greenlock-koa').create({
     version: 'draft-11',
     configDir: '/etc/letsencrypts',
-    server: 'https://acme-v02.api.letsencrypt.org/directory',
+    server: 'https://acme-v02.api.letsencrypt.org/directory', // 'https://acme-v02-staging.api.letsencrypt.org/directory',
     approveDomains: (opts, certs, cb) => {
         if (certs) {
-            opts.domains = ['sandspoon.com']
+            opts.domains = ['www.sandspoon.com']
         } else {
             opts.email = 'sandspoons@gmail.com'
             opts.agreeTos = true

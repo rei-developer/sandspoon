@@ -2,7 +2,7 @@ const mysql = require('promise-mysql')
 const config = require("./config")
 
 const pool = mysql.createPool({
-    host: 'sandspoon.com',
+    host: 'www.sandspoon.com',
     port: 3306,
     user: 'root',
     password: config.SECRET,
