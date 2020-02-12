@@ -870,10 +870,12 @@ global.User = (function () {
             User.removeByUser(this)
             if (!await DB.UpdateUser(this))
                 logger.log('유저 정보 저장 실패 ' + JSON.stringify(user.getJSON()))
-            if (!await DB.DeleteInventory(this.id))
-                logger.log('유저 인벤토리 삭제 실패 ' + JSON.stringify(user.getJSON()))
-            if (!await DB.InsertInventory(this.id, this.inventory))
-                logger.log('유저 인벤토리 저장 실패 ' + JSON.stringify(user.getJSON()))
+            if (this.inventory.length > 0) {
+                if (!await DB.DeleteInventory(this.id))
+                    logger.log('유저 인벤토리 삭제 실패 ' + JSON.stringify(user.getJSON()))
+                if (!await DB.InsertInventory(this.id, this.inventory))
+                    logger.log('유저 인벤토리 저장 실패 ' + JSON.stringify(user.getJSON()))
+            }
         }
 
         send(data) {
