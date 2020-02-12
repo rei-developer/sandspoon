@@ -1,0 +1,277 @@
+{
+    "items": [
+        {
+            "id": 1,
+            "type": "SKIN",
+            "icon": "Yuzuha",
+            "name": "유즈하",
+            "description": "일본 어느 신사의 무녀. 그녀는 오니 퇴치에 매우 전문적이다.",
+            "cost": 70,
+            "isCash": true,
+            "method": {
+                "command": "Yuzuha",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 2,
+            "type": "SKIN",
+            "icon": "YuzuhaBlue",
+            "name": "우미",
+            "description": "유즈하의 동생이며, 신사의 청결을 담당하고 있다.",
+            "cost": 70,
+            "isCash": true,
+            "method": {
+                "command": "YuzuhaBlue",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 3,
+            "type": "SKIN",
+            "icon": "hikaru",
+            "name": "히카루",
+            "description": "도쿠시마현에 사는 평범한 여중생. 오니에게 목숨을 잃을 뻔했지만, 그녀의 영적 기운으로 가까스로 살아남았다.",
+            "cost": 30,
+            "isCash": true,
+            "method": {
+                "command": "Hikaru",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 4,
+            "type": "SKIN",
+            "icon": "Someok",
+            "name": "소먹어라",
+            "description": "소를 먹으면 소 기운이 솟아나요! 당신도 소머리국밥 한 그릇하실?",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "Someok",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 5,
+            "type": "SKIN",
+            "icon": "Red_Witch",
+            "name": "마법사",
+            "description": "생명과 대자연의 힘으로 오니 퇴치를 전문적으로 하는 오니 전문 퇴치 마법사.",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "Red_Witch",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 6,
+            "type": "SKIN",
+            "icon": "PYH",
+            "name": "박영호",
+            "description": "변호사 시험에 합격했으나 정작 변호사가 되지 못해 탐정사무소를 차리고 현재는 탐정으로 일하는 중.",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "PYH",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 7,
+            "type": "SKIN",
+            "icon": "Prisoner",
+            "name": "도망자",
+            "description": "오니에게 붙잡힌 인질을 구했으나 살인 혐의로 체포되어 감옥에 갇힌 그는 탈옥을 결심하게 되는데...",
+            "cost": 40,
+            "isCash": true,
+            "method": {
+                "command": "Prisoner",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 8,
+            "type": "SKIN",
+            "icon": "orange",
+            "name": "개귤이",
+            "description": "시베리아에서 귤을 까먹다가 귤 껍질로 강철 헬멧을 만들어 뒤집어 쓰고 다닌다.",
+            "cost": 40,
+            "isCash": true,
+            "method": {
+                "command": "Orange",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 9,
+            "type": "SKIN",
+            "icon": "Loliny",
+            "name": "로리",
+            "description": "그 로리를 의미하는 것이 아니에요.",
+            "cost": 70,
+            "isCash": true,
+            "method": {
+                "command": "Loliny",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 10,
+            "type": "SKIN",
+            "icon": "KJT",
+            "name": "김준태",
+            "description": "나는 여자가 아니야... 남자야.",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "KJT",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 11,
+            "type": "SKIN",
+            "icon": "ISJ",
+            "name": "임성준",
+            "description": "오니를 전문으로 퇴치하는 사업을 시작하게 된 그의 회사는 단 1년만에 벤처 기업으로 성장하게 된다.",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "ISJ",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 12,
+            "type": "SKIN",
+            "icon": "JHY",
+            "name": "이브",
+            "description": "서울에 사는 절세미녀의 그녀는 노르웨이인 아버지와 한국인 어머니 사이에 태어난 혼혈 여자 아이이다.",
+            "cost": 70,
+            "isCash": true,
+            "method": {
+                "command": "JHY",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 13,
+            "type": "SKIN",
+            "icon": "Bbangdori",
+            "name": "빵돌이",
+            "description": "일진에게 잡혀 사는 그는 그들에게 빵을 하루에 3개씩 제공한다고 한다.",
+            "cost": 30,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 14,
+            "type": "SKIN",
+            "icon": "dean",
+            "name": "할배",
+            "description": "소규모 마법사 길드를 운영하는 할배.",
+            "cost": 100,
+            "isCash": false,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 15,
+            "type": "SKIN",
+            "icon": "Limeon",
+            "name": "리먼",
+            "description": "제작자: 리먼",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 16,
+            "type": "SKIN",
+            "icon": "VirusDoctor",
+            "name": "역병의사",
+            "description": "제작자: 화이트",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 17,
+            "type": "SKIN",
+            "icon": "AoKami",
+            "name": "푸른 머리 소년",
+            "description": "제작자: 나브루",
+            "cost": 30,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 18,
+            "type": "SKIN",
+            "icon": "DeathMan",
+            "name": "저승사자",
+            "description": "제작자: 나브루",
+            "cost": 40,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 19,
+            "type": "SKIN",
+            "icon": "Dinosaur",
+            "name": "공룡 잠옷 소년",
+            "description": "제작자: 화이트",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 20,
+            "type": "SKIN",
+            "icon": "BreadHat",
+            "name": "빵모자 소녀",
+            "description": "제작자: 나브루",
+            "cost": 30,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 21,
+            "type": "SKIN",
+            "icon": "RabbitGirl",
+            "name": "토끼 소녀",
+            "description": "제작자: 트윙클",
+            "cost": 90,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        }
+    ]
+}

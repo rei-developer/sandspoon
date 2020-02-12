@@ -2,12 +2,12 @@ const mysql = require('promise-mysql')
 const config = require("./config")
 
 const pool = mysql.createPool({
-    host: 'www.sandspoon.com',
+    host: 'localhost',
     port: 3306,
     user: 'root',
     password: config.SECRET,
     database: 'sandspoon',
-    connectionLimit: 100
+    connectionLimit: 500
 })
 
 module.exports = {
@@ -23,7 +23,52 @@ module.exports = {
     },
     async LoadPortals(id) {
         try {
-            return await this.query('SELECT * FROM portals WHERE place = ?', [id])
+            return await this.query('SELECT * FROM portals WHERE `place` = ?', [id])
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async LoadItems() {
+        try {
+            return await this.query('SELECT * FROM items')
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async LoadInventorys(id) {
+        try {
+            return await this.query('SELECT * FROM inventorys WHERE `user_id` = ?', [id])
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async LoadBilling(id) {
+        try {
+            return await this.query('SELECT * FROM billings WHERE `userId` = ?', [id])
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async LoadRanks() {
+        try {
+            return await this.query(
+                `SELECT
+                    u.id,
+                    u.name,
+                    u.level,
+                    u.exp,
+                    u.point,
+                    u.kill,
+                    u.death,
+                    u.assist,
+                    u.blue_graphics avatar,
+                    u.memo,
+                    u.admin,
+                    c.name clanname
+                FROM users u
+                LEFT JOIN clan_members cm ON cm.user_id = u.id
+                LEFT JOIN clans c ON c.id = cm.clan_id
+                WHERE u.verify = 1 ORDER BY u.point DESC`)
         } catch (e) {
             console.error(e)
         }
@@ -35,16 +80,61 @@ module.exports = {
             console.error(e)
         }
     },
-    async LoadRanks() {
+    async LoadClanMembers(clanId) {
         try {
-            return await this.query('SELECT name, level, exp, admin FROM users WHERE verify = 1 ORDER BY point DESC')
+            return await this.query('SELECT * FROM clan_members WHERE `clan_id` = ? ORDER BY `level` DESC', [clanId])
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async LoadInviteClans(userId) {
+        try {
+            return await this.query('SELECT * FROM invite_clans WHERE `target_id` = ?', [userId])
         } catch (e) {
             console.error(e)
         }
     },
     async FindUserById(id) {
         try {
-            const [row] = await this.query("SELECT * FROM users WHERE id = ?", [id])
+            const [row] = await this.query("SELECT * FROM users WHERE `id` = ?", [id])
+            return row
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async FindUserByOauth(uid, loginType) {
+        try {
+            const [row] = await this.query("SELECT * FROM users WHERE `uid` = ? AND `login_type` = ?", [uid, loginType])
+            return row
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async FindUserByName(name) {
+        try {
+            const [row] = await this.query("SELECT * FROM users WHERE `name` = ?", [name])
+            return row
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async FindUserInventory(id, itemId) {
+        try {
+            const [row] = await this.query(
+                `SELECT
+                    u.id,
+                    u.name,
+                    
+                
+                `
+            )
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async FindMyClanByUserId(id) {
+        try {
+            const [row] = await this.query('SELECT * FROM clan_members WHERE `user_id` = ?', [id])
             return row
         } catch (e) {
             console.error(e)
@@ -72,26 +162,78 @@ module.exports = {
             console.error(e)
         }
     },
-    async FindUserByOauth(uid, loginType) {
+    async FindInviteClan(clanId, userId) {
         try {
-            const [row] = await this.query("SELECT * FROM users WHERE uid = ? AND login_type = ?", [uid, loginType])
+            return await this.query('SELECT * FROM invite_clans WHERE `clan_id` = ? AND `target_id` = ?', [clanId, userId])
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async FindBilling(billingId, userId) {
+        try {
+            const [row] = await this.query('SELECT * FROM billings WHERE `id` = ? AND `userId` = ?', [billingId, userId])
             return row
         } catch (e) {
             console.error(e)
         }
     },
-    async FindUserByName(name) {
+    async InsertBlock(uid, uuid, loginType, description, date) {
         try {
-            const [row] = await this.query("SELECT * FROM users WHERE name = ?", [name])
+            await this.query('INSERT INTO blocks (`login_type`, `uid`, `uuid`, `description`, `date`) VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL ? DAY))', [loginType, uid, uuid, description, date])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async InsertInventory(userId, inventory) {
+        try {
+            await pool.query(
+                `INSERT INTO inventorys (item_id, user_id, num, expiry) VALUES ${inventory.map(() => `(?, ?, ?, ?)`).join(', ')}`,
+                inventory
+                    .map(item => [item.id, userId, item.num, item.expiry])
+                    .reduce((acc, current) => [...acc, ...current], [])
+            )
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async CreateClan(masterId, clanname) {
+        const conn = await pool.getConnection()
+        try {
+            await conn.beginTransaction()
+            const row = await conn.query('INSERT INTO clans (`master_id`, `name`) VALUES (?, ?)', [masterId, clanname])
+            await conn.query('INSERT INTO clan_members (`clan_id`, `user_id`, `level`) VALUES (?, ?, ?)', [row.insertId, masterId, 5])
+            await conn.commit()
             return row
+        } catch (e) {
+            await conn.rollback()
+            console.error(e)
+        } finally {
+            conn.release()
+        }
+    },
+    async EnterClan(clanId, userId) {
+        try {
+            await this.query('INSERT INTO clan_members (`clan_id`, `user_id`) VALUES (?, ?)', [clanId, userId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async InviteClan(clanId, userId, targetId) {
+        try {
+            await this.query('INSERT INTO invite_clans (`clan_id`, `user_id`, `target_id`) VALUES (?, ?, ?)', [clanId, userId, targetId])
+            return true
         } catch (e) {
             console.error(e)
         }
     },
     async UpdateUser(user) {
         try {
-            await this.query('UPDATE users SET `uuid` = ?, `level` = ?, `exp` = ?, `coin` = ?, `cash` = ?, `point` = ?, `kill` = ?, `death` = ?, `assist` = ?, `blast` = ?, `rescue` = ?, `rescue_combo` = ?, `survive` = ?, `escape` = ?, `red_graphics` = ?, `blue_graphics` = ?, `memo` = ?, `last_chat` = ? WHERE `id` = ?', [
+            await this.query('UPDATE users SET `uuid` = ?, `sex` = ?, `level` = ?, `exp` = ?, `coin` = ?, `cash` = ?, `point` = ?, `kill` = ?, `death` = ?, `assist` = ?, `blast` = ?, `rescue` = ?, `rescue_combo` = ?, `survive` = ?, `escape` = ?, `red_graphics` = ?, `blue_graphics` = ?, `memo` = ?, `last_chat` = ? WHERE `id` = ?', [
                 user.verify.uuid,
+                user.sex,
                 user.level,
                 user.exp,
                 user.coin,
@@ -172,69 +314,39 @@ module.exports = {
             console.error(e)
         }
     },
-    async FindMyClanByUserId(id) {
+    async UpdateBillingUseState(billingId, userId) {
         try {
-            const [row] = await this.query('SELECT * FROM clan_members WHERE user_id = ?', [id])
-            return row
+            await this.query('UPDATE billings SET `useState` = 1 WHERE `id` = ? AND `userId` = ?', [billingId, userId])
+            return true
         } catch (e) {
             console.error(e)
         }
     },
-    async GetClanMembers(clanId) {
+    async UpdateBillingRefundRequestState(billingId, userId, state = 0) {
         try {
-            return await this.query('SELECT * FROM clan_members WHERE clan_id = ? ORDER BY level DESC', [clanId])
+            await this.query('UPDATE billings SET `refundRequestState` = ? WHERE `id` = ? AND `userId` = ?', [state, billingId, userId])
+            return true
         } catch (e) {
             console.error(e)
         }
     },
-    async CreateClan(masterId, clanname) {
-        const conn = await pool.getConnection()
+    async ClaerInventory(userId) {
         try {
-            await conn.beginTransaction()
-            const row = await conn.query('INSERT INTO clans (master_id, name) VALUES (?, ?)', [masterId, clanname])
-            await conn.query('INSERT INTO clan_members (clan_id, user_id, level) VALUES (?, ?, ?)', [row.insertId, masterId, 5])
-            await conn.commit()
-            return row
-        } catch (e) {
-            await conn.rollback()
-            console.error(e)
-        } finally {
-            conn.release()
-        }
-    },
-    async FindInviteClan(clanId, userId) {
-        try {
-            return await this.query('SELECT * FROM invite_clans WHERE clan_id = ? AND target_id = ?', [clanId, userId])
+            await this.query('DELETE FROM inventorys WHERE `user_id` = ?', [userId])
         } catch (e) {
             console.error(e)
         }
     },
     async ClearInviteClan(userId) {
         try {
-            await this.query('DELETE FROM invite_clans WHERE target_id = ?', [userId])
+            await this.query('DELETE FROM invite_clans WHERE `target_id` = ?', [userId])
         } catch (e) {
             console.error(e)
         }
     },
-    async GetInviteClans(userId) {
+    async DeleteClan(clanId) {
         try {
-            return await this.query('SELECT * FROM invite_clans WHERE target_id = ?', [userId])
-        } catch (e) {
-            console.error(e)
-        }
-    },
-    async InviteClan(clanId, userId, targetId) {
-        try {
-            await this.query('INSERT INTO invite_clans (clan_id, user_id, target_id) VALUES (?, ?, ?)', [clanId, userId, targetId])
-            return true
-        } catch (e) {
-            console.error(e)
-        }
-    },
-
-    async EnterClan(clanId, userId) {
-        try {
-            await this.query('INSERT INTO clan_members (clan_id, user_id) VALUES (?, ?)', [clanId, userId])
+            await this.query('DELETE FROM clans WHERE `id` = ?', [clanId])
             return true
         } catch (e) {
             console.error(e)
@@ -242,7 +354,7 @@ module.exports = {
     },
     async LeaveClan(userId) {
         try {
-            await this.query('DELETE FROM clan_members WHERE user_id = ?', [userId])
+            await this.query('DELETE FROM clan_members WHERE `user_id` = ?', [userId])
             return true
         } catch (e) {
             console.error(e)
@@ -250,26 +362,18 @@ module.exports = {
     },
     async DeleteInviteClan(clanId) {
         try {
-            await this.query('DELETE FROM invite_clans WHERE clan_id = ?', [clanId])
+            await this.query('DELETE FROM invite_clans WHERE `clan_id` = ?', [clanId])
             return true
         } catch (e) {
             console.error(e)
         }
     },
-    async DeleteClan(clanId) {
+    async DeleteInventory(userId) {
         try {
-            await this.query('DELETE FROM clans WHERE id = ?', [clanId])
+            await this.query('DELETE FROM inventorys WHERE `user_id` = ?', [userId])
             return true
         } catch (e) {
             console.error(e)
         }
     },
-    async InsertBlock(uid, uuid, loginType, description, date) {
-        try {
-            await this.query('INSERT INTO blocks (login_type, uid, uuid, description, date) VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL ? DAY))', [loginType, uid, uuid, description, date])
-            return true
-        } catch (e) {
-            console.error(e)
-        }
-    }
 }

@@ -27,10 +27,19 @@ module.exports = {
         'SWITCH_LIGHT',
         'QUIT_GAME',
         'UPDATE_MODE_SCORE',
-        'TEMP_SKIN_BUY',
         'SET_OPTION_CLAN',
         'MEMBER_INFO_CLAN',
         'UPDATE_CLAN',
-        'MESSAGE_CLAN'
+        'MESSAGE_CLAN',
+        'GET_BILLING',
+        'UPDATE_BILLING',
+        'GET_SHOP',
+        'GET_SKIN_ITEM',
+        'MESSAGE_SHOP',
+        'GET_SKIN_LIST',
+        'UPDATE_CASH_AND_COIN',
+        'GET_PAY_INFO_ITEM',
+        'GET_RANK',
+        'GET_USER_INFO_RANK'
     )
 }

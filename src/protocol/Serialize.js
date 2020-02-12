@@ -1,5 +1,6 @@
 const { TeamType, ModeType, MapType } = require('../const')
 const ToClient = require('./ToClient')
+const moment = require('moment')
 const my = {}
 
 my.UserData = function (user) {
@@ -10,6 +11,7 @@ my.UserData = function (user) {
     packet.clanname = user.clan && user.clan.name || ''
     packet.name = user.name
     packet.rank = user.rank
+    packet.sex = user.sex
     packet.level = user.level
     packet.exp = user.exp
     packet.maxExp = user.maxExp
@@ -28,6 +30,7 @@ my.UserData = function (user) {
     packet.graphics = user.graphics
     packet.redGraphics = user.redGraphics
     packet.blueGraphics = user.blueGraphics
+    packet.memo = user.memo
     packet.admin = user.admin
     return JSON.stringify(packet)
 }
@@ -274,11 +277,129 @@ my.QuitGame = function () {
     return JSON.stringify(packet)
 }
 
-my.TempSkinBuy = function (blueGraphics, coin) {
+my.GetBilling = function (items = []) {
     const packet = {}
-    packet._head = ToClient.TEMP_SKIN_BUY
-    packet.blueGraphics = blueGraphics
+    packet._head = ToClient.GET_BILLING
+    packet.items = items.map(i => ({
+        id: i.id,
+        cash: i.productId,
+        regdate: moment(i.purchaseDate, 'YYYY-MM-DD').format('YYYY-MM-DD HH:mm:ss'),
+        use: i.useState,
+        refund: i.refundRequestState
+    }))
+    return JSON.stringify(packet)
+}
+
+my.UpdateBilling = function (id, useState, refundRequestState) {
+    const packet = {}
+    packet._head = ToClient.UPDATE_BILLING
+    packet.id = id
+    packet.use = useState
+    packet.refund = refundRequestState
+    return JSON.stringify(packet)
+}
+
+my.GetPayInfoItem = function (item) {
+    const packet = {}
+    packet._head = ToClient.GET_PAY_INFO_ITEM
+    packet.id = item.id
+    packet.cash = item.productId
+    packet.memo = item.transactionId // item.memo
+    packet.regdate = moment(item.purchaseDate, 'YYYY-MM-DD').format('YYYY-MM-DD HH:mm:ss')
+    packet.use = item.useState
+    packet.refund = item.refundRequestState
+    return JSON.stringify(packet)
+}
+
+my.GetShop = function (items = []) {
+    const packet = {}
+    packet._head = ToClient.GET_SHOP
+    packet.items = items.map(i => ({
+        id: i.id,
+        type: i.type,
+        icon: i.icon,
+        name: i.name,
+        description: i.description,
+        cost: i.cost,
+        isCash: i.isCash
+    }))
+    return JSON.stringify(packet)
+}
+
+my.GetSkinItem = function (item, expiry) {
+    const packet = {}
+    packet._head = ToClient.GET_SKIN_ITEM
+    packet.id = item.id
+    packet.type = item.type
+    packet.icon = item.icon
+    packet.name = item.name
+    packet.description = item.description
+    packet.cost = item.cost
+    packet.isCash = item.isCash
+    packet.expiry = expiry
+    return JSON.stringify(packet)
+}
+
+my.MessageShop = function (status) {
+    const packet = {}
+    packet._head = ToClient.MESSAGE_SHOP
+    packet.status = status
+    return JSON.stringify(packet)
+}
+
+my.GetSkinList = function (skins = []) {
+    const packet = {}
+    packet._head = ToClient.GET_SKIN_LIST
+    packet.skins = skins.map(s => ({
+        id: s.id,
+        icon: s.icon,
+        name: s.name,
+        expiry: s.expiry
+    }))
+    return JSON.stringify(packet)
+}
+
+my.UpdateCashAndCoin = function (cash, coin) {
+    const packet = {}
+    packet._head = ToClient.UPDATE_CASH_AND_COIN
+    packet.cash = cash
     packet.coin = coin
+    return JSON.stringify(packet)
+}
+
+my.GetRank = function (ranks = []) {
+    const packet = {}
+    packet._head = ToClient.GET_RANK
+    packet.ranks = ranks.map(r => ({
+        id: r.id,
+        rank: r.rank,
+        name: r.name,
+        clanname: r.clanname || '(소속 없음)',
+        level: r.level,
+        exp: r.exp,
+        point: r.point,
+        kill: r.kill,
+        death: r.death,
+        avatar: r.avatar
+    }))
+    return JSON.stringify(packet)
+}
+
+my.GetUserInfoRank = function (user, maxExp) {
+    const packet = {}
+    packet._head = ToClient.GET_USER_INFO_RANK
+    packet.rank = user.rank
+    packet.name = user.name
+    packet.clanname = user.clanname || '(소속 없음)'
+    packet.level = user.level
+    packet.exp = user.exp
+    packet.maxExp = maxExp
+    packet.kill = user.kill
+    packet.death = user.death
+    packet.assist = user.assist
+    packet.likes = user.likes
+    packet.memo = user.memo
+    packet.avatar = user.avatar
     return JSON.stringify(packet)
 }
 

@@ -97,6 +97,7 @@ module.exports = class Server {
         const handler = {}
 
         handler[ToServer.HELLO] = async () => {
+            user.checkSkinExpiry()
             user.send(Serialize.UserData(user))
             user.send(Serialize.ConnectionCount(User.users.length))
         }
@@ -118,32 +119,19 @@ module.exports = class Server {
                 user.move(x, y, timestamp)
         }
 
-        handler[ToServer.INPUT_HIT] = async () => {
-            user.hit()
-        }
+        handler[ToServer.INPUT_HIT] = async () => user.hit()
 
-        handler[ToServer.ENTER_ROOM] = async data => {
-            user.entry(data[0])
-        }
+        handler[ToServer.ENTER_ROOM] = async data => user.entry(data[0])
 
-        handler[ToServer.REWARD] = async data => {
-            user.result(data[0])
-        }
+        handler[ToServer.REWARD] = async data => user.result(data[0])
 
-        handler[ToServer.ESCAPE] = async () => {
-            user.leave()
-        }
+        handler[ToServer.ESCAPE] = async () => user.leave()
 
-        handler[ToServer.CREATE_CLAN] = async data => {
-            user.createClan(utf8.decode(data))
-        }
+        handler[ToServer.CREATE_CLAN] = async data => user.createClan(utf8.decode(data))
 
-        handler[ToServer.GET_CLAN] = async () => {
-            user.getClan()
-        }
-        handler[ToServer.LEAVE_CLAN] = async () => {
-            user.leaveClan()
-        }
+        handler[ToServer.GET_CLAN] = async () => user.getClan()
+
+        handler[ToServer.LEAVE_CLAN] = async () => user.leaveClan()
 
         handler[ToServer.JOIN_CLAN] = async data => {
             const int32 = new Int32Array(data.buffer)
@@ -155,38 +143,22 @@ module.exports = class Server {
             user.cancelClan(int32[0])
         }
 
-        handler[ToServer.INVITE_CLAN] = async data => {
-            user.inviteClan(utf8.decode(data))
-        }
+        handler[ToServer.INVITE_CLAN] = async data => user.inviteClan(utf8.decode(data))
 
         handler[ToServer.KICK_CLAN] = async data => {
             const int32 = new Int32Array(data.buffer)
             user.kickClan(int32[0])
         }
 
-        handler[ToServer.TEMP_SKIN_BUY] = async () => {
-            user.tempSkinBuy()
-        }
+        handler[ToServer.SET_OPTION_CLAN] = async data => user.setOptionClan(JSON.parse(utf8.decode(data)))
 
-        handler[ToServer.SET_OPTION_CLAN] = async data => {
-            user.setOptionClan(JSON.parse(utf8.decode(data)))
-        }
+        handler[ToServer.PAY_CLAN] = async data => user.payClan(utf8.decode(data))
 
-        handler[ToServer.PAY_CLAN] = async data => {
-            user.payClan(utf8.decode(data))
-        }
+        handler[ToServer.DONATE_CLAN] = async data => user.donateClan(utf8.decode(data))
 
-        handler[ToServer.DONATE_CLAN] = async data => {
-            user.donateClan(utf8.decode(data))
-        }
+        handler[ToServer.WITHDRAW_CLAN] = async data => user.withdrawClan(utf8.decode(data))
 
-        handler[ToServer.WITHDRAW_CLAN] = async data => {
-            user.withdrawClan(utf8.decode(data))
-        }
-
-        handler[ToServer.LEVEL_UP_CLAN] = async () => {
-            user.levelUpClan()
-        }
+        handler[ToServer.LEVEL_UP_CLAN] = async () => user.levelUpClan()
 
         handler[ToServer.MEMBER_INFO_CLAN] = async data => {
             const int32 = new Int32Array(data.buffer)
@@ -206,6 +178,52 @@ module.exports = class Server {
         handler[ToServer.CHANGE_MASTER_CLAN] = async data => {
             const int32 = new Int32Array(data.buffer)
             user.changeMasterClan(int32[0])
+        }
+
+        handler[ToServer.GET_BILLING] = async () => user.getBilling()
+
+        handler[ToServer.USE_BILLING] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.useBilling(int32[0])
+        }
+
+        handler[ToServer.REFUND_BILLING] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.refundBilling(int32[0])
+        }
+
+        handler[ToServer.GET_SHOP] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.getShop(int32[0])
+        }
+
+        handler[ToServer.GET_INFO_ITEM] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.getInfoItem(int32[0])
+        }
+
+        handler[ToServer.BUY_ITEM] = async data => user.buyItem(JSON.parse(utf8.decode(data)))
+
+        handler[ToServer.GET_SKIN_LIST] = async () => user.getSkinList()
+
+        handler[ToServer.SET_SKIN] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.setSkin(int32[0])
+        }
+
+        handler[ToServer.GET_PAY_INFO_ITEM] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.getPayInfoItem(int32[0])
+        }
+
+        handler[ToServer.GET_RANK] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.getRank(int32[0])
+        }
+
+        handler[ToServer.GET_USER_INFO_RANK] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.getUserInfoRank(int32[0])
         }
 
         return handler

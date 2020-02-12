@@ -17,7 +17,6 @@ module.exports = {
         'CANCEL_CLAN',
         'JOIN_CLAN',
         'KICK_CLAN',
-        'TEMP_SKIN_BUY',
         'SET_OPTION_CLAN',
         'PAY_CLAN',
         'DONATE_CLAN',
@@ -26,6 +25,17 @@ module.exports = {
         'MEMBER_INFO_CLAN',
         'SET_UP_MEMBER_LEVEL_CLAN',
         'SET_DOWN_MEMBER_LEVEL_CLAN',
-        'CHANGE_MASTER_CLAN'
+        'CHANGE_MASTER_CLAN',
+        'GET_BILLING',
+        'USE_BILLING',
+        'REFUND_BILLING',
+        'GET_SHOP',
+        'GET_INFO_ITEM',
+        'BUY_ITEM',
+        'GET_SKIN_LIST',
+        'SET_SKIN',
+        'GET_PAY_INFO_ITEM',
+        'GET_RANK',
+        'GET_USER_INFO_RANK'
     )
 }
