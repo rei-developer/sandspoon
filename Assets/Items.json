@@ -377,6 +377,76 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 28,
+            "type": "SKIN",
+            "icon": "FlowerGirl",
+            "name": "꽃 소녀",
+            "creator": "트윙클",
+            "description": "",
+            "cost": 70,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 29,
+            "type": "SKIN",
+            "icon": "CatMan",
+            "name": "고양이 소년",
+            "creator": "크로마토",
+            "description": "",
+            "cost": 70,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 30,
+            "type": "SKIN",
+            "icon": "ManiaFighter",
+            "name": "파이터 마니아",
+            "creator": "크로마토",
+            "description": "",
+            "cost": 80,
+            "isCash": false,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 31,
+            "type": "SKIN",
+            "icon": "ManiaMage",
+            "name": "메이지 마니아",
+            "creator": "크로마토",
+            "description": "",
+            "cost": 80,
+            "isCash": false,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 32,
+            "type": "SKIN",
+            "icon": "ManiaShaman",
+            "name": "샤먼 마니아",
+            "creator": "크로마토",
+            "description": "",
+            "cost": 80,
+            "isCash": false,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }

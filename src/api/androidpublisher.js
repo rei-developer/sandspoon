@@ -66,6 +66,9 @@ router.get('/androidpublisher/validate_purchase', async ctx => {
         token,
         date
     } = ctx.query
+
+    console.log(ctx.query)
+
     const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}`
     const reqUrl = `${url}?access_token=${recentlyToken}`
     try {
@@ -76,7 +79,10 @@ router.get('/androidpublisher/validate_purchase', async ctx => {
                 const data = JSON.parse(body)
                 if (!data.orderId || data.orderId !== transactionId || data.purchaseState > 0)
                     return ctx.body = { message: '유효하지 않은 영수증입니다.', status: 'FAILED' }
+
+                console.log(data)
                 await createBilling({ userId, transactionId, productId, token, date })
+                console.log("ASDF")
                 resolve({ status: 'SUCCESS' })
             })
         })
