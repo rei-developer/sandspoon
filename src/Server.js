@@ -59,6 +59,12 @@ module.exports = class Server {
         return this
     }
 
+    login(user) {
+        user.checkSkinExpiry()
+        user.send(Serialize.UserData(user))
+        user.send(Serialize.ConnectionCount(User.users.length))
+    }
+
     async onConnect(socket, req) {
         socket.isAlive = true
         socket.on('pong', heartbeat)
@@ -70,6 +76,7 @@ module.exports = class Server {
             const verify = token !== 'test' && await verifyToken(config.KEY, token) || 'test'
             const user = await User.create(socket, verify)
             if (!user) return
+            login(user)
             socket.user = user
             console.log(user.name + ' 접속 (동시접속자: ' + User.users.length + '명)')
             const handler = this.onMessage(socket)
@@ -96,15 +103,9 @@ module.exports = class Server {
         const { user } = socket
         const handler = {}
 
-        handler[ToServer.HELLO] = async () => {
-            user.checkSkinExpiry()
-            user.send(Serialize.UserData(user))
-            user.send(Serialize.ConnectionCount(User.users.length))
-        }
+        handler[ToServer.HELLO] = async () => login(user)
 
-        handler[ToServer.CHAT] = async data => {
-            user.chat(utf8.decode(data))
-        }
+        handler[ToServer.CHAT] = async data => user.chat(utf8.decode(data))
 
         handler[ToServer.INPUT_ARROW] = async data => {
             const view = new DataView(data.buffer)
