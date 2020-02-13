@@ -18,36 +18,6 @@ async function createBilling({ userId, transactionId, productId, token, date }) 
     }
 }
 
-async function cashUser({ userId, productId }) {
-    let value = 0
-    switch (productId) {
-        case '110':
-            value = 1200
-            break
-        case '540':
-            value = 5900
-            break
-        case '1100':
-            value = 12000
-            break
-        case '3280':
-            value = 35000
-            break
-        case '6500':
-            value = 69000
-            break
-        case '10500':
-            value = 109000
-            break
-    }
-    try {
-        await DB.query('UPDATE users SET `cash` = `cash` + ? WHERE `id` = ?', [value, userId])
-    } catch (e) {
-        console.log(e)
-        throw e
-    }
-}
-
 router.get('/androidpublisher/check_server', ctx => ctx.body = { status: recentlyToken === '' ? 'FAILED' : 'SUCCESS' })
 
 router.get('/androidpublisher/get_code', ctx => {
@@ -107,7 +77,6 @@ router.get('/androidpublisher/validate_purchase', async ctx => {
                 if (!data.orderId || data.orderId !== transactionId || data.purchaseState > 0)
                     return ctx.body = { message: '유효하지 않은 영수증입니다.', status: 'FAILED' }
                 await createBilling({ userId, transactionId, productId, token, date })
-                // await cashUser({ userId, productId })
                 resolve({ status: 'SUCCESS' })
             })
         })

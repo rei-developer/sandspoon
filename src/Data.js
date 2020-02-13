@@ -28,7 +28,7 @@ module.exports = (function () {
             const items = require(`../Assets/Items.json`)['items']
             for (let i = 0; i < items.length; ++i) {
                 const itemData = items[i]
-                const item = new Item(itemData.id, itemData.type, itemData.icon, itemData.name, itemData.description, itemData.cost, itemData.isCash, itemData.method)
+                const item = new Item(itemData.id, itemData.type, itemData.icon, itemData.name, itemData.creator, itemData.description, itemData.cost, itemData.isCash, itemData.method)
                 Item.items[i + 1] = item
             }
             console.log('아이템 로딩 완료.')

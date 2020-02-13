@@ -333,6 +333,7 @@ my.GetSkinItem = function (item, expiry) {
     packet.type = item.type
     packet.icon = item.icon
     packet.name = item.name
+    packet.creator = item.creator || ''
     packet.description = item.description
     packet.cost = item.cost
     packet.isCash = item.isCash
