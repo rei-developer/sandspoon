@@ -44,7 +44,7 @@ router.get('/androidpublisher/exchange_token', async ctx => {
         const result = await new Promise((resolve, reject) => {
             request.post('https://www.googleapis.com/oauth2/v4/token', { form }, (err, response, body) => {
                 if (err)
-                    return ctx.body = { message: err, status: 'FAILED' }
+                    return reject({ message: err, status: 'FAILED' })
                 const parsed_body = JSON.parse(body)
                 recentlyToken = parsed_body.access_token
                 resolve({ recentlyToken, status: 'SUCCESS' })
@@ -71,14 +71,21 @@ router.get('/androidpublisher/validate_purchase', async ctx => {
 
     const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}`
     const reqUrl = `${url}?access_token=${recentlyToken}`
+
+    console.log("A")
+
     try {
+        console.log("B")
         const result = await new Promise((resolve, reject) => {
+            console.log("C")
             request.get(reqUrl, async (err, response, body) => {
                 if (err)
-                    return ctx.body = { message: err, status: 'FAILED' }
+                    return reject({ message: err, status: 'FAILED' })
+
                 const data = JSON.parse(body)
+                console.log(data)
                 if (!data.orderId || data.orderId !== transactionId || data.purchaseState > 0)
-                    return ctx.body = { message: '유효하지 않은 영수증입니다.', status: 'FAILED' }
+                    return reject({ message: '유효하지 않은 영수증입니다.', status: 'FAILED' })
 
                 console.log(data)
                 await createBilling({ userId, transactionId, productId, token, date })

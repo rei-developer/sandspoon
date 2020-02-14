@@ -228,9 +228,9 @@
             "id": 17,
             "type": "SKIN",
             "icon": "AoKami",
-            "name": "푸른 머리 소년",
+            "name": "뉴턴",
             "creator": "나브루",
-            "description": "",
+            "description": "똑똑한 소년. 사과를 좋아한다.",
             "cost": 30,
             "isCash": true,
             "method": {
@@ -244,7 +244,7 @@
             "icon": "DeathMan",
             "name": "저승사자",
             "creator": "나브루",
-            "description": "",
+            "description": "호호... 말 안 듣는 사람은 혼내줄거야.",
             "cost": 40,
             "isCash": true,
             "method": {
@@ -270,9 +270,9 @@
             "id": 20,
             "type": "SKIN",
             "icon": "BreadHat",
-            "name": "빵모자 소녀",
+            "name": "마법 소녀",
             "creator": "나브루",
-            "description": "",
+            "description": "마법사 2세. 강력한 힘이 깃든 빵모자는 마법사로부터 물려받은 것이다.",
             "cost": 30,
             "isCash": true,
             "method": {
@@ -300,7 +300,7 @@
             "icon": "HeartWomen",
             "name": "하트 우먼",
             "creator": "나브루",
-            "description": "",
+            "description": "미국의 히어로. 하트빔 한 번이면 돌연변이를 무찌를 수 있다는 소문이 돌고 있다.",
             "cost": 30,
             "isCash": true,
             "method": {
@@ -443,6 +443,48 @@
             "description": "",
             "cost": 80,
             "isCash": false,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 33,
+            "type": "SKIN",
+            "icon": "GoldArmor",
+            "name": "황금 갑옷",
+            "creator": "화이트",
+            "description": "",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 34,
+            "type": "SKIN",
+            "icon": "Rain",
+            "name": "레인",
+            "creator": "설명",
+            "description": "",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 35,
+            "type": "SKIN",
+            "icon": "LittleDevil",
+            "name": "소악마",
+            "creator": "리먼",
+            "description": "",
+            "cost": 60,
+            "isCash": true,
             "method": {
                 "command": "",
                 "arguments": {}
