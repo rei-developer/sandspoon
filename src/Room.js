@@ -3,7 +3,7 @@ const GameMap = require('./GameMap')
 const Place = require('./Place')
 const GameMode = require('./GameMode')
 const PlayGroundMode = require('./mode/PlayGroundMode')
-const { RoomType } = require('./const')
+const { RoomType } = require('./util/const')
 
 global.Room = (function () {
     const _static = {
@@ -56,7 +56,8 @@ global.Room = (function () {
         static available(type = RoomType.PLAYGROUND) {
             for (const id in Room.rooms) {
                 const room = Room.rooms[id]
-                if (room.type === type && room.canJoin()) return room
+                if (room.type === type && room.canJoin())
+                    return room
             }
             return null
         }
@@ -119,9 +120,8 @@ global.Room = (function () {
 
         changeMode(mode) {
             this.mode = new mode(this.index)
-            for (const user of this.users) {
+            for (const user of this.users)
                 this.mode.join(user)
-            }
         }
 
         akari(place) {
@@ -129,30 +129,29 @@ global.Room = (function () {
         }
 
         publish(data) {
-            for (const user of this.users) {
+            for (const user of this.users)
                 user.send(data)
-            }
         }
 
         broadcast(self, data) {
-            for (const user of this.users) {
-                if (user !== self) user.send(data)
-            }
+            for (const user of this.users)
+                if (user !== self)
+                    user.send(data)
         }
 
         broadcastToMap(self, data) {
             const { users } = this.places[self.place]
             for (const user of users) {
-                if (user === self) continue
+                if (user === self)
+                    continue
                 user.send(data)
             }
         }
 
         publishToMap(place, data) {
             const { users } = this.places[place]
-            for (const user of users) {
+            for (const user of users)
                 user.send(data)
-            }
         }
 
         sameMapUsers(place) {
@@ -162,20 +161,20 @@ global.Room = (function () {
         isPassable(place, x, y, d, collider = true) {
             if (collider) {
                 const { events } = this.places[place]
-                for (const event of events) {
-                    if (event.collider && event.x === x && event.y === y) {
+                for (const event of events)
+                    if (event.collider && event.x === x && event.y === y)
                         return false
-                    }
-                }
             }
             return GameMap.get(place).isPassable(x, y, d)
         }
 
         portal(self) {
             const portal = GameMap.get(self.place).getPortal(self.x, self.y)
-            if (!portal) return
+            if (!portal)
+                return
             this.teleport(self, portal.nextPlace, portal.nextX, portal.nextY, portal.nextDirX, portal.nextDirY)
-            if (portal.sound) this.publishToMap(self.place, Serialize.PlaySound(portal.sound))
+            if (portal.sound)
+                this.publishToMap(self.place, Serialize.PlaySound(portal.sound))
         }
 
         teleport(self, place, x, y, dx = 0, dy = 0) {
@@ -188,12 +187,16 @@ global.Room = (function () {
         hit(self) {
             const { users, events } = this.places[self.place]
             for (const user of users) {
-                if (!(self.x === user.x && self.y === user.y || self.x + self.direction.x === user.x && self.y - self.direction.y === user.y)) continue
-                if (this.mode.attack(self, user)) break
+                if (!(self.x === user.x && self.y === user.y || self.x + self.direction.x === user.x && self.y - self.direction.y === user.y))
+                    continue
+                if (this.mode.attack(self, user))
+                    break
             }
             for (const event of events) {
-                if (!(self.x === event.x && self.y === event.y || self.x + self.direction.x === event.x && self.y - self.direction.y === event.y)) continue
-                if (this.mode.doAction(self, event)) break
+                if (!(self.x === event.x && self.y === event.y || self.x + self.direction.x === event.x && self.y - self.direction.y === event.y))
+                    continue
+                if (this.mode.doAction(self, event))
+                    break
             }
         }
 
@@ -218,11 +221,13 @@ global.Room = (function () {
             this.removeUser(self)
             this.publishToMap(self.place, Serialize.RemoveGameObject(self))
             this.publish(Serialize.UpdateRoomUserCount(this.users.length))
-            if (this.users.length <= 0) Room.remove(this)
+            if (this.users.length <= 0)
+                Room.remove(this)
         }
 
         start() {
-            if (this.isRunning) return
+            if (this.isRunning)
+                return
             this.isRunning = true
         }
 
@@ -231,15 +236,16 @@ global.Room = (function () {
         }
 
         stop() {
-            if (!this.isRunning) return
+            if (!this.isRunning)
+                return
             this.isRunning = false
         }
 
         update() {
-            if (!this.isRunning) return
-            for (const place in this.places) {
+            if (!this.isRunning)
+                return
+            for (const place in this.places)
                 this.places[place].update()
-            }
             this.mode.update()
         }
     }

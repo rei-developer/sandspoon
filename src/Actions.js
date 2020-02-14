@@ -1,6 +1,10 @@
 const Serialize = require('./protocol/Serialize')
-const { TeamType } = require('./const')
-const pix = require('./pix')
+const { TeamType } = require('./util/const')
+const pix = require('./util/pix')
+
+const dr = [
+    [1, 0], [-1, 0], [0, 1], [0, -1], [1, 0]
+]
 
 class State {
     constructor(args = {}) { }
@@ -208,10 +212,6 @@ class TansuState {
         }
     }
 }
-
-const dr = [
-    [1, 0], [-1, 0], [0, 1], [0, -1], [1, 0]
-]
 
 class ManiaState {
     constructor(args = {}) {

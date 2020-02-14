@@ -11,19 +11,17 @@ function sample(array, count = 1) {
     return iter
 }
 
-function maker(txt = '가') {
-    if (txt) {
-        return (txt[txt.length - 1].charCodeAt() - 44032) % 28 === 0
-    } else {
+function maker(text = '가') {
+    if (text)
+        return (text[txt.length - 1].charCodeAt() - 44032) % 28 === 0
+    else
         return ''
-    }
 }
 
 function ENUM(...args) {
     const kv = {}
-    for (let i = 0 ; i < args.length; i++) {
+    for (let i = 0; i < args.length; i++)
         kv[args[i]] = i
-    }
     return kv
 }
 

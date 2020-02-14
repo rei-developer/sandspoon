@@ -1,15 +1,15 @@
-const Serialize = require('./protocol/Serialize')
-
 const Basic = class PlayerBasicState {
-    static turn (self, x, y) {
-        if (!self.roomId) return
+    static turn(self, x, y) {
+        if (!self.roomId)
+            return
         self.dirty = true
         self.direction.x = x
         self.direction.y = y
     }
 
-    static move (self, x, y) {
-        if (!self.roomId) return
+    static move(self, x, y) {
+        if (!self.roomId)
+            return
         self.dirty = true
         const room = Room.get(self.roomId)
         self.direction.x = x
@@ -27,10 +27,10 @@ const Basic = class PlayerBasicState {
 }
 
 const Tansu = class PlayerTansuState {
-    static turn (self, x, y) {
+    static turn(self, x, y) {
 
     }
-    static move (self, x, y) {
+    static move(self, x, y) {
 
     }
 }

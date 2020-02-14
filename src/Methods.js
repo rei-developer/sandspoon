@@ -1,5 +1,5 @@
-const { StatusType } = require('./const')
-const pix = require('./pix')
+const { StatusType } = require('./util/const')
+const pix = require('./util/pix')
 const Serialize = require('./protocol/Serialize')
 
 class DefaultMethod {

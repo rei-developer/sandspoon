@@ -1,4 +1,4 @@
-const { ENUM } = require('../pix')
+const { ENUM } = require('../util/pix')
 
 module.exports = {
     ...ENUM(

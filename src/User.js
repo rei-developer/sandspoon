@@ -1,13 +1,13 @@
 const Serialize = require('./protocol/Serialize')
 const Character = require('./Character')
-const { TeamType, RoomType } = require('./const')
+const { TeamType, RoomType } = require('./util/const')
 const PlayerState = require('./PlayerState')
 const DB = require('./DB')
 const Data = require('./Data')
-const pix = require('./pix')
+const pix = require('./util/pix')
 const Score = require('./Score')
 const Reward = require('./Reward')
-const filtering = require('./filtering-text')
+const filtering = require('./util/filtering-text')
 const moment = require('moment')
 
 global.User = (function () {

@@ -1,9 +1,9 @@
 const Serialize = require('../protocol/Serialize')
 const GameMap = require('../GameMap')
-const { TeamType, ModeType, MapType } = require('../const')
+const { TeamType, ModeType, MapType } = require('../util/const')
 const PlayerState = require('../PlayerState')
 const Event = require('../Event')
-const pix = require('../pix')
+const pix = require('../util/pix')
 
 const STATE_READY = 0
 const STATE_GAME = 1

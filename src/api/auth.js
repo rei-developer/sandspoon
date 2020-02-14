@@ -1,12 +1,11 @@
 const Router = require('koa-router')
 const jwt = require('jsonwebtoken')
-const config = require('../config')
 const DB = require('../DB')
 const router = new Router()
 const https = require('https')
-const filtering = require('../filtering-text')
-
-const VERSION = config.VERSION
+const filtering = require('../util/filtering-text')
+const config = require('../config')
+const secretKey = require('../secretKey')
 
 const OAUTH_ID = { GOOGLE: '112494846092-ar8ml4nm16mr7bhd3cekb87846fr5k0e.apps.googleusercontent.com' }
 const LOGIN_TYPE = { GOOGLE: 0 }
@@ -101,7 +100,7 @@ async function verifyUser({ id, name, loginType }) {
 router.post('/verify/register', async ctx => {
     try {
         const { token, name } = ctx.request.body
-        const verify = await verifyToken(config.KEY, token)
+        const verify = await verifyToken(secretKey.KEY, token)
         const user = await findUser(verify)
         if (/[^가-힣]/.test(name)) throw new Error('FAILED')
         if (user.verify === 0) {
@@ -120,8 +119,8 @@ router.post('/verify/register', async ctx => {
 router.post('/verify/google', async ctx => {
     try {
         const { token, uuid, version } = ctx.request.body
-        if (version !== VERSION)
-            return ctx.body = { status: 'NOT_UPDATED', version: VERSION }
+        if (version !== config.VERSION)
+            return ctx.body = { status: 'NOT_UPDATED', version: config.VERSION }
         const blocked = await blockedUser(uuid)
         if (blocked)
             return ctx.body = { status: 'BLOCKED', date: blocked.date, description: blocked.description }
@@ -137,7 +136,7 @@ router.post('/verify/google', async ctx => {
             if (blocked2)
                 return ctx.body = { status: 'BLOCKED', date: blocked2.date, description: blocked2.description }
             const user = await findUser(data)
-            const my = await issueToken(config.KEY, data)
+            const my = await issueToken(secretKey.KEY, data)
             if (!user) {
                 await registerUser(data)
                 ctx.body = {

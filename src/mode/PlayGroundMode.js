@@ -37,15 +37,15 @@ module.exports = class PlayGroundMode {
 
     drawEvents(self) {
         const { events } = this.room.places[self.place]
-        for (const event of events) {
+        for (const event of events)
             self.send(Serialize.CreateGameObject(event))
-        }
     }
 
     drawUsers(self) {
         const sameMapUsers = this.room.sameMapUsers(self.place)
         for (const user of sameMapUsers) {
-            if (self === user) continue
+            if (self === user)
+                continue
             user.send(Serialize.CreateGameObject(self))
             self.send(Serialize.CreateGameObject(user))
         }
@@ -61,10 +61,9 @@ module.exports = class PlayGroundMode {
     }
 
     spawnRabbit() {
-        const range = 6
+        const range = 3
         const objects = require('../../Assets/Mods/Eve000.json')[2]
         for (const object of objects) {
-            const range = 3
             for (let i = 0; i < 10; i++) {
                 const event = new Event(this.roomId, object)
                 const x = Math.floor(-range + Math.random() * (range * 2 + 1))
@@ -88,9 +87,10 @@ module.exports = class PlayGroundMode {
             const minute = date.getMinutes()
             const second = date.getSeconds()
             if (hour >= 9 || hour === 0) {
-                if (hour >= 9 && minute % 5 === 0 && second === 0 && this.count >= this.maxCount) this.spawnRabbit()
-                --this.count
-                if (this.count === 0) this.count = this.maxCount
+                if (hour >= 9 && minute % 5 === 0 && second === 0 && this.count >= this.maxCount)
+                    this.spawnRabbit()
+                if (--this.count === 0)
+                    this.count = this.maxCount
             }
         }
     }

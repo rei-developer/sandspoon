@@ -1,5 +1,5 @@
 const Serialize = require('./protocol/Serialize')
-const { ModeType, MapType } = require('./const')
+const { ModeType, MapType } = require('./util/const')
 const RescueMode = require('./mode/RescueMode')
 const InfectMode = require('./mode/InfectMode')
 const Event = require('./Event')
@@ -76,15 +76,15 @@ module.exports = class GameMode {
 
     drawEvents(self) {
         const { events } = this.room.places[self.place]
-        for (const event of events) {
+        for (const event of events)
             self.send(Serialize.CreateGameObject(event))
-        }
     }
 
     drawUsers(self) {
         const sameMapUsers = this.room.sameMapUsers(self.place)
         for (const user of sameMapUsers) {
-            if (self === user) continue
+            if (self === user)
+                continue
             user.send(Serialize.CreateGameObject(self))
             self.send(Serialize.CreateGameObject(user))
         }
@@ -112,10 +112,10 @@ module.exports = class GameMode {
             }
             return
         } else {
-            if (this.count % 100 === 0) {
+            if (this.count % 100 === 0)
                 this.room.publish(Serialize.NoticeMessage('4명부터 시작합니다. (' + this.room.users.length + '/' + this.room.max + '명)'))
-            }
         }
-        if (++this.count === 10000) this.count = 0
+        if (++this.count === 10000)
+            this.count = 0
     }
 }

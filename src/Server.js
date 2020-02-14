@@ -1,9 +1,9 @@
 const Serialize = require('./protocol/Serialize')
 const WebSocket = require('ws')
-const config = require('./config')
 const jwt = require('jsonwebtoken')
 const querystring = require('querystring')
 const ToServer = require('./protocol/ToServer')
+const secretKey = require('./secretKey')
 const Encoding = require('text-encoding-utf-8')
 const utf8 = new Encoding.TextDecoder('utf-8')
 
@@ -73,7 +73,7 @@ module.exports = class Server {
 
         try {
             const { token } = querystring.parse(req.url.slice(1))
-            const verify = token !== 'test' && await verifyToken(config.KEY, token) || 'test'
+            const verify = token !== 'test' && await verifyToken(secretKey.KEY, token) || 'test'
             const user = await User.create(socket, verify)
             if (!user) return
             this.login(user)

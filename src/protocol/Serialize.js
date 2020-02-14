@@ -1,4 +1,4 @@
-const { TeamType, ModeType, MapType } = require('../const')
+const { TeamType, ModeType, MapType } = require('../util/const')
 const ToClient = require('./ToClient')
 const moment = require('moment')
 const my = {}

@@ -119,9 +119,8 @@ global.Clan = (function () {
 
         async setMemberLevel(userId, level) {
             const findIndex = this.members.indexOf(userId)
-            if (findIndex !== -1) {
+            if (findIndex !== -1)
                 await DB.UpdateClanMemberLevel(this.id, userId, level)
-            }
         }
 
         async changeMaster(userId, targetId) {

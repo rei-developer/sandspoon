@@ -8,9 +8,9 @@ const lex = require('greenlock-koa').create({
     configDir: '/etc/letsencrypts',
     server: 'https://acme-v02.api.letsencrypt.org/directory', // 'https://acme-v02-staging.api.letsencrypt.org/directory',
     approveDomains: (opts, certs, cb) => {
-        if (certs) {
+        if (certs)
             opts.domains = ['www.sandspoon.com']
-        } else {
+        else {
             opts.email = 'sandspoons@gmail.com'
             opts.agreeTos = true
         }

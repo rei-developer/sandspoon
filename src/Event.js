@@ -2,7 +2,7 @@ const Actions = require('./Actions')
 const Character = require('./Character')
 
 module.exports = class Event extends Character {
-    constructor (roomId, {
+    constructor(roomId, {
         name,
         graphics,
         place,
@@ -11,14 +11,14 @@ module.exports = class Event extends Character {
         collider,
         action,
     } = {
-        name: '',
-        graphics: '',
-        place: 0,
-        x: 0,
-        y: 0,
-        collider: false,
-        action: { command: '', arguments: {} }
-    }) {
+            name: '',
+            graphics: '',
+            place: 0,
+            x: 0,
+            y: 0,
+            collider: false,
+            action: { command: '', arguments: {} }
+        }) {
         super()
         this.type = 2
         this.index = 0
@@ -34,15 +34,15 @@ module.exports = class Event extends Character {
         // tpye 1: player, 2: event 3: event in underfoot
     }
 
-    doAction (self) {
+    doAction(self) {
         this.state.doAction(this, self)
     }
 
-    update () {
+    update() {
         this.state.update && this.state.update(this)
     }
 
-    getJSON () {
+    getJSON() {
         return {
             index: this.index,
             type: this.type,
@@ -58,14 +58,14 @@ module.exports = class Event extends Character {
         }
     }
 
-    getIndex () {
+    getIndex() {
         return {
             index: this.index,
             type: this.type
         }
     }
-    
-    getMovement () {
+
+    getMovement() {
         return {
             index: this.index,
             type: this.type,
@@ -77,20 +77,20 @@ module.exports = class Event extends Character {
         }
     }
 
-    turn (x, y) {
+    turn(x, y) {
         super.turn(x, y)
     }
 
-    move (x, y) {
+    move(x, y) {
         super.turn(x, y)
         super.move(x, y)
     }
 
-    publish (data) {
+    publish(data) {
         Room.get(this.roomId).publish(data)
     }
 
-    publishToMap (data) {
+    publishToMap(data) {
         Room.get(this.roomId).publishToMap(this.place, data)
     }
 }

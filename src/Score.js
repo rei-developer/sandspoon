@@ -1,9 +1,9 @@
 module.exports = class Score {
-    constructor () {
+    constructor() {
         this.init()
     }
 
-    init () {
+    init() {
         this.sum = 0
         this.kill = 0
         this.killForWardrobe = 0
@@ -18,11 +18,10 @@ module.exports = class Score {
         this.surviveForWardrobe = 0
     }
 
-    send (self) {
+    send(self) {
         self.kill += this.kill + this.killForWardrobe
         self.death += this.death + this.deathForWardrobe
         self.assist += this.assist
-        // killCombo 넣기
         self.blast += this.blast
         self.rescue += this.rescue
         self.rescueCombo += this.rescueCombo

@@ -1,12 +1,12 @@
 const mysql = require('promise-mysql')
-const config = require("./config")
+const secretKey = require('./secretKey')
 
 const pool = mysql.createPool({
-    host: 'www.sandspoon.com',//'localhost',
-    port: 3306,
-    user: 'root',
-    password: config.SECRET,
-    database: 'sandspoon',
+    host: secretKey.DB_HOST,
+    port: secretKey.DB_PORT,
+    user: secretKey.DB_USER,
+    password: secretKey.DB_PASSWORD,
+    database: secretKey.DB_DATABASE,
     connectionLimit: 500
 })
 
@@ -114,20 +114,6 @@ module.exports = {
         try {
             const [row] = await this.query("SELECT * FROM users WHERE `name` = ?", [name])
             return row
-        } catch (e) {
-            console.error(e)
-        }
-    },
-    async FindUserInventory(id, itemId) {
-        try {
-            const [row] = await this.query(
-                `SELECT
-                    u.id,
-                    u.name,
-                    
-                
-                `
-            )
         } catch (e) {
             console.error(e)
         }

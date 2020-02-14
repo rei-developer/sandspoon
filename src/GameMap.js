@@ -10,25 +10,25 @@ module.exports = (function () {
     }
 
     return class GameMap {
-        static get maps () {
+        static get maps() {
             return _static.maps
         }
 
-        static add (map) {
+        static add(map) {
             GameMap.maps[map.id] = map
         }
 
-        static get (id) {
+        static get(id) {
             return GameMap.maps[id]
         }
 
-        static async load (id) {
+        static async load(id) {
             const data = await readFile('./Assets/Maps/' + id + '.json')
             const mapdata = JSON.parse(data)
             return await new GameMap(id, mapdata)
         }
 
-        constructor (id, {width, height, data, collisions, priorities}) {
+        constructor(id, { width, height, data, collisions, priorities }) {
             this.id = id
             this.width = width
             this.height = height
@@ -55,39 +55,40 @@ module.exports = (function () {
             })()
         }
 
-        getPortal (x, y) {
-            for (const portal of this.portals) {
-                if (portal.x === x && portal.y === y) {
+        getPortal(x, y) {
+            for (const portal of this.portals)
+                if (portal.x === x && portal.y === y)
                     return portal
-                }
-            }
             return null
         }
 
-        rangePortal (x, y, range) {
-            for (const p of this.portals) {
-                if (Math.pow(Math.abs(p.x - x), 2) + Math.pow(Math.abs(p.y - y), 2) <= range * range) {
+        rangePortal(x, y, range) {
+            for (const p of this.portals)
+                if (Math.pow(Math.abs(p.x - x), 2) + Math.pow(Math.abs(p.y - y), 2) <= range * range)
                     return true
-                }
-            }
             return false
         }
 
-        isPassable (x, y, d) {
-            if (!this.isValid(x, y)) return false
+        isPassable(x, y, d) {
+            if (!this.isValid(x, y))
+                return false
             const bit = parseInt((1 << (parseInt(d / 2) - 1)) & 0x0f)
             for (let z = this.data.length - 1; z >= 0; --z) {
                 const tileId = this.data[z][x + y * this.width]
-                if (tileId === 0) continue 
+                if (tileId === 0)
+                    continue
                 const collision = this.collisions[tileId - 1]
-                if ((collision & bit) != 0) return false
-                else if ((collision & 0x0f) === 0x0f) return false
-                else if (this.priorities[tileId - 1] === 0) return true
+                if ((collision & bit) != 0)
+                    return false
+                else if ((collision & 0x0f) === 0x0f)
+                    return false
+                else if (this.priorities[tileId - 1] === 0)
+                    return true
             }
             return true
         }
 
-        isValid (x, y) {
+        isValid(x, y) {
             return (x >= 0 && x < this.width && y >= 0 && y < this.height)
         }
     }

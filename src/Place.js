@@ -1,5 +1,5 @@
 module.exports = class Place {
-    constructor (roomId, place) {
+    constructor(roomId, place) {
         this.roomId = roomId
         this.users = []
         this.events = []
@@ -7,51 +7,54 @@ module.exports = class Place {
         this.place = place
     }
 
-    addUser (user) {
+    addUser(user) {
         this.users.push(user)
     }
 
-    removeUser (user) {
+    removeUser(user) {
         this.users.splice(this.users.indexOf(user), 1)
     }
 
-    removeAllUsers () {
+    removeAllUsers() {
         this.users = []
     }
 
-    addEvent (event) {
+    addEvent(event) {
         this.events.push(event)
     }
 
-    removeEvent (event) {
+    removeEvent(event) {
         this.events.splice(this.events.indexOf(event), 1)
     }
 
-    removeAllEvents () {
+    removeAllEvents() {
         this.events = []
     }
 
-    update () {
-        if (!this.users) return
+    update() {
+        if (!this.users)
+            return
 
         const users = []
         const events = []
 
-        for (let i = 0; i < this.users.length; ++i) {
-            if (this.users[i].dirty) users.push(this.users[i])
-        }
+        for (let i = 0; i < this.users.length; ++i)
+            if (this.users[i].dirty)
+                users.push(this.users[i])
 
         for (let i = 0; i < this.events.length; ++i) {
             const event = this.events[i]
             event.update()
-            if (event.dirty) events.push(event)
+            if (event.dirty)
+                events.push(event)
         }
 
-        if (users.length + events.length <= 0) return
+        if (users.length + events.length <= 0)
+            return
 
         const buffer = new ArrayBuffer(2 + 11 * (users.length + events.length))
         const view = new DataView(buffer)
-        
+
         // 첫번째 바이트의 값 0 - 위치 동기화 코드
         // 두번쨰 바이트의 값 동기화 개체수 - 최대 255 // 한 공간 플레이어 50 + 이벤트 a(0-205)
 
@@ -84,8 +87,7 @@ module.exports = class Place {
             offset += 11
         }
 
-        for (const user of this.users) {
+        for (const user of this.users)
             user.send(buffer)
-        }
     }
 }
