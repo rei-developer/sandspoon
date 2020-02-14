@@ -1,22 +1,21 @@
 const DB = require('./DB')
 const GameMap = require('./GameMap')
-
-const MAP_COUNT = 257
+const config = require('./config')
 
 module.exports = (function () {
     const _static = { rank: [] }
 
     return class Data {
         static async loadData() {
-            await Data.loadMaps(MAP_COUNT)
+            await Data.loadMaps()
             await Data.loadItems()
             await Data.loadRanks()
             await Data.loadClans()
         }
 
-        static async loadMaps(count) {
+        static async loadMaps() {
             console.log('맵 로딩중...')
-            for (let i = 1; i <= count; ++i) {
+            for (let i = 1; i <= config.MAP_COUNT; ++i) {
                 const map = await GameMap.load(i)
                 GameMap.add(map)
             }

@@ -35,12 +35,7 @@ const Data = require('./src/Data')
 const DB = require('./src/DB')
 const config = require('./src/config')
 
-const PORT = config.PORT
-const VERSION = config.VERSION
-
-router.get('/', (ctx, next) => {
-    ctx.body = VERSION
-})
+router.get('/', ctx => ctx.body = config.VERSION)
 
 app.use(bodyparser())
     .use(router.routes())
@@ -50,23 +45,14 @@ app.use(bodyparser())
 const Logger = require('./Logger')
 global.logger = new Logger('[INFO]', true)
 
-async function test() {
-    try {
-        throw new Error('hihi')
-    } catch (e) {
-        console.error(e)
-        throw e
-    }
-}
 async function start() {
     try {
         await Data.loadData()
         let lastRankUpdated = new Date().getDay()
         setInterval(() => {
             const users = User.users
-            for (const user of users) {
+            for (const user of users)
                 DB.UpdateUser(user)
-            }
             const day = new Date().getDay()
             if (lastRankUpdated != day) {
                 lastRankUpdated = day
@@ -75,7 +61,7 @@ async function start() {
         }, 1000 * 300)
         https.createServer(lex.httpsOptions, lex.middleware(app.callback())).listen(443)
         http.createServer(lex.middleware(require('redirect-https')())).listen(80)
-        new Server().run(PORT)
+        new Server().run(config.PORT)
         console.log('server is running.')
     } catch (e) {
         console.log(e)
@@ -84,17 +70,12 @@ async function start() {
 
 process.on('SIGINT', async () => {
     const users = User.users
-    for (const user of users) {
-        if (await DB.UpdateUser(user))
-            logger.log(user.name + ' 저장 완료')
-        else {
+    for (const user of users)
+        if (!await DB.UpdateUser(user))
             logger.log('저장 실패 ' + JSON.stringify(user.getJSON()))
-        }
-    }
     logger.writeFile('./log.txt')
     console.log('Caught interrupt signal.')
     process.exit()
-
 })
 
 start()

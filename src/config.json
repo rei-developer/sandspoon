@@ -1,6 +1,7 @@
 {
-    "PORT": 50000,
     "VERSION": "0.4.6",
+    "PORT": 50000,
+    "MAP_COUNT": 257,
     "SECRET": "Hitomi847400#$",
     "KEY": "$Emakdkekwk+ckeoIYNdjYYyzakwKW"
 }
