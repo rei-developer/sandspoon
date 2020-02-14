@@ -4,15 +4,25 @@ const qs = require('querystring')
 const DB = require('../DB')
 const router = new Router()
 
-const inn_client_id = '403199035553-ptrj3m550enl3jdskim8i5be8maua98f.apps.googleusercontent.com'
-const inn_client_secret = 'xsAkSHcdp0CuTnYnnor9vP5f'
-const inn_redirect_url = 'https://www.sandspoon.com/androidpublisher/exchange_token'
+const CLIENT_ID = '403199035553-ptrj3m550enl3jdskim8i5be8maua98f.apps.googleusercontent.com'
+const CLIENT_SECRET = 'xsAkSHcdp0CuTnYnnor9vP5f'
+const REDIRECT_URL = 'https://www.sandspoon.com/androidpublisher/exchange_token'
 
 let recentlyToken = ''
 
-async function createBilling({ userId, transactionId, productId, token, date }) {
+async function CreateBilling({ userId, transactionId, productId, token, date }) {
     try {
-        await DB.query('INSERT INTO billings (`userId`, `transactionId`, `productId`, `purchaseToken`, `purchaseDate`) VALUES (?, ?, ?, ?, STR_TO_DATE(?, "%m/%d/%Y %H:%i:%s"))', [userId, transactionId, productId, token, date])
+        const result = await DB.query('INSERT INTO billings (`userId`, `transactionId`, `productId`, `purchaseToken`, `purchaseDate`) VALUES (?, ?, ?, ?, STR_TO_DATE(?, "%m/%d/%Y %H:%i:%s"))', [userId, transactionId, productId, token, date])
+        return result.insertId
+    } catch (e) {
+        throw e
+    }
+}
+
+async function UpdateBilling(id) {
+    try {
+        await DB.query('UPDATE billings SET `allowState` = 1 WHERE `id` = ?', [id])
+        return true
     } catch (e) {
         throw e
     }
@@ -26,9 +36,9 @@ router.get('/androidpublisher/get_code', ctx => {
     const codeUrl = url
         + `?scope=${qs.escape(scope)}`
         + `&access_type=offline`
-        + `&redirect_uri=${qs.escape(inn_redirect_url)}`
+        + `&redirect_uri=${qs.escape(REDIRECT_URL)}`
         + `&response_type=code`
-        + `&client_id=${inn_client_id}`
+        + `&client_id=${CLIENT_ID}`
     ctx.redirect(codeUrl)
 })
 
@@ -36,17 +46,17 @@ router.get('/androidpublisher/exchange_token', async ctx => {
     const form = {
         grant_type: 'authorization_code',
         code: ctx.query.code,
-        client_id: inn_client_id,
-        client_secret: inn_client_secret,
-        redirect_uri: inn_redirect_url
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+        redirect_uri: REDIRECT_URL
     }
     try {
         const result = await new Promise((resolve, reject) => {
             request.post('https://www.googleapis.com/oauth2/v4/token', { form }, (err, response, body) => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
-                const parsed_body = JSON.parse(body)
-                recentlyToken = parsed_body.access_token
+                const data = JSON.parse(body)
+                recentlyToken = data.access_token
                 resolve({ recentlyToken, status: 'SUCCESS' })
             })
         })
@@ -66,30 +76,20 @@ router.get('/androidpublisher/validate_purchase', async ctx => {
         token,
         date
     } = ctx.query
-
-    console.log(ctx.query)
-
-    const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}`
-    const reqUrl = `${url}?access_token=${recentlyToken}`
-
-    console.log("A")
-
+    const billingId = await CreateBilling({ userId, transactionId, productId, token, date })
+    if (!billingId)
+        return ctx.body = { message: '영수증 발행 도중 문제가 발생했습니다. 고객센터에 문의해주세요.', status: 'FAILED' }
+    const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}?access_token=${recentlyToken}`
     try {
-        console.log("B")
         const result = await new Promise((resolve, reject) => {
-            console.log("C")
-            request.get(reqUrl, async (err, response, body) => {
+            request.get(url, async (err, response, body) => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
-
                 const data = JSON.parse(body)
-                console.log(data)
                 if (!data.orderId || data.orderId !== transactionId || data.purchaseState > 0)
                     return reject({ message: '유효하지 않은 영수증입니다.', status: 'FAILED' })
-
-                console.log(data)
-                await createBilling({ userId, transactionId, productId, token, date })
-                console.log("ASDF")
+                if (!await UpdateBilling(billingId))
+                    return reject({ message: '영수증 발행 허가 도중 문제가 발생했습니다. 고객센터에 문의해주세요.', status: 'FAILED' })
                 resolve({ status: 'SUCCESS' })
             })
         })

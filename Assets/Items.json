@@ -489,6 +489,20 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 36,
+            "type": "SKIN",
+            "icon": "MisterWolf",
+            "name": "미스터 울프",
+            "creator": "화이트",
+            "description": "그 역시 실험체였지만, 지능이 매우 높아 연구원들의 관심을 얻고 연구원이 되었다. 현재는 도주중.",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }
