@@ -498,7 +498,7 @@ global.User = (function () {
                 return
             if (item.type === 'SKIN') {
                 const check = this.inventory.find(i => i.id === id)
-                this.send(Serialize.GetSkinItem(item, check ? moment(check.expiry, 'YYYY-MM-DD').format('YYYY-MM-DD HH:mm:ss') : '-'))
+                this.send(Serialize.GetSkinItem(item, check ? moment(check.expiry, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss') : '-'))
             }
         }
 
@@ -520,11 +520,11 @@ global.User = (function () {
                 let date
                 if (check) {
                     const min = moment().diff(moment(check.expiry), 'minutes')
-                    date = moment(min > 0 ? new Date() : check.expiry, 'YYYY-MM-DD').add(data.days, 'days').format('YYYY-MM-DD HH:mm:ss')
+                    date = moment(min > 0 ? new Date() : check.expiry, 'YYYY-MM-DD HH:mm:ss').add(data.days, 'days').format('YYYY-MM-DD HH:mm:ss')
                     check.expiry = date
                     this.send(Serialize.MessageShop('UPDATE_SUCCESS'))
                 } else {
-                    date = moment(new Date(), 'YYYY-MM-DD').add(data.days, 'days').format('YYYY-MM-DD HH:mm:ss')
+                    date = moment(new Date(), 'YYYY-MM-DD HH:mm:ss').add(data.days, 'days').format('YYYY-MM-DD HH:mm:ss')
                     this.addItem(data.id, 1, date)
                     this.send(Serialize.MessageShop('BUY_SUCCESS'))
                 }
@@ -539,12 +539,12 @@ global.User = (function () {
 
         checkSkinExpiry() {
             this.inventory.map(i => {
-                const min = moment().diff(moment(i.expiry), 'minutes')
-                if (min > 0) {
-                    const item = Item.get(i.id)
-                    if (!item)
-                        return
-                    if (item.icon === this.blueGraphics)
+                const item = Item.get(i.id)
+                if (!item)
+                    return
+                if (item.type === 'SKIN' && item.icon === this.blueGraphics) {
+                    const min = moment().diff(moment(i.expiry), 'minutes')
+                    if (min > 0)
                         this.blueGraphics = 'Mania'
                 }
             })
@@ -563,7 +563,7 @@ global.User = (function () {
                             id: i.id,
                             icon: item.icon,
                             name: item.name,
-                            expiry: moment(i.expiry, 'YYYY-MM-DD').format('YYYY-MM-DD HH:mm:ss')
+                            expiry: moment(i.expiry, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
                         })
                     }
                 }
