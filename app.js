@@ -36,7 +36,7 @@ const Data = require('./src/Data')
 const DB = require('./src/DB')
 const config = require('./src/config')
 
-router.use(bodyParser())
+router.use(bodyparser())
 router.use('/androidpublisher', androidpublisher.routes())
 router.use('/api', api.routes())
 router.use('/verify', auth.routes())
