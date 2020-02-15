@@ -22,9 +22,10 @@ let tokenStorage = {
 let repeatRefresh = null
 
 if (repeatRefresh === null)
-    repeatRefresh = setInterval(() => RefreshIABTokenInterval, min30)
+    repeatRefresh = setInterval(() => RefreshIABTokenInterval, 120)//min30)
 
 async function RefreshIABTokenInterval() {
+    console.log("A")
     try {
         const url = 'https://www.googleapis.com/oauth2/v4/token'
         const payload = {

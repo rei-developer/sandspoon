@@ -517,6 +517,76 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 38,
+            "type": "SKIN",
+            "icon": "Hwaran",
+            "name": "화란",
+            "creator": "서향",
+            "description": "중학생 소년. 언제나 머리에 꽃을 달고 다닌다.",
+            "cost": 120,
+            "isCash": false,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 39,
+            "type": "SKIN",
+            "icon": "Seolha",
+            "name": "설하",
+            "creator": "리먼",
+            "description": "말 수가 적으며, 항상 냉정하고 차갑다.",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 40,
+            "type": "SKIN",
+            "icon": "Meri",
+            "name": "메리",
+            "creator": "설명",
+            "description": "",
+            "cost": 70,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 41,
+            "type": "SKIN",
+            "icon": "Dove",
+            "name": "행복한 둘기",
+            "creator": "화이트",
+            "description": "이 비둘기는 아주 흔한 행복한 비둘기입니다. 아마도요..?",
+            "cost": 60,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 42,
+            "type": "SKIN",
+            "icon": "FinallyDevilSheet",
+            "name": "뱀파이어",
+            "creator": "무셀",
+            "description": "CROWN 클랜 연구실에서 만들어진 돌연변이",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }
