@@ -84,7 +84,7 @@ router.get('/check/server', ctx => ctx.body = { status: tokenStorage.accessToken
 router.get('/token/request', ctx => {
     const oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
     const url = oauth2Client.generateAuthUrl({
-        access_type: 'offline',
+        access_type: 'online',
         scope: scopes,
         approval_prompt: 'force'
     })
