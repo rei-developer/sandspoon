@@ -549,7 +549,7 @@
         {
             "id": 40,
             "type": "SKIN",
-            "icon": "Meri",
+            "icon": "Mery",
             "name": "메리",
             "creator": "설명",
             "description": "",
@@ -582,6 +582,20 @@
             "creator": "무셀",
             "description": "CROWN 클랜 연구실에서 만들어진 돌연변이",
             "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 43,
+            "type": "SKIN",
+            "icon": "KoreanGirl",
+            "name": "한복 입은 여자",
+            "creator": "할리오스",
+            "description": "",
+            "cost": 40,
             "isCash": true,
             "method": {
                 "command": "",
