@@ -86,7 +86,13 @@ router.get('/androidpublisher/validate_purchase', async ctx => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
                 const data = JSON.parse(body)
-                if (!data.orderId || data.orderId !== transactionId || data.purchaseState > 0)
+
+                console.log(data)
+                console.log(data.orderId)
+                console.log(transactionId)
+                console.log(data.purchaseState)
+
+                if (!data.orderId || data.orderId != transactionId || data.purchaseState > 0)
                     return reject({ message: '유효하지 않은 영수증입니다.', status: 'FAILED' })
                 if (!await UpdateBilling(billingId))
                     return reject({ message: '영수증 발행 허가 도중 문제가 발생했습니다. 고객센터에 문의해주세요.', status: 'FAILED' })
