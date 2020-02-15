@@ -3,9 +3,13 @@ const WebSocket = require('ws')
 const jwt = require('jsonwebtoken')
 const querystring = require('querystring')
 const ToServer = require('./protocol/ToServer')
-const secretKey = require('./secretKey')
 const Encoding = require('text-encoding-utf-8')
 const utf8 = new Encoding.TextDecoder('utf-8')
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+const { KEY } = process.env
 
 function verifyToken(key, token) {
     return new Promise((resolve, reject) => {
@@ -73,7 +77,7 @@ module.exports = class Server {
 
         try {
             const { token } = querystring.parse(req.url.slice(1))
-            const verify = token !== 'test' && await verifyToken(secretKey.KEY, token) || 'test'
+            const verify = token !== 'test' && await verifyToken(KEY, token) || 'test'
             const user = await User.create(socket, verify)
             if (!user) return
             this.login(user)

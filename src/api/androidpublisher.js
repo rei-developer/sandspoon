@@ -1,14 +1,56 @@
 const Router = require('koa-router')
 const DB = require('../DB')
 const request = require('request')
-const qs = require('querystring')
+const { google } = require('googleapis')
+const OAuth2 = google.auth.OAuth2
 const router = new Router()
+const dotenv = require('dotenv')
 
-const CLIENT_ID = '403199035553-ptrj3m550enl3jdskim8i5be8maua98f.apps.googleusercontent.com'
-const CLIENT_SECRET = 'xsAkSHcdp0CuTnYnnor9vP5f'
-const REDIRECT_URL = 'https://www.sandspoon.com/androidpublisher/exchange_token'
+dotenv.config()
 
-let recentlyToken = ''
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } = process.env
+
+const scopes = ['https://www.googleapis.com/auth/androidpublisher']
+const min30 = 30 * 60 * 1000
+
+let tokenStorage = {
+    accessToken: null,
+    tokenType: null,
+    expiresIn: null,
+    refreshToken: null
+}
+let repeatRefresh = null
+
+if (repeatRefresh === null)
+    repeatRefresh = setInterval(() => RefreshIABTokenInterval, min30)
+
+async function RefreshIABTokenInterval() {
+    try {
+        const url = 'https://www.googleapis.com/oauth2/v4/token'
+        const payload = {
+            refresh_token: tokenStorage.refreshToken,
+            grant_type: 'refresh_token',
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET
+        }
+        await new Promise((resolve, reject) => {
+            request.post(url, { form: payload }, async (err, response, body) => {
+                if (err) {
+                    repeatRefresh = null
+                    clearInterval(repeatRefresh)
+                    return reject({ message: err, status: 'FAILED' })
+                }
+                const data = await JSON.parse(body)
+                tokenStorage.accessToken = data.access_token
+                tokenStorage.tokenType = data.token_type
+                tokenStorage.expiresIn = data.expires_in
+                resolve({ status: 'SUCCESS' })
+            })
+        })
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 async function CreateBilling({ userId, transactionId, productId, token, date }) {
     try {
@@ -28,46 +70,50 @@ async function UpdateBilling(id) {
     }
 }
 
-router.get('/check_server', ctx => ctx.body = { status: recentlyToken === '' ? 'FAILED' : 'SUCCESS' })
+router.get('/check/server', ctx => ctx.body = { status: recentlyToken === '' ? 'FAILED' : 'SUCCESS' })
 
-router.get('/get_code', ctx => {
-    const url = 'https://accounts.google.com/o/oauth2/v2/auth'
-    const scope = 'https://www.googleapis.com/auth/androidpublisher'
-    const codeUrl = url
-        + `?scope=${qs.escape(scope)}`
-        + `&access_type=offline`
-        + `&redirect_uri=${qs.escape(REDIRECT_URL)}`
-        + `&response_type=code`
-        + `&client_id=${CLIENT_ID}`
-    ctx.redirect(codeUrl)
+router.get('/token/request', ctx => {
+    const oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
+    const url = oauth2Client.generateAuthUrl({
+        access_type: 'offline',
+        scope: scopes,
+        approval_prompt: 'force'
+    })
+    ctx.redirect(url)
 })
 
-router.get('/exchange_token', async ctx => {
-    const form = {
-        grant_type: 'authorization_code',
-        code: ctx.query.code,
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        redirect_uri: REDIRECT_URL
-    }
+router.get('/token/redirect', async ctx => {
     try {
+        if (ctx.query.code === null || ctx.query.code === undefined)
+            return resolve({ tokenStorage, status: 'SUCCESS' })
+        const url = 'https://www.googleapis.com/oauth2/v4/token'
+        const payload = {
+            grant_type: 'authorization_code',
+            code: ctx.query.code,
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            redirect_uri: REDIRECT_URL
+        }
         const result = await new Promise((resolve, reject) => {
-            request.post('https://www.googleapis.com/oauth2/v4/token', { form }, async (err, response, body) => {
+            request.post(url, { form: payload }, async (err, response, body) => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
                 const data = await JSON.parse(body)
-                recentlyToken = data.access_token
-                resolve({ recentlyToken, status: 'SUCCESS' })
+                tokenStorage.accessToken = data.access_token
+                tokenStorage.tokenType = data.token_type
+                tokenStorage.expiresIn = data.expires_in
+                tokenStorage.refreshToken = data.refresh_token
+                resolve({ tokenStorage, status: 'SUCCESS' })
             })
         })
         ctx.body = result
-    } catch (e) {
-        console.log(e)
-        ctx.body = e
+    } catch (err) {
+        console.error(err)
+        ctx.body = err
     }
 })
 
-router.get('/validate_purchase', async ctx => {
+router.get('/receipt/validation', async ctx => {
     const packageName = 'com.sandspoons.detective'
     const {
         userId,
@@ -80,7 +126,7 @@ router.get('/validate_purchase', async ctx => {
         const billingId = await CreateBilling({ userId, transactionId, productId, token, date })
         if (!billingId)
             return reject({ message: '영수증 발행 도중 문제가 발생했습니다. 고객센터에 문의해주세요.', status: 'FAILED' })
-        const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}?access_token=${recentlyToken}`
+        const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}?access_token=${tokenStorage.accessToken}`
         const result = await new Promise((resolve, reject) => {
             request.get(url, async (err, response, body) => {
                 if (err)

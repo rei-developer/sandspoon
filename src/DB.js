@@ -1,12 +1,16 @@
 const mysql = require('promise-mysql')
-const secretKey = require('./secretKey')
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env
 
 const pool = mysql.createPool({
-    host: secretKey.DB_HOST,
-    port: secretKey.DB_PORT,
-    user: secretKey.DB_USER,
-    password: secretKey.DB_PASSWORD,
-    database: secretKey.DB_DATABASE,
+    host: DB_HOST,
+    port: DB_PORT,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
     connectionLimit: 500
 })
 

@@ -5,7 +5,11 @@ const https = require('https')
 const jwt = require('jsonwebtoken')
 const filtering = require('../util/filtering-text')
 const config = require('../config')
-const secretKey = require('../secretKey')
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+const { KEY } = process.env
 
 const OAUTH_ID = { GOOGLE: '112494846092-ar8ml4nm16mr7bhd3cekb87846fr5k0e.apps.googleusercontent.com' }
 const LOGIN_TYPE = { GOOGLE: 0 }
@@ -100,7 +104,7 @@ async function verifyUser({ id, name, loginType }) {
 router.post('/register', async ctx => {
     try {
         const { token, name } = ctx.request.body
-        const verify = await verifyToken(secretKey.KEY, token)
+        const verify = await verifyToken(KEY, token)
         const user = await findUser(verify)
         if (/[^가-힣]/.test(name)) throw new Error('FAILED')
         if (user.verify === 0) {
@@ -136,7 +140,7 @@ router.post('/google', async ctx => {
             if (blocked2)
                 return ctx.body = { status: 'BLOCKED', date: blocked2.date, description: blocked2.description }
             const user = await findUser(data)
-            const my = await issueToken(secretKey.KEY, data)
+            const my = await issueToken(KEY, data)
             if (!user) {
                 await registerUser(data)
                 ctx.body = {
