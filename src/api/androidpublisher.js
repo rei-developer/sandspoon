@@ -21,11 +21,7 @@ let tokenStorage = {
 }
 let repeatRefresh = null
 
-if (repeatRefresh === null)
-    repeatRefresh = setInterval(RefreshIABTokenInterval, 120 * 1000)//min30)
-
 async function RefreshIABTokenInterval() {
-    console.log("A")
     try {
         const url = 'https://www.googleapis.com/oauth2/v4/token'
         const payload = {
@@ -35,24 +31,16 @@ async function RefreshIABTokenInterval() {
             client_secret: CLIENT_SECRET
         }
         await new Promise((resolve, reject) => {
-            request.post(url, { form: payload }, async (err, response, body) => {
+            request.post(url, { form: payload }, async (err, _, body) => {
                 if (err) {
                     repeatRefresh = null
                     clearInterval(repeatRefresh)
                     return reject({ message: err, status: 'FAILED' })
                 }
                 const data = await JSON.parse(body)
-
-                console.log(data)
-                console.log("====C")
-
                 tokenStorage.accessToken = data.access_token
                 tokenStorage.tokenType = data.token_type
                 tokenStorage.expiresIn = data.expires_in
-
-                console.log(tokenStorage)
-                console.log("====D")
-
                 resolve({ status: 'SUCCESS' })
             })
         })
@@ -79,7 +67,7 @@ async function UpdateBilling(id) {
     }
 }
 
-router.get('/check/server', ctx => ctx.body = { tokenStorage, status: tokenStorage.accessToken ? 'SUCCESS' : 'FAILED' })
+router.get('/check/server', ctx => ctx.body = { status: tokenStorage.accessToken ? 'SUCCESS' : 'FAILED' })
 
 router.get('/token/request', ctx => {
     const oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
@@ -104,22 +92,16 @@ router.get('/token/redirect', async ctx => {
             redirect_uri: REDIRECT_URL
         }
         const result = await new Promise((resolve, reject) => {
-            request.post(url, { form: payload }, async (err, response, body) => {
+            request.post(url, { form: payload }, async (err, _, body) => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
                 const data = await JSON.parse(body)
-
-                console.log(data)
-                console.log("====A")
-
                 tokenStorage.accessToken = data.access_token
                 tokenStorage.tokenType = data.token_type
                 tokenStorage.expiresIn = data.expires_in
                 tokenStorage.refreshToken = data.refresh_token
-
-                console.log(tokenStorage)
-                console.log("====B")
-
+                if (repeatRefresh === null)
+                    repeatRefresh = setInterval(RefreshIABTokenInterval, min30)
                 resolve({ tokenStorage, status: 'SUCCESS' })
             })
         })
@@ -145,11 +127,10 @@ router.get('/receipt/validation', async ctx => {
             return reject({ message: '영수증 발행 도중 문제가 발생했습니다. 고객센터에 문의해주세요.', status: 'FAILED' })
         const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}?access_token=${tokenStorage.accessToken}`
         const result = await new Promise((resolve, reject) => {
-            request.get(url, async (err, response, body) => {
+            request.get(url, async (err, _, body) => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
                 const data = await JSON.parse(body)
-                console.log(data)
                 if (!data.orderId || data.orderId != transactionId || data.purchaseState > 0)
                     return reject({ message: '유효하지 않은 영수증입니다.', status: 'FAILED' })
                 if (!await UpdateBilling(billingId))
@@ -158,9 +139,9 @@ router.get('/receipt/validation', async ctx => {
             })
         })
         ctx.body = result
-    } catch (e) {
-        console.log(e)
-        ctx.body = e
+    } catch (err) {
+        console.error(err)
+        ctx.body = err
     }
 })
 

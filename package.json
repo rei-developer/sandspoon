@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
+    "googleapis": "^47.0.0",
     "greenlock-express": "^2.6.7",
     "greenlock-koa": "^2.1.4",
     "https": "^1.0.0",
