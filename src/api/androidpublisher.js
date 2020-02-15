@@ -70,7 +70,7 @@ async function UpdateBilling(id) {
     }
 }
 
-router.get('/check/server', ctx => ctx.body = { status: recentlyToken === '' ? 'FAILED' : 'SUCCESS' })
+router.get('/check/server', ctx => ctx.body = { status: tokenStorage.accessToken ? 'SUCCESS' : 'FAILED' })
 
 router.get('/token/request', ctx => {
     const oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
