@@ -1,8 +1,8 @@
 const Router = require('koa-router')
-const jwt = require('jsonwebtoken')
 const DB = require('../DB')
 const router = new Router()
 const https = require('https')
+const jwt = require('jsonwebtoken')
 const filtering = require('../util/filtering-text')
 const config = require('../config')
 const secretKey = require('../secretKey')
@@ -97,7 +97,7 @@ async function verifyUser({ id, name, loginType }) {
     }
 }
 
-router.post('/verify/register', async ctx => {
+router.post('/register', async ctx => {
     try {
         const { token, name } = ctx.request.body
         const verify = await verifyToken(secretKey.KEY, token)
@@ -116,7 +116,7 @@ router.post('/verify/register', async ctx => {
     }
 })
 
-router.post('/verify/google', async ctx => {
+router.post('/google', async ctx => {
     try {
         const { token, uuid, version } = ctx.request.body
         if (version !== config.VERSION)

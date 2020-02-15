@@ -503,6 +503,20 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 37,
+            "type": "SKIN",
+            "icon": "SnowMan",
+            "name": "눈사람",
+            "creator": "눈물",
+            "description": "늘 해맑습니다.",
+            "cost": 40,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }

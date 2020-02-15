@@ -1,7 +1,7 @@
 const Router = require('koa-router')
+const DB = require('../DB')
 const request = require('request')
 const qs = require('querystring')
-const DB = require('../DB')
 const router = new Router()
 
 const CLIENT_ID = '403199035553-ptrj3m550enl3jdskim8i5be8maua98f.apps.googleusercontent.com'
@@ -28,9 +28,9 @@ async function UpdateBilling(id) {
     }
 }
 
-router.get('/androidpublisher/check_server', ctx => ctx.body = { status: recentlyToken === '' ? 'FAILED' : 'SUCCESS' })
+router.get('/check_server', ctx => ctx.body = { status: recentlyToken === '' ? 'FAILED' : 'SUCCESS' })
 
-router.get('/androidpublisher/get_code', ctx => {
+router.get('/get_code', ctx => {
     const url = 'https://accounts.google.com/o/oauth2/v2/auth'
     const scope = 'https://www.googleapis.com/auth/androidpublisher'
     const codeUrl = url
@@ -42,7 +42,7 @@ router.get('/androidpublisher/get_code', ctx => {
     ctx.redirect(codeUrl)
 })
 
-router.get('/androidpublisher/exchange_token', async ctx => {
+router.get('/exchange_token', async ctx => {
     const form = {
         grant_type: 'authorization_code',
         code: ctx.query.code,
@@ -52,10 +52,10 @@ router.get('/androidpublisher/exchange_token', async ctx => {
     }
     try {
         const result = await new Promise((resolve, reject) => {
-            request.post('https://www.googleapis.com/oauth2/v4/token', { form }, (err, response, body) => {
+            request.post('https://www.googleapis.com/oauth2/v4/token', { form }, async (err, response, body) => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
-                const data = JSON.parse(body)
+                const data = await JSON.parse(body)
                 recentlyToken = data.access_token
                 resolve({ recentlyToken, status: 'SUCCESS' })
             })
@@ -67,7 +67,7 @@ router.get('/androidpublisher/exchange_token', async ctx => {
     }
 })
 
-router.get('/androidpublisher/validate_purchase', async ctx => {
+router.get('/validate_purchase', async ctx => {
     const packageName = 'com.sandspoons.detective'
     const {
         userId,
@@ -76,22 +76,17 @@ router.get('/androidpublisher/validate_purchase', async ctx => {
         token,
         date
     } = ctx.query
-    const billingId = await CreateBilling({ userId, transactionId, productId, token, date })
-    if (!billingId)
-        return ctx.body = { message: '영수증 발행 도중 문제가 발생했습니다. 고객센터에 문의해주세요.', status: 'FAILED' }
-    const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}?access_token=${recentlyToken}`
     try {
+        const billingId = await CreateBilling({ userId, transactionId, productId, token, date })
+        if (!billingId)
+            return reject({ message: '영수증 발행 도중 문제가 발생했습니다. 고객센터에 문의해주세요.', status: 'FAILED' })
+        const url = `https://www.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${productId}/tokens/${token}?access_token=${recentlyToken}`
         const result = await new Promise((resolve, reject) => {
             request.get(url, async (err, response, body) => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
-                const data = JSON.parse(body)
-
+                const data = await JSON.parse(body)
                 console.log(data)
-                console.log(data.orderId)
-                console.log(transactionId)
-                console.log(data.purchaseState)
-
                 if (!data.orderId || data.orderId != transactionId || data.purchaseState > 0)
                     return reject({ message: '유효하지 않은 영수증입니다.', status: 'FAILED' })
                 if (!await UpdateBilling(billingId))

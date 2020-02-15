@@ -13,7 +13,7 @@ function sample(array, count = 1) {
 
 function maker(text = '가') {
     if (text)
-        return (text[txt.length - 1].charCodeAt() - 44032) % 28 === 0
+        return (text[text.length - 1].charCodeAt() - 44032) % 28 === 0
     else
         return ''
 }
