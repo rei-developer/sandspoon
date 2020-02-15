@@ -1,7 +1,8 @@
 const Router = require('koa-router')
 const DB = require('../DB')
 const request = require('request')
-const qs = require('querystring')
+const { google } = require('googleapis')
+const OAuth2 = google.auth.OAuth2
 const router = new Router()
 const dotenv = require('dotenv')
 
@@ -9,7 +10,7 @@ dotenv.config()
 
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } = process.env
 
-const scope = 'https://www.googleapis.com/auth/androidpublisher'
+const scopes = ['https://www.googleapis.com/auth/androidpublisher']
 const min30 = 30 * 60 * 1000
 
 let tokenStorage = {
@@ -81,14 +82,13 @@ async function UpdateBilling(id) {
 router.get('/check/server', ctx => ctx.body = { tokenStorage, status: tokenStorage.accessToken ? 'SUCCESS' : 'FAILED' })
 
 router.get('/token/request', ctx => {
-    const url = 'https://accounts.google.com/o/oauth2/v2/auth'
-    const codeUrl = url
-        + `?scope=${qs.escape(scope)}`
-        + `&access_type=offline`
-        + `&redirect_uri=${qs.escape(REDIRECT_URL)}`
-        + `&response_type=code`
-        + `&client_id=${CLIENT_ID}`
-    ctx.redirect(codeUrl)
+    const oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
+    const url = oauth2Client.generateAuthUrl({
+        access_type: 'offline',
+        scope: scopes,
+        prompt: 'consent'
+    })
+    ctx.redirect(url)
 })
 
 router.get('/token/redirect', async ctx => {
