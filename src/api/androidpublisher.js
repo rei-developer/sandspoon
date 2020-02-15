@@ -22,7 +22,7 @@ let tokenStorage = {
 let repeatRefresh = null
 
 if (repeatRefresh === null)
-    repeatRefresh = setInterval(() => RefreshIABTokenInterval, 120)//min30)
+    repeatRefresh = setInterval(RefreshIABTokenInterval, 120 * 1000)//min30)
 
 async function RefreshIABTokenInterval() {
     console.log("A")
@@ -42,9 +42,17 @@ async function RefreshIABTokenInterval() {
                     return reject({ message: err, status: 'FAILED' })
                 }
                 const data = await JSON.parse(body)
+
+                console.log(data)
+                console.log("====C")
+
                 tokenStorage.accessToken = data.access_token
                 tokenStorage.tokenType = data.token_type
                 tokenStorage.expiresIn = data.expires_in
+
+                console.log(tokenStorage)
+                console.log("====D")
+
                 resolve({ status: 'SUCCESS' })
             })
         })
@@ -100,10 +108,18 @@ router.get('/token/redirect', async ctx => {
                 if (err)
                     return reject({ message: err, status: 'FAILED' })
                 const data = await JSON.parse(body)
+
+                console.log(data)
+                console.log("====A")
+
                 tokenStorage.accessToken = data.access_token
                 tokenStorage.tokenType = data.token_type
                 tokenStorage.expiresIn = data.expires_in
                 tokenStorage.refreshToken = data.refresh_token
+
+                console.log(tokenStorage)
+                console.log("====B")
+
                 resolve({ tokenStorage, status: 'SUCCESS' })
             })
         })
