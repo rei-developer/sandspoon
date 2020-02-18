@@ -59,7 +59,7 @@ global.User = (function () {
             this.clan = null
             return (async () => {
                 if (verify === 'test')
-                    this.verify = { id: 113049585880204162131, loginType: 0 }
+                    this.verify = { id: 1, loginType: 0 }
                 await this.loadUserData()
                 return this
             })()
@@ -536,9 +536,22 @@ global.User = (function () {
             const item = Item.get(data.id)
             if (!item)
                 return
-            if (item.type === 'SKIN') {
+            if (item.type === 'ITEM') {
                 if (item.isCash) {
-                    if (this.cash < (item.cost * data.days))
+                    if (this.cash < item.cost * data.num)
+                        return this.send(Serialize.MessageShop('NOT_ENOUGH_CASH'))
+                    this.setUpCash(-(item.cost * data.num))
+                } else {
+                    if (this.coin < item.cost * data.num)
+                        return this.send(Serialize.MessageShop('NOT_ENOUGH_COIN'))
+                    this.coin -= item.cost * data.num
+                }
+                this.addItem(data.id, data.num)
+                this.send(Serialize.MessageShop('BUY_SUCCESS'))
+                this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
+            } else if (item.type === 'SKIN') {
+                if (item.isCash) {
+                    if (this.cash < item.cost * data.days)
                         return this.send(Serialize.MessageShop('NOT_ENOUGH_CASH'))
                     this.setUpCash(-(item.cost * data.days))
                     if (item.creatorId > 0 && this.id !== item.creatorId) {
@@ -548,7 +561,7 @@ global.User = (function () {
                         await DB.InsertNoticeMessage(this.id, item.creatorId, title, content, receiveCash)
                     }
                 } else {
-                    if (this.coin < (item.cost * data.days))
+                    if (this.coin < item.cost * data.days)
                         return this.send(Serialize.MessageShop('NOT_ENOUGH_COIN'))
                     this.coin -= item.cost * data.days
                 }
@@ -569,7 +582,7 @@ global.User = (function () {
             }
         }
 
-        addItem(id, num, expiry) {
+        addItem(id, num, expiry = null) {
             this.inventory.push({ id, num, expiry })
         }
 

@@ -839,6 +839,21 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 57,
+            "type": "SKIN",
+            "icon": "StarGirl",
+            "name": "별과 소녀",
+            "creator": "또이339",
+            "creatorId": 0,
+            "description": "반짝반짝한 별이 생긴다! 우와! 정말 대다네!",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }
