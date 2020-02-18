@@ -53,6 +53,24 @@ module.exports = {
             console.error(e)
         }
     },
+    async LoadNoticeMessage(id, deleted = false) {
+        try {
+            return await this.query(
+                `SELECT
+                    nm.id,
+                    nm.title,
+                    nm.created,
+                    nm.deleted,
+                    u.name author,
+                    u.blue_graphics avatar
+                FROM notice_messages nm
+                LEFT JOIN Users u ON u.id = nm.target_id
+                WHERE nm.user_id = ? AND ${deleted ? '!' : ''}ISNULL(nm.deleted)
+                ORDER BY id DESC`, [id])
+        } catch (e) {
+            console.error(e)
+        }
+    },
     async LoadRanks() {
         try {
             return await this.query(
@@ -167,9 +185,63 @@ module.exports = {
             console.error(e)
         }
     },
+    async FindReportedUser(userId, targetId) {
+        try {
+            const [row] = await this.query('SELECT * FROM reports WHERE `user_id` = ? AND `target_id` = ?', [userId, targetId])
+            return row
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async GetNoticeMessageCount(id) {
+        try {
+            return await this.query('SELECT COUNT(*) count FROM notice_messages WHERE `user_id` = ? AND ISNULL(`deleted`)', [id])
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async GetNoticeMessage(id) {
+        try {
+            const [row] = await this.query(
+                `SELECT
+                    nm.id,
+                    nm.title,
+                    nm.content,
+                    nm.cash,
+                    nm.coin,
+                    nm.created,
+                    nm.deleted,
+                    nm.rewarded,
+                    u.name author,
+                    u.blue_graphics avatar
+                FROM notice_messages nm
+                LEFT JOIN Users u ON u.id = nm.target_id
+                WHERE nm.id = ?
+                ORDER BY id DESC`, [id])
+            return row
+        } catch (e) {
+            console.error(e)
+        }
+    },
     async InsertBlock(uid, uuid, loginType, description, date) {
         try {
             await this.query('INSERT INTO blocks (`login_type`, `uid`, `uuid`, `description`, `date`) VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL ? DAY))', [loginType, uid, uuid, description, date])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async InsertNoticeMessage(userId, targetId, title, content, cash = 0, coin = 0) {
+        try {
+            await this.query('INSERT INTO notice_messages (`user_id`, `target_id`, `title`, `content`, `cash`, `coin`) VALUES (?, ?, ?, ?, ?, ?)', [userId, targetId, title, content, cash, coin])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async InsertReport(userId, targetId, type, content) {
+        try {
+            await this.query('INSERT INTO reports (`user_id`, `target_id`, `type`, `content`) VALUES (?, ?, ?, ?)', [userId, targetId, type, content])
             return true
         } catch (e) {
             console.error(e)
@@ -248,6 +320,22 @@ module.exports = {
             console.error(e)
         }
     },
+    async UpdateUsername(userId, username) {
+        try {
+            await this.query('UPDATE users SET `name` = ? WHERE `id` = ?', [username, userId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async UpdateUserCash(userId, cash) {
+        try {
+            await this.query('UPDATE users SET `cash` = ? WHERE `id` = ?', [cash, userId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
     async UpdateClanOption(clanId, data) {
         try {
             await this.query('UPDATE clans SET `notice` = ?, `level1_name` = ?, `level2_name` = ?, `level3_name` = ?, `level4_name` = ?, `level5_name` = ? WHERE `id` = ?', [
@@ -275,6 +363,14 @@ module.exports = {
     async UpdateClanExp(clanId, exp) {
         try {
             await this.query('UPDATE clans SET `exp` = ? WHERE `id` = ?', [exp, clanId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async UpdateClanCash(clanId, cash) {
+        try {
+            await this.query('UPDATE clans SET `cash` = ? WHERE `id` = ?', [cash, clanId])
             return true
         } catch (e) {
             console.error(e)
@@ -320,6 +416,30 @@ module.exports = {
             console.error(e)
         }
     },
+    async UpdateNotieMessageDeleted(id, userId, deleted = true) {
+        try {
+            await this.query(`UPDATE notice_messages SET deleted = ${deleted ? 'NOW()' : 'NULL'} WHERE id = ? AND user_id = ?`, [id, userId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async UpdateNotieMessageRewarded(id, rewarded = 1) {
+        try {
+            await this.query('UPDATE notice_messages SET `rewarded` = ? WHERE `id` = ?', [rewarded, id])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async ClearNoticeMessage(userId) {
+        try {
+            await this.query('DELETE FROM notice_messages WHERE `user_id` = ?', [userId])
+            return true
+        } catch (e) {
+            console.error(e)
+        }
+    },
     async ClaerInventory(userId) {
         try {
             await this.query('DELETE FROM inventorys WHERE `user_id` = ?', [userId])
@@ -330,6 +450,14 @@ module.exports = {
     async ClearInviteClan(userId) {
         try {
             await this.query('DELETE FROM invite_clans WHERE `target_id` = ?', [userId])
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async DeleteNoticeMessage(id, userId) {
+        try {
+            await this.query('DELETE FROM notice_messages WHERE `id` = ? AND `user_id` = ?', [id, userId])
+            return true
         } catch (e) {
             console.error(e)
         }

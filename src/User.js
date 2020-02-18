@@ -4,10 +4,10 @@ const { TeamType, RoomType } = require('./util/const')
 const PlayerState = require('./PlayerState')
 const DB = require('./DB')
 const Data = require('./Data')
-const pix = require('./util/pix')
 const Score = require('./Score')
 const Reward = require('./Reward')
 const filtering = require('./util/filtering-text')
+const pix = require('./util/pix')
 const moment = require('moment')
 
 global.User = (function () {
@@ -78,6 +78,11 @@ global.User = (function () {
                 this.exp -= this.maxExp
                 this.setUpLevel()
             }
+        }
+
+        async setUpCash(cash) {
+            this.cash += cash
+            await DB.UpdateUserCash(this.id, this.cash)
         }
 
         getMaxExp(level = this.level) {
@@ -168,10 +173,32 @@ global.User = (function () {
             this.admin = user.admin
         }
 
+        async changeUsername(username) {
+            if (this.cash < 1000)
+                return this.send(Serialize.MessageLobby('NOT_ENOUGH_CASH'))
+            if (username.length < 1 || username.length > 6)
+                return this.send(Serialize.MessageLobby('AN_IMPOSSIBLE_LENGTH'))
+            if (/[^가-힣]/.test(username))
+                return this.send(Serialize.MessageLobby('AN_IMPOSSIBLE_WORD'))
+            if (!filtering.check(username))
+                return this.send(Serialize.MessageLobby('UNAVAILABLE_NAME'))
+            if (await DB.FindUserByName(username))
+                return this.send(Serialize.MessageLobby('ALREADY_EXISTENT_USER'))
+            if (!await DB.UpdateUsername(this.id, username))
+                return this.send(Serialize.MessageLobby('FAILED'))
+            const user = Data.rank.find(r => r.id === this.id)
+            if (user)
+                user.name = username
+            this.name = username
+            this.setUpCash(-1000)
+            this.send(Serialize.MessageLobby('CHANGE_USERNAME_SUCCESS'))
+            this.send(Serialize.UserData(this))
+        }
+
         async createClan(name) {
             if (this.clanId)
                 return
-            if (this.coin < 10000)
+            if (this.coin < 50000)
                 return this.send(Serialize.MessageClan('NOT_ENOUGH_COIN'))
             if (name.length < 1 || name.length > 12)
                 return this.send(Serialize.MessageClan('AN_IMPOSSIBLE_LENGTH'))
@@ -182,7 +209,7 @@ global.User = (function () {
             const clan = await Clan.create(this.id, name)
             if (!clan)
                 return
-            this.coin -= 10000
+            this.coin -= 50000
             this.clan = clan
             let members = []
             for (let i = 0; i < this.clan.members.length; ++i) {
@@ -297,21 +324,23 @@ global.User = (function () {
             this.clan.setUpCoin(data)
             this.coin -= data
             this.send(Serialize.UpdateClan(this.clan))
+            this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
         }
 
-        async donateClan(data) {
+        async donateClan(cash) {
             if (!this.clan)
                 return
-            data = Number(data)
-            if (isNaN(data))
+            cash = Number(cash)
+            if (isNaN(cash))
                 return this.send(Serialize.MessageClan('WRONG_NUMBER'))
-            if (data < 1)
+            if (cash < 1)
                 return this.send(Serialize.MessageClan('BELOW_STANDARD'))
-            if (this.exp < data)
-                return this.send(Serialize.MessageClan('NOT_ENOUGH_EXP'))
-            this.clan.setUpExp(data)
-            this.setUpExp(-data)
+            if (this.cash < cash)
+                return this.send(Serialize.MessageClan('NOT_ENOUGH_CASH'))
+            this.clan.setUpCash(cash)
+            this.setUpCash(-cash)
             this.send(Serialize.UpdateClan(this.clan))
+            this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
         }
 
         async withdrawClan(data) {
@@ -329,6 +358,7 @@ global.User = (function () {
             this.clan.setUpCoin(-data)
             this.coin += data
             this.send(Serialize.UpdateClan(this.clan))
+            this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
         }
 
         async levelUpClan() {
@@ -454,7 +484,7 @@ global.User = (function () {
             if (!await DB.UpdateBillingUseState(id, this.id))
                 return this.send(Serialize.MessageShop('FAILED'))
             const cash = Number(item.productId)
-            this.cash += cash
+            this.setUpCash(cash)
             this.send(Serialize.UpdateBilling(id, 1, 0))
             this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
             this.send(Serialize.MessageShop('USE_SUCCESS'))
@@ -502,7 +532,7 @@ global.User = (function () {
             }
         }
 
-        buyItem(data) {
+        async buyItem(data) {
             const item = Item.get(data.id)
             if (!item)
                 return
@@ -510,7 +540,13 @@ global.User = (function () {
                 if (item.isCash) {
                     if (this.cash < (item.cost * data.days))
                         return this.send(Serialize.MessageShop('NOT_ENOUGH_CASH'))
-                    this.cash -= item.cost * data.days
+                    this.setUpCash(-(item.cost * data.days))
+                    if (item.creatorId > 0 && this.id !== item.creatorId) {
+                        const receiveCash = Math.floor(item.cost / 5)
+                        const title = item.name + ' 스킨 구매에 따른 보석 지급 안내'
+                        const content = '안녕하세요?<br><br>스킨 공모에 출품하신 <color=red>[' + item.name + ']</color>' + (pix.maker(item.name) ? '를' : '을') + ' <color=red>[' + this.name + ']</color>님께서 구입하셨기 때문에 보석 "' + receiveCash + '개"를 지급해드립니다.<br><br>앞으로도 많은 출품을 부탁드립니다. 감사합니다!'
+                        await DB.InsertNoticeMessage(this.id, item.creatorId, title, content, receiveCash)
+                    }
                 } else {
                     if (this.coin < (item.cost * data.days))
                         return this.send(Serialize.MessageShop('NOT_ENOUGH_COIN'))
@@ -582,6 +618,105 @@ global.User = (function () {
         getUserInfoRank(id) {
             const user = Data.rank.find(r => r.id === id)
             this.send(Serialize.GetUserInfoRank(user, this.getMaxExp(user.level)))
+        }
+
+        getUserInfoRankByUsername(username) {
+            const user = Data.rank.find(r => r.name === username)
+            if (!user)
+                return this.send(Serialize.MessageRank('NON_EXISTENT_USER'))
+            this.send(Serialize.GetUserInfoRank(user, this.getMaxExp(user.level)))
+        }
+
+        async getNoticeMessageCount() {
+            const count = await DB.GetNoticeMessageCount(this.id)
+            this.send(Serialize.GetNoticeMessageCount(count ? count[0].count : 0))
+        }
+
+        async getNoticeMessage(deleted) {
+            const item = await DB.LoadNoticeMessage(this.id, deleted)
+            if (!item)
+                return
+            this.send(Serialize.GetNoticeMessage(item))
+        }
+
+        async getInfoNoticeMessage(id) {
+            const item = await DB.GetNoticeMessage(id)
+            if (!item)
+                return
+            this.send(Serialize.GetInfoNoticeMessage(item))
+        }
+
+        async withdrawNoticeMessage(id) {
+            const item = await DB.GetNoticeMessage(id)
+            if (!item)
+                return
+            if (item.cash < 1 || item.rewarded > 0)
+                return
+            if (!await DB.UpdateNotieMessageRewarded(id))
+                return this.send(Serialize.MessageLobby('FAILED'))
+            this.setUpCash(item.cash)
+            this.send(Serialize.MessageLobby('WITHDRAW_SUCCESS'))
+            this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
+        }
+
+        async deleteNoticeMessage(id) {
+            const item = await DB.GetNoticeMessage(id)
+            if (!item)
+                return
+            if (item.deleted) {
+                if (!await DB.DeleteNoticeMessage(id, this.id))
+                    return this.send(Serialize.MessageLobby('FAILED'))
+            } else {
+                if (!await DB.UpdateNotieMessageDeleted(id, this.id))
+                    return this.send(Serialize.MessageLobby('FAILED'))
+            }
+            this.send(Serialize.DeleteNoticeMessage(id))
+            await this.getNoticeMessageCount()
+        }
+
+        async restoreNoticeMessage(id) {
+            const item = await DB.GetNoticeMessage(id)
+            if (!item || !item.deleted)
+                return
+            if (!await DB.UpdateNotieMessageDeleted(id, this.id, false))
+                return this.send(Serialize.MessageLobby('FAILED'))
+            this.send(Serialize.DeleteNoticeMessage(id))
+            await this.getNoticeMessageCount()
+        }
+
+        async clearNoticeMessage() {
+            if (await DB.ClearNoticeMessage(this.id))
+                this.send(Serialize.MessageLobby('CLEAR_NOTICE_SUCCESS'))
+        }
+
+        async addNoticeMessage(data) {
+            if (this.cash < 10)
+                return
+            const { username, title, content } = data
+            if (username === '' || title === '' || content === '')
+                return
+            const target = await DB.FindUserByName(username)
+            if (!target || !target.id)
+                return this.send(Serialize.MessageLobby('NON_EXISTENT_USER'))
+            if (!await DB.InsertNoticeMessage(this.id, target.id, title, content))
+                return this.send(Serialize.MessageLobby('FAILED'))
+            this.setUpCash(-10)
+            this.send(Serialize.MessageLobby('ADD_NOTICE_SUCCESS'))
+            this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
+        }
+
+        async addUserReport(data) {
+            const { type, username, content } = data
+            if (username === '' || content === '')
+                return
+            const target = await DB.FindUserByName(username)
+            if (!target || !target.id)
+                return this.send(Serialize.MessageGame('NON_EXISTENT_USER'))
+            const check = await DB.FindReportedUser(this.id, target.id)
+            if (check)
+                return this.send(Serialize.MessageGame('ALREADY_RECEIVED'))
+            if (await DB.InsertReport(this.id, target.id, type, content))
+                this.send(Serialize.MessageGame('REQUEST_REPORT_SUCCESS'))
         }
 
         setSkin(id) {
@@ -692,7 +827,7 @@ global.User = (function () {
                     if (cash < 1 || cash > 10000)
                         cash = 1
                     for (const user of User.users) {
-                        user.cash += cash
+                        user.setUpCash(cash)
                         user.send(Serialize.SystemMessage('<color=#FFC90E>' + this.name + '님께서 보석 ' + cash + '개를 지급해주셨습니다!!!</color>'))
                     }
                     break

@@ -41,6 +41,7 @@ global.Clan = (function () {
             notice = '',
             level = 1,
             exp = 0,
+            cash = 0,
             coin = 0,
             regdate = 0,
             condition = 0,
@@ -57,6 +58,7 @@ global.Clan = (function () {
             this.notice = notice
             this.level = level
             this.exp = exp
+            this.cash = cash
             this.coin = coin
             this.regdate = regdate
             this.condition = condition
@@ -110,6 +112,11 @@ global.Clan = (function () {
         async setUpExp(exp) {
             this.exp += exp
             await DB.UpdateClanExp(this.id, this.exp)
+        }
+
+        async setUpCash(cash) {
+            this.cash += cash
+            await DB.UpdateClanCash(this.id, this.cash)
         }
 
         async setUpCoin(coin) {

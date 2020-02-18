@@ -258,24 +258,42 @@ module.exports = class InfectMode {
             const mission = "킬 " + red.score.kill + "\n장농 킬 " + red.score.killForWardrobe
             let exp = 100 + red.score.sum
             let coin = 50 + parseInt(red.score.sum / 2)
-            if (exp < 100) exp = 100
-            if (coin < 50) coin = 50
+            if (exp < 100)
+                exp = 100
+            if (coin < 50)
+                coin = 50
             const rank = ranks.indexOf(red) + 1
             red.reward.exp = exp
             red.reward.coin = coin
-            if (rank <= 3) red.reward.point = 4 - rank
+            switch (rank) {
+                case 1:
+                    blue.reward.point = 10
+                case 2:
+                    blue.reward.point = 5
+                case 3:
+                    blue.reward.point = 1
+            }
             red.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
         for (const blue of this.blueTeam) {
             const mission = "생존" + (blue.state === PlayerState.Tansu ? " (장농)" : "")
             let exp = 100 + blue.score.sum
             let coin = 50 + parseInt(blue.score.sum / 2)
-            if (exp < 100) exp = 100
-            if (coin < 50) coin = 50
+            if (exp < 100)
+                exp = 100
+            if (coin < 50)
+                coin = 50
             const rank = ranks.indexOf(blue) + 1
             blue.reward.exp = exp
             blue.reward.coin = coin
-            if (rank <= 3) blue.reward.point = 4 - rank
+            switch (rank) {
+                case 1:
+                    blue.reward.point = 10
+                case 2:
+                    blue.reward.point = 5
+                case 3:
+                    blue.reward.point = 1
+            }
             blue.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
     }

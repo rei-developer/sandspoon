@@ -185,6 +185,7 @@ my.GetClan = function (clan, members = []) {
         packet.notice = clan.notice
         packet.level = clan.level
         packet.exp = clan.exp
+        packet.cash = clan.cash
         packet.coin = clan.coin
         packet.regdate = clan.regdate
         packet.condition = clan.condition
@@ -222,7 +223,7 @@ my.UpdateClan = function (clan) {
     const packet = {}
     packet._head = ToClient.UPDATE_CLAN
     packet.level = clan.level
-    packet.exp = clan.exp
+    packet.cash = clan.cash
     packet.coin = clan.coin
     return JSON.stringify(packet)
 }
@@ -348,6 +349,13 @@ my.MessageShop = function (status) {
     return JSON.stringify(packet)
 }
 
+my.MessageLobby = function (status) {
+    const packet = {}
+    packet._head = ToClient.MESSAGE_LOBBY
+    packet.status = status
+    return JSON.stringify(packet)
+}
+
 my.GetSkinList = function (skins = []) {
     const packet = {}
     packet._head = ToClient.GET_SKIN_LIST
@@ -401,6 +409,64 @@ my.GetUserInfoRank = function (user, maxExp) {
     packet.likes = user.likes
     packet.memo = user.memo
     packet.avatar = user.avatar
+    return JSON.stringify(packet)
+}
+
+my.MessageRank = function (status) {
+    const packet = {}
+    packet._head = ToClient.MESSAGE_RANK
+    packet.status = status
+    return JSON.stringify(packet)
+}
+
+my.GetNoticeMessageCount = function (count) {
+    const packet = {}
+    packet._head = ToClient.GET_NOTICE_MESSAGE_COUNT
+    packet.count = count
+    return JSON.stringify(packet)
+}
+
+my.GetNoticeMessage = function (items = []) {
+    const packet = {}
+    packet._head = ToClient.GET_NOTICE_MESSAGE
+    packet.items = items.map(i => ({
+        id: i.id,
+        avatar: i.avatar,
+        author: i.author,
+        title: i.title,
+        created: moment(i.created, 'YYYY-MM-DD').format('YYYY-MM-DD HH:mm:ss'),
+        deleted: i.deleted ? true : false
+    }))
+    return JSON.stringify(packet)
+}
+
+my.GetInfoNoticeMessage = function (item) {
+    const packet = {}
+    packet._head = ToClient.GET_INFO_NOTICE_MESSAGE
+    packet.id = item.id
+    packet.avatar = item.avatar
+    packet.author = item.author
+    packet.title = item.title
+    packet.content = item.content
+    packet.cash = item.cash
+    packet.coin = item.coin
+    packet.created = moment(item.created, 'YYYY-MM-DD').format('YYYY-MM-DD HH:mm:ss')
+    packet.deleted = item.deleted ? true : false
+    packet.rewarded = item.rewarded
+    return JSON.stringify(packet)
+}
+
+my.DeleteNoticeMessage = function (id) {
+    const packet = {}
+    packet._head = ToClient.DELETE_NOTICE_MESSAGE
+    packet.id = id
+    return JSON.stringify(packet)
+}
+
+my.MessageGame = function (status) {
+    const packet = {}
+    packet._head = ToClient.MESSAGE_GAME
+    packet.status = status
     return JSON.stringify(packet)
 }
 

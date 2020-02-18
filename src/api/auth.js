@@ -106,7 +106,8 @@ router.post('/register', async ctx => {
         const { token, name } = ctx.request.body
         const verify = await verifyToken(KEY, token)
         const user = await findUser(verify)
-        if (/[^가-힣]/.test(name)) throw new Error('FAILED')
+        if (/[^가-힣]/.test(name))
+            throw new Error('FAILED')
         if (user.verify === 0) {
             if (!filtering.check(name))
                 throw new Error('UNAVAILABLE_NAME')

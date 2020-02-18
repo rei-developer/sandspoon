@@ -9,6 +9,7 @@ module.exports = {
         'REWARD',
         'ESCAPE',
         'CHAT',
+        'CHANGE_USERNAME',
         'CREATE_CLAN',
         'DELETE_CLAN',
         'GET_CLAN',
@@ -36,6 +37,16 @@ module.exports = {
         'SET_SKIN',
         'GET_PAY_INFO_ITEM',
         'GET_RANK',
-        'GET_USER_INFO_RANK'
+        'GET_USER_INFO_RANK',
+        'GET_USER_INFO_RANK_BY_USERNAME',
+        'GET_NOTICE_MESSAGE_COUNT',
+        'GET_NOTICE_MESSAGE',
+        'GET_INFO_NOTICE_MESSAGE',
+        'WITHDRAW_NOTICE_MESSAGE',
+        'DELETE_NOTICE_MESSAGE',
+        'RESTORE_NOTICE_MESSAGE',
+        'CLEAR_NOTICE_MESSAGE',
+        'ADD_NOTICE_MESSAGE',
+        'ADD_USER_REPORT'
     )
 }

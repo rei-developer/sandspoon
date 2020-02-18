@@ -10,9 +10,6 @@ dotenv.config()
 
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } = process.env
 
-const scopes = ['https://www.googleapis.com/auth/androidpublisher']
-const min30 = 30 * 60 * 1000
-
 let tokenStorage = {
     accessToken: null,
     tokenType: null,
@@ -73,7 +70,7 @@ router.get('/token/request', ctx => {
     const oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
     const url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
-        scope: scopes,
+        scope: ['https://www.googleapis.com/auth/androidpublisher'],
         prompt: 'consent'
     })
     ctx.redirect(url)
@@ -101,7 +98,7 @@ router.get('/token/redirect', async ctx => {
                 tokenStorage.expiresIn = data.expires_in
                 tokenStorage.refreshToken = data.refresh_token
                 if (repeatRefresh === null)
-                    repeatRefresh = setInterval(RefreshIABTokenInterval, min30)
+                    repeatRefresh = setInterval(RefreshIABTokenInterval, 55 * 60 * 1000)
                 resolve({ tokenStorage, status: 'SUCCESS' })
             })
         })

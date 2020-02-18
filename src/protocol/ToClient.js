@@ -36,10 +36,17 @@ module.exports = {
         'GET_SHOP',
         'GET_SKIN_ITEM',
         'MESSAGE_SHOP',
+        'MESSAGE_LOBBY',
         'GET_SKIN_LIST',
         'UPDATE_CASH_AND_COIN',
         'GET_PAY_INFO_ITEM',
         'GET_RANK',
-        'GET_USER_INFO_RANK'
+        'GET_USER_INFO_RANK',
+        'MESSAGE_RANK',
+        'GET_NOTICE_MESSAGE_COUNT',
+        'GET_NOTICE_MESSAGE',
+        'GET_INFO_NOTICE_MESSAGE',
+        'DELETE_NOTICE_MESSAGE',
+        'MESSAGE_GAME'
     )
 }

@@ -109,8 +109,6 @@ module.exports = class Server {
 
         handler[ToServer.HELLO] = async () => this.login(user)
 
-        handler[ToServer.CHAT] = async data => user.chat(utf8.decode(data))
-
         handler[ToServer.INPUT_ARROW] = async data => {
             const view = new DataView(data.buffer)
             const x = view.getInt8(0)
@@ -131,6 +129,10 @@ module.exports = class Server {
         handler[ToServer.REWARD] = async data => user.result(data[0])
 
         handler[ToServer.ESCAPE] = async () => user.leave()
+
+        handler[ToServer.CHAT] = async data => user.chat(utf8.decode(data))
+
+        handler[ToServer.CHANGE_USERNAME] = async data => user.changeUsername(utf8.decode(data))
 
         handler[ToServer.CREATE_CLAN] = async data => user.createClan(utf8.decode(data))
 
@@ -230,6 +232,38 @@ module.exports = class Server {
             const int32 = new Int32Array(data.buffer)
             user.getUserInfoRank(int32[0])
         }
+
+        handler[ToServer.GET_USER_INFO_RANK_BY_USERNAME] = async data => user.getUserInfoRankByUsername(utf8.decode(data))
+
+        handler[ToServer.GET_NOTICE_MESSAGE_COUNT] = async () => user.getNoticeMessageCount()
+
+        handler[ToServer.GET_NOTICE_MESSAGE] = async data => user.getNoticeMessage(data[0])
+
+        handler[ToServer.GET_INFO_NOTICE_MESSAGE] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.getInfoNoticeMessage(int32[0])
+        }
+
+        handler[ToServer.WITHDRAW_NOTICE_MESSAGE] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.withdrawNoticeMessage(int32[0])
+        }
+
+        handler[ToServer.DELETE_NOTICE_MESSAGE] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.deleteNoticeMessage(int32[0])
+        }
+
+        handler[ToServer.RESTORE_NOTICE_MESSAGE] = async data => {
+            const int32 = new Int32Array(data.buffer)
+            user.restoreNoticeMessage(int32[0])
+        }
+
+        handler[ToServer.CLEAR_NOTICE_MESSAGE] = async () => user.clearNoticeMessage()
+
+        handler[ToServer.ADD_NOTICE_MESSAGE] = async data => user.addNoticeMessage(JSON.parse(utf8.decode(data)))
+
+        handler[ToServer.ADD_USER_REPORT] = async data => user.addUserReport(JSON.parse(utf8.decode(data)))
 
         return handler
     }
