@@ -169,7 +169,7 @@
             "id": 12,
             "type": "SKIN",
             "icon": "JHY",
-            "name": "이브",
+            "name": "빅토리아",
             "creator": "크로마토",
             "creatorId": 0,
             "description": "서울에 사는 절세미녀의 그녀는 노르웨이인 아버지와 한국인 어머니 사이에 태어난 혼혈 여자 아이이다.",
@@ -804,6 +804,36 @@
             "creatorId": 0,
             "description": "CROWN 지하 실험실에서 몰래 빠져나왔다. 뱀파이어를 만든 자이다.",
             "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 55,
+            "type": "SKIN",
+            "icon": "PrisonerA",
+            "name": "모범수",
+            "creator": "레어닉",
+            "creatorId": 0,
+            "description": "이름이 모 범수인데 실상은 전혀 아니다.",
+            "cost": 30,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 56,
+            "type": "SKIN",
+            "icon": "IB",
+            "name": "이브",
+            "creator": "리먼",
+            "creatorId": 0,
+            "description": "",
+            "cost": 70,
             "isCash": true,
             "method": {
                 "command": "",

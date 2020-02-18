@@ -312,11 +312,11 @@ module.exports = class RescueMode {
             red.reward.coin = coin
             switch (rank) {
                 case 1:
-                    blue.reward.point = 10
+                    red.reward.point = 10
                 case 2:
-                    blue.reward.point = 5
+                    red.reward.point = 5
                 case 3:
-                    blue.reward.point = 1
+                    red.reward.point = 1
             }
             red.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }

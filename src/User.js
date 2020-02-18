@@ -698,7 +698,7 @@ global.User = (function () {
             const target = await DB.FindUserByName(username)
             if (!target || !target.id)
                 return this.send(Serialize.MessageLobby('NON_EXISTENT_USER'))
-            if (!await DB.InsertNoticeMessage(this.id, target.id, title, content))
+            if (!await DB.InsertNoticeMessage(target.id, this.id, title, content))
                 return this.send(Serialize.MessageLobby('FAILED'))
             this.setUpCash(-10)
             this.send(Serialize.MessageLobby('ADD_NOTICE_SUCCESS'))
