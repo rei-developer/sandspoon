@@ -64,7 +64,7 @@ module.exports = {
                     u.name author,
                     u.blue_graphics avatar
                 FROM notice_messages nm
-                LEFT JOIN Users u ON u.id = nm.target_id
+                LEFT JOIN users u ON u.id = nm.target_id
                 WHERE nm.user_id = ? AND ${deleted ? '!' : ''}ISNULL(nm.deleted)
                 ORDER BY id DESC`, [id])
         } catch (e) {
@@ -215,7 +215,7 @@ module.exports = {
                     u.name author,
                     u.blue_graphics avatar
                 FROM notice_messages nm
-                LEFT JOIN Users u ON u.id = nm.target_id
+                LEFT JOIN users u ON u.id = nm.target_id
                 WHERE nm.id = ?
                 ORDER BY id DESC`, [id])
             return row
