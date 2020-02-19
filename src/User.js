@@ -397,7 +397,7 @@ global.User = (function () {
             if (targetMember.clanLevel >= 4)
                 return this.send(Serialize.MessageClan('LEVEL_LIMIT'))
             this.clan.setMemberLevel(data, targetMember.clanLevel + 1)
-            this.send(Serialize.GetClan())
+            this.getClan()
         }
 
         async setDownMemberLevelClan(data) {
@@ -420,7 +420,7 @@ global.User = (function () {
             if (targetMember.clanLevel <= 1)
                 return this.send(Serialize.MessageClan('LEVEL_LIMIT'))
             this.clan.setMemberLevel(data, targetMember.clanLevel - 1)
-            this.send(Serialize.GetClan())
+            this.getClan()
         }
 
         async changeMasterClan(data) {
@@ -431,7 +431,7 @@ global.User = (function () {
             if (this.id === data)
                 return this.send(Serialize.MessageClan('OWN_SELF'))
             this.clan.changeMaster(this, data)
-            this.send(Serialize.GetClan())
+            this.getClan()
         }
 
         async tempSkinBuy() {
