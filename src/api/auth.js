@@ -152,7 +152,7 @@ router.post('/register', async ctx => {
 router.post('/google', async ctx => {
     try {
         const { token, uuid, version } = ctx.request.body
-        if (version && version < config.VERSION)
+        if (version !== config.VERSION)
             return ctx.body = { status: 'NOT_UPDATED', version: config.VERSION }
         const blocked = await BlockedUserByUUID(uuid)
         if (blocked)
