@@ -147,7 +147,8 @@ global.User = (function () {
             if (clanMember)
                 this.clan = Clan.clans[clanMember.clan_id]
             this.id = user.id
-            this.rank = Data.rank.find(r => r.id === this.id).rank
+            const rank = Data.rank.find(r => r.id === this.id)
+            this.rank = rank ? rank.rank : 0
             this.name = user.name
             this.sex = user.sex
             this.level = user.level
