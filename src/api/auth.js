@@ -14,7 +14,7 @@ const { KEY } = process.env
 const OAUTH_ID = { GOOGLE: '112494846092-ar8ml4nm16mr7bhd3cekb87846fr5k0e.apps.googleusercontent.com' }
 const LOGIN_TYPE = { GOOGLE: 0 }
 
-function verifyGoogle(token) {
+function VerifyGoogle(token) {
     const option = {
         host: 'www.googleapis.com',
         path: '/oauth2/v3/tokeninfo?id_token=' + token
@@ -35,7 +35,7 @@ function verifyGoogle(token) {
     })
 }
 
-function issueToken(key, data) {
+function IssueToken(key, data) {
     return new Promise((resolve, reject) => {
         jwt.sign(data, key, {
             expiresIn: '1d',
@@ -48,7 +48,7 @@ function issueToken(key, data) {
     })
 }
 
-async function findUser({ id, loginType }) {
+async function FindUser({ id, loginType }) {
     try {
         const users = await DB.query('SELECT * FROM users WHERE `uid` = ? AND `login_type` = ?', [id, loginType])
         return users[0]
@@ -57,7 +57,16 @@ async function findUser({ id, loginType }) {
     }
 }
 
-async function registerUser({ id, loginType, name }) {
+async function FindUserById(id) {
+    try {
+        const users = await this.query('SELECT id, name FROM users WHERE `id` = ?', [id])
+        return users[0]
+    } catch (e) {
+        throw e
+    }
+}
+
+async function RegisterUser({ id, loginType, name }) {
     try {
         await DB.query('INSERT INTO users (`uid`, `login_type`, `name`) VALUES (?, ?, ?)', [id, loginType, name])
     } catch (e) {
@@ -65,25 +74,25 @@ async function registerUser({ id, loginType, name }) {
     }
 }
 
-async function blockedUser(uuid) {
+async function BlockedUserByUUID(uuid) {
     try {
-        const users = await DB.query('SELECT * FROM blocks WHERE `uuid` = ? AND date > DATE(NOW())', [uuid])
+        const users = await DB.query('SELECT * FROM blocks WHERE `uuid` = ? AND `date` > DATE(NOW())', [uuid])
         return users[0]
     } catch (e) {
         throw e
     }
 }
 
-async function blockedUser2(loginType, uid) {
+async function BlockedUserByUID(loginType, uid) {
     try {
-        const users = await DB.query('SELECT * FROM blocks WHERE `login_type` = ? AND `uid` = ? AND date > DATE(NOW())', [loginType, uid])
+        const users = await DB.query('SELECT * FROM blocks WHERE `login_type` = ? AND `uid` = ? AND `date` > DATE(NOW())', [loginType, uid])
         return users[0]
     } catch (e) {
         throw e
     }
 }
 
-function verifyToken(key, token) {
+function VerifyToken(key, token) {
     return new Promise((resolve, reject) => {
         jwt.verify(token, key, (err, decode) => {
             if (err)
@@ -93,7 +102,7 @@ function verifyToken(key, token) {
     })
 }
 
-async function verifyUser({ id, name, loginType }) {
+async function VerifyUser({ id, name, loginType }) {
     try {
         await DB.query('UPDATE users SET `name` = ?, `verify` = 1 WHERE `uid` = ? AND `login_type` = ?', [name, id, loginType])
     } catch (e) {
@@ -101,17 +110,36 @@ async function verifyUser({ id, name, loginType }) {
     }
 }
 
+async function InsertNoticeMessage(userId, targetId, title, content, cash) {
+    try {
+        await this.query('INSERT INTO notice_messages (`user_id`, `target_id`, `title`, `content`, `cash`) VALUES (?, ?, ?, ?, ?)', [userId, targetId, title, content, cash])
+        return true
+    } catch (e) {
+        throw e
+    }
+}
+
 router.post('/register', async ctx => {
     try {
-        const { token, name } = ctx.request.body
-        const verify = await verifyToken(KEY, token)
-        const user = await findUser(verify)
+        const { token, name, recommend } = ctx.request.body
+        const verify = await VerifyToken(KEY, token)
+        const user = await FindUser(verify)
         if (/[^가-힣]/.test(name))
             throw new Error('FAILED')
         if (user.verify === 0) {
             if (!filtering.check(name))
                 throw new Error('UNAVAILABLE_NAME')
-            await verifyUser(Object.assign(verify, { name }))
+            await VerifyUser(Object.assign(verify, { name }))
+            if (recommend && recommend !== '') {
+                const recommendId = Number(recommend)
+                if (!isNaN(recommendId) && recommendId > 0) {
+                    const target = await FindUserById(recommendId)
+                    if (target) {
+                        await InsertNoticeMessage(user.id, target.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${target.name}]님의 추천으로 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 20개를 지급해드립니다.`, 20)
+                        await InsertNoticeMessage(target.id, user.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${name}]님께서 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 50개를 지급해드립니다.<br><br><color=red>(추천인 코드를 절대 악용하지 마세요. 운영진이 로그를 통해 모두 확인이 가능합니다. 부정 수급 또는 어뷰징 행위시 계정이 정지될 수 있습니다.)</color>`, 50)
+                    }
+                }
+            }
             ctx.body = 'LOGIN_SUCCESS'
         } else {
             throw new Error('FAILED')
@@ -124,12 +152,12 @@ router.post('/register', async ctx => {
 router.post('/google', async ctx => {
     try {
         const { token, uuid, version } = ctx.request.body
-        if (version !== config.VERSION)
+        if (version && version < config.VERSION)
             return ctx.body = { status: 'NOT_UPDATED', version: config.VERSION }
-        const blocked = await blockedUser(uuid)
+        const blocked = await BlockedUserByUUID(uuid)
         if (blocked)
             return ctx.body = { status: 'BLOCKED', date: blocked.date, description: blocked.description }
-        const verify = await verifyGoogle(token)
+        const verify = await VerifyGoogle(token)
         if (verify.aud === OAUTH_ID.GOOGLE) {
             const data = {
                 id: verify.sub,
@@ -137,13 +165,13 @@ router.post('/google', async ctx => {
                 name: verify.name,
                 uuid
             }
-            const blocked2 = await blockedUser2(data.loginType, data.id)
+            const blocked2 = await BlockedUserByUID(data.loginType, data.id)
             if (blocked2)
                 return ctx.body = { status: 'BLOCKED', date: blocked2.date, description: blocked2.description }
-            const user = await findUser(data)
-            const my = await issueToken(KEY, data)
+            const user = await FindUser(data)
+            const my = await IssueToken(KEY, data)
             if (!user) {
-                await registerUser(data)
+                await RegisterUser(data)
                 ctx.body = {
                     status: 'REGISTER_SUCCESS',
                     token: my

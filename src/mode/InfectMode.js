@@ -268,10 +268,13 @@ module.exports = class InfectMode {
             switch (rank) {
                 case 1:
                     red.reward.point = 10
+                    break
                 case 2:
                     red.reward.point = 5
+                    break
                 case 3:
                     red.reward.point = 1
+                    break
             }
             red.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
@@ -289,10 +292,13 @@ module.exports = class InfectMode {
             switch (rank) {
                 case 1:
                     blue.reward.point = 10
+                    break
                 case 2:
                     blue.reward.point = 5
+                    break
                 case 3:
                     blue.reward.point = 1
+                    break
             }
             blue.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }

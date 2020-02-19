@@ -43,7 +43,8 @@ module.exports = class Server {
 
         setInterval(() => {
             this.io.clients.forEach((ws) => {
-                if (!ws.isAlive) return ws.terminate()
+                if (!ws.isAlive)
+                    return ws.terminate()
                 ws.isAlive = false
                 view.setInt32(0, ws.pongTime - Date.now(), true)
                 try {
