@@ -59,7 +59,7 @@ async function FindUser({ id, loginType }) {
 
 async function FindUserById(id) {
     try {
-        const users = await this.query('SELECT id, name FROM users WHERE `id` = ?', [id])
+        const users = await DB.query('SELECT id, name FROM users WHERE `id` = ?', [id])
         return users[0]
     } catch (e) {
         throw e
@@ -112,7 +112,7 @@ async function VerifyUser({ id, name, loginType }) {
 
 async function InsertNoticeMessage(userId, targetId, title, content, cash) {
     try {
-        await this.query('INSERT INTO notice_messages (`user_id`, `target_id`, `title`, `content`, `cash`) VALUES (?, ?, ?, ?, ?)', [userId, targetId, title, content, cash])
+        await DB.query('INSERT INTO notice_messages (`user_id`, `target_id`, `title`, `content`, `cash`) VALUES (?, ?, ?, ?, ?)', [userId, targetId, title, content, cash])
         return true
     } catch (e) {
         throw e
@@ -135,8 +135,8 @@ router.post('/register', async ctx => {
                 if (!isNaN(recommendId) && recommendId > 0) {
                     const target = await FindUserById(recommendId)
                     if (target) {
-                        await InsertNoticeMessage(user.id, target.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${target.name}]님의 추천으로 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 20개를 지급해드립니다.`, 20)
-                        await InsertNoticeMessage(target.id, user.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${name}]님께서 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 50개를 지급해드립니다.<br><br><color=red>(추천인 코드를 절대 악용하지 마세요. 운영진이 로그를 통해 모두 확인이 가능합니다. 부정 수급 또는 어뷰징 행위시 계정이 정지될 수 있습니다.)</color>`, 50)
+                        await InsertNoticeMessage(user.id, target.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${target.name}]님의 추천으로 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 50개를 지급해드립니다.`, 50)
+                        await InsertNoticeMessage(target.id, user.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${name}]님께서 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 20개를 지급해드립니다.<br><br><color=red>(추천인 코드를 절대 악용하지 마세요. 운영진이 로그를 통해 모두 확인이 가능합니다. 부정 수급 또는 어뷰징 행위시 계정이 정지될 수 있습니다.)</color>`, 20)
                     }
                 }
             }
@@ -153,7 +153,7 @@ router.post('/google', async ctx => {
     try {
         const { token, uuid, version } = ctx.request.body
         if (version !== config.VERSION)
-            return ctx.body = { status: 'NOT_UPDATED', version: config.VERSION }
+            return ctx.body = { status: 'NOT_UPDATED' }
         const blocked = await BlockedUserByUUID(uuid)
         if (blocked)
             return ctx.body = { status: 'BLOCKED', date: blocked.date, description: blocked.description }

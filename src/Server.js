@@ -80,7 +80,8 @@ module.exports = class Server {
             const { token } = querystring.parse(req.url.slice(1))
             const verify = token !== 'test' && await verifyToken(KEY, token) || 'test'
             const user = await User.create(socket, verify)
-            if (!user) return
+            if (!user)
+                return
             this.login(user)
             socket.user = user
             console.log(user.name + ' 접속 (동시접속자: ' + User.users.length + '명)')
@@ -90,7 +91,6 @@ module.exports = class Server {
                     const bytes = new Uint8Array(rawData)
                     const view = new DataView(bytes.buffer)
                     const type = view.getUint16()
-
                     if (handler[type])
                         handler[type](bytes.slice(2))
                 })
