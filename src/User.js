@@ -559,7 +559,7 @@ global.User = (function () {
                         const receiveCash = Math.floor(item.cost / 20)
                         const title = item.name + ' 스킨 구매에 따른 보석 지급 안내'
                         const content = '안녕하세요?<br><br>스킨 공모에 출품하신 <color=red>[' + item.name + ']</color>' + (pix.maker(item.name) ? '를' : '을') + ' <color=red>[' + this.name + ']</color>님께서 구입하셨기 때문에 보석 "' + receiveCash + '개"를 지급해드립니다.<br><br>앞으로도 많은 출품을 부탁드립니다. 감사합니다!'
-                        await DB.InsertNoticeMessage(this.id, item.creatorId, title, content, receiveCash)
+                        await DB.InsertNoticeMessage(item.creatorId, this.id, title, content, receiveCash)
                     }
                 } else {
                     if (this.coin < item.cost * data.days)
