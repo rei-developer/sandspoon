@@ -888,21 +888,6 @@
         {
             "id": 60,
             "type": "SKIN",
-            "icon": "Sesil",
-            "name": "세실",
-            "creator": "설명",
-            "creatorId": 78,
-            "description": "실력 좋은 마법사. 마법으로 무엇이든 얼릴 수 있다는 소문이 돌고 있다.",
-            "cost": 70,
-            "isCash": true,
-            "method": {
-                "command": "",
-                "arguments": {}
-            }
-        },
-        {
-            "id": 61,
-            "type": "SKIN",
             "icon": "JK",
             "name": "여고생",
             "creator": "파르큥",
@@ -916,7 +901,7 @@
             }
         },
         {
-            "id": 62,
+            "id": 61,
             "type": "SKIN",
             "icon": "YBH",
             "name": "윤비화",
@@ -931,7 +916,7 @@
             }
         },
         {
-            "id": 63,
+            "id": 62,
             "type": "SKIN",
             "icon": "Charlotte",
             "name": "샤를로트",
@@ -946,7 +931,7 @@
             }
         },
         {
-            "id": 64,
+            "id": 63,
             "type": "SKIN",
             "icon": "MouseDoll",
             "name": "쥐인형",
@@ -961,13 +946,28 @@
             }
         },
         {
-            "id": 65,
+            "id": 64,
             "type": "SKIN",
             "icon": "Kuro",
             "name": "쿠노이치 쿠로",
             "creator": "파르큥",
             "creatorId": 94,
             "description": "학창시절부터 존재감이 없었던 쿠로는 음습한 곳에서는 누구보다도 잘 숨을 자신이 있다고 전한다.",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 65,
+            "type": "SKIN",
+            "icon": "Seri",
+            "name": "세리",
+            "creator": "설명",
+            "creatorId": 78,
+            "description": "어느 작은 나라의 공주이다.",
             "cost": 50,
             "isCash": true,
             "method": {
