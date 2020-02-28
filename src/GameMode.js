@@ -102,7 +102,7 @@ module.exports = class GameMode {
 
     update() {
         if (this.room.users.length >= 4) {
-            const mode = ModeType.RESCUE + parseInt(Math.random() * ModeType.HIDE)
+            const mode = ModeType.HIDE // ModeType.RESCUE + parseInt(Math.random() * ModeType.HIDE)
             switch (mode) {
                 case ModeType.RESCUE:
                     this.room.changeMode(RescueMode)
