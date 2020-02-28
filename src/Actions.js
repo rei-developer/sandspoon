@@ -360,7 +360,7 @@ class EscapeState {
         if (self.game.key < 1)
             return self.send(Serialize.InformMessage('<color=red>열쇠가 부족합니다.</color>'))
         --self.game.key
-        const r = parseInt(Math.random() * 3)
+        const r = parseInt(Math.random() * 2)
         if (r === 0) {
             ++mode.score.blue
             self.publish(Serialize.NoticeMessage(self.name + ' 탈출 성공!'))
@@ -374,12 +374,12 @@ class EscapeState {
     }
 
     update(context) {
-        if (++this.count % 10 == 0) {
+        if (++this.count % 5 == 0) {
             const { mode } = Room.get(context.roomId)
             for (const red of mode.redTeam) {
                 if (red.place === context.place) {
                     const range = Math.abs(red.x - context.x) + Math.abs(red.y - context.y)
-                    if (range >= 5) continue
+                    if (range >= 12) continue
                     if (red.game.hp < 0) {
                         mode.moveToBase(red)
                         red.game.hp = 100
