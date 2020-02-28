@@ -175,7 +175,7 @@ global.User = (function () {
         }
 
         async changeUsername(username) {
-            if (this.cash < 1000)
+            if (this.cash < 500)
                 return this.send(Serialize.MessageLobby('NOT_ENOUGH_CASH'))
             if (username.length < 1 || username.length > 6)
                 return this.send(Serialize.MessageLobby('AN_IMPOSSIBLE_LENGTH'))
@@ -191,7 +191,7 @@ global.User = (function () {
             if (user)
                 user.name = username
             this.name = username
-            this.setUpCash(-1000)
+            this.setUpCash(-500)
             this.send(Serialize.MessageLobby('CHANGE_USERNAME_SUCCESS'))
             this.send(Serialize.UserData(this))
         }
@@ -556,7 +556,7 @@ global.User = (function () {
                         return this.send(Serialize.MessageShop('NOT_ENOUGH_CASH'))
                     this.setUpCash(-(item.cost * data.days))
                     if (item.creatorId > 0 && this.id !== item.creatorId) {
-                        const receiveCash = Math.floor(item.cost / 20)
+                        const receiveCash = Math.floor(item.cost / 10)
                         const title = item.name + ' 스킨 구매에 따른 보석 지급 안내'
                         const content = '안녕하세요?<br><br>스킨 공모에 출품하신 <color=red>[' + item.name + ']</color>' + (pix.maker(item.name) ? '를' : '을') + ' <color=red>[' + this.name + ']</color>님께서 구입하셨기 때문에 보석 "' + receiveCash + '개"를 지급해드립니다.<br><br>앞으로도 많은 출품을 부탁드립니다. 감사합니다!'
                         await DB.InsertNoticeMessage(item.creatorId, this.id, title, content, receiveCash)

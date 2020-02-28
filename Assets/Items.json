@@ -8,7 +8,7 @@
             "creator": "크로마토",
             "creatorId": 1,
             "description": "일본 어느 신사의 무녀. 그녀는 오니 퇴치에 매우 전문적이다.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "Yuzuha",
@@ -23,7 +23,7 @@
             "creator": "크로마토",
             "creatorId": 1,
             "description": "유즈하의 동생이며, 신사의 청결을 담당하고 있다.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "YuzuhaBlue",
@@ -53,7 +53,7 @@
             "creator": "크로마토",
             "creatorId": 0,
             "description": "소를 먹으면 소 기운이 솟아나요! 당신도 소머리국밥 한 그릇하실?",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "Someok",
@@ -68,7 +68,7 @@
             "creator": "크로마토",
             "creatorId": 0,
             "description": "생명과 대자연의 힘으로 오니 퇴치를 전문적으로 하는 오니 전문 퇴치 마법사.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "Red_Witch",
@@ -83,7 +83,7 @@
             "creator": "크로마토",
             "creatorId": 0,
             "description": "변호사 시험에 합격했으나 정작 변호사가 되지 못해 탐정사무소를 차리고 현재는 탐정으로 일하는 중.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "PYH",
@@ -128,7 +128,7 @@
             "creator": "크로마토",
             "creatorId": 0,
             "description": "그 로리를 의미하는 것이 아니에요.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "Loliny",
@@ -143,7 +143,7 @@
             "creator": "크로마토",
             "creatorId": 0,
             "description": "나는 여자가 아니야... 남자야.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "KJT",
@@ -158,7 +158,7 @@
             "creator": "크로마토",
             "creatorId": 0,
             "description": "오니를 전문으로 퇴치하는 사업을 시작하게 된 그의 회사는 단 1년만에 벤처 기업으로 성장하게 된다.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "ISJ",
@@ -173,7 +173,7 @@
             "creator": "크로마토",
             "creatorId": 0,
             "description": "서울에 사는 절세미녀의 그녀는 노르웨이인 아버지와 한국인 어머니 사이에 태어난 혼혈 여자 아이이다.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "JHY",
@@ -278,7 +278,7 @@
             "creator": "화이트",
             "creatorId": 70,
             "description": "",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -308,7 +308,7 @@
             "creator": "트윙클",
             "creatorId": 83,
             "description": "",
-            "cost": 90,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -368,7 +368,7 @@
             "creator": "설명",
             "creatorId": 78,
             "description": "",
-            "cost": 80,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -398,7 +398,7 @@
             "creator": "리먼",
             "creatorId": 34,
             "description": "원래는 어디에서나 볼 수 있는 고양이였지만 주사기에 있는 약물 투입 후 부작용으로 꼬리가 없어지고 몸의 형태가 바뀌었으며, 이족보행이 가능해졌다. 지능은 낮다.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -413,7 +413,7 @@
             "creator": "트윙클",
             "creatorId": 83,
             "description": "",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -428,7 +428,7 @@
             "creator": "크로마토",
             "creatorId": 0,
             "description": "",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -503,7 +503,7 @@
             "creator": "설명",
             "creatorId": 78,
             "description": "",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -518,7 +518,7 @@
             "creator": "리먼",
             "creatorId": 34,
             "description": "",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -578,7 +578,7 @@
             "creator": "리먼",
             "creatorId": 34,
             "description": "말 수가 적으며, 항상 냉정하고 차갑다.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -593,7 +593,7 @@
             "creator": "설명",
             "creatorId": 78,
             "description": "",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -608,7 +608,7 @@
             "creator": "화이트",
             "creatorId": 70,
             "description": "이 비둘기는 아주 흔한 행복한 비둘기입니다. 아마도요..?",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -668,7 +668,7 @@
             "creator": "리먼",
             "creatorId": 34,
             "description": "청초한 아름다움을 지니고있는 소녀이며, 희수와 쌍둥이이다.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -683,7 +683,7 @@
             "creator": "리먼",
             "creatorId": 0,
             "description": "조금 냉정하고 말 수가 적다. 희린과 쌍둥이이다.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -728,7 +728,7 @@
             "creator": "화이트",
             "creatorId": 70,
             "description": "그녀는 축복을 통해 신성한 무기를 만들고 성수를 만들어 오니들을 퇴치하는 사제입니다.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -758,7 +758,7 @@
             "creator": "리먼",
             "creatorId": 34,
             "description": "한 겨울날 자살한 소녀가 한이 맺어 지박령이 되었다. 보통 눈이 오는 날 사람들의 앞에 나타난다.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -788,7 +788,7 @@
             "creator": "트윙클",
             "creatorId": 83,
             "description": "배가 너무 고파서 간을 꾀내려고 왔다.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -833,7 +833,7 @@
             "creator": "리먼",
             "creatorId": 34,
             "description": "",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -878,7 +878,7 @@
             "creator": "설명",
             "creatorId": 78,
             "description": "실력 좋은 마법사. 마법으로 무엇이든 얼릴 수 있다는 소문이 돌고 있다.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -893,7 +893,7 @@
             "creator": "파르큥",
             "creatorId": 94,
             "description": "하와와 여고생쟝이어와요.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -908,7 +908,7 @@
             "creator": "아이유",
             "creatorId": 209,
             "description": "향기로운 꽃을 다스리는 꿈의 아이.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -923,7 +923,7 @@
             "creator": "또이339",
             "creatorId": 13,
             "description": "돌연변이 천사란 이유로 천계에서 추방당했다.",
-            "cost": 70,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
@@ -938,7 +938,7 @@
             "creator": "트윙클",
             "creatorId": 83,
             "description": "숲 속 어딘가 마법에 걸린 쥐인형이 살아 숨쉰다고 한다.",
-            "cost": 60,
+            "cost": 50,
             "isCash": true,
             "method": {
                 "command": "",
