@@ -246,7 +246,8 @@ module.exports = class RescueMode {
                 break
             case TeamType.BLUE:
                 this.blueTeam.splice(this.blueTeam.indexOf(self), 1)
-                if (self.game.caught)--this.score.red
+                if (self.game.caught)
+                    --this.score.red
                 break
         }
         self.game = {}

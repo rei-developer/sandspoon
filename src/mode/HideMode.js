@@ -335,6 +335,7 @@ module.exports = class HideMode {
                         for (const lotto of lottos) {
                             this.blueTeam.splice(this.blueTeam.indexOf(lotto), 1)
                             this.redTeam.push(lotto)
+                            this.moveToBase(lotto)
                             lotto.game.team = TeamType.RED
                             lotto.setGraphics(lotto.redGraphics)
                             if (lotto.state === PlayerState.Tansu) {
