@@ -173,27 +173,28 @@ module.exports = class HideMode {
     }
 
     change() {
-        const skins = [
-            '2door',
-            '170-Door01',
-            'Ball',
-            'Box',
-            'door-Blackwood',
-            'door-Blackwood_panel',
-            'door-Chocolatewood',
-            'ev02',
-            'iron',
-            'iron2',
-            'steel',
-            'tana_black',
-            'tana_red',
-            'tana_white',
-            'tansu',
-            'ud_toilet'
-        ]
-        const i = Math.floor(Math.random() * skins.length)
-        for (const blue of this.blueTeam)
+        for (const blue of this.blueTeam) {
+            const skins = [
+                '2door',
+                '170-Door01',
+                'Ball',
+                'Box',
+                'door-Blackwood',
+                'door-Blackwood_panel',
+                'door-Chocolatewood',
+                'ev02',
+                'iron',
+                'iron2',
+                'steel',
+                'tana_black',
+                'tana_red',
+                'tana_white',
+                'tansu',
+                'ud_toilet'
+            ]
+            const i = Math.floor(Math.random() * skins.length)
             blue.setGraphics(skins[i])
+        }
     }
 
     doAction(self, event) {
