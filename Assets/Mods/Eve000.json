@@ -50,5 +50,18 @@
 				"command": "key"
 			}
 		}
+	],
+	"5": [
+		{
+			"name": "탈출구",
+			"place": 0,
+			"x": 0,
+			"y": 0,
+			"graphics": "door-Blackwood_panel",
+			"collider": true,
+			"action": {
+				"command": "escape"
+			}
+		}
 	]
 }

@@ -17,7 +17,7 @@ module.exports = class EscapeMode {
         this.map = MapType.ASYLUM + parseInt(Math.random() * MapType.DESERT)
         this.count = 230
         this.maxCount = 230
-        this.supplyCount = 10
+        this.supplyCount = 5
         this.score = {
             red: 0,
             blue: 0
@@ -202,6 +202,21 @@ module.exports = class EscapeMode {
         return true
     }
 
+    spawnDoor() {
+        const newObjects = require('../../Assets/Mods/Eve000.json')[5]
+        for (const object of newObjects) {
+            const event = new Event(this.roomId, object)
+            const red = pix.sample(this.redTeam, 1)[0]
+            if (!red)
+                continue
+            event.place = red.place
+            event.x = red.x
+            event.y = red.y
+            this.room.addEvent(event)
+            this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
+        }
+    }
+
     spawnKey() {
         const newObjects = require('../../Assets/Mods/Eve000.json')[4]
         for (const object of newObjects) {
@@ -215,7 +230,7 @@ module.exports = class EscapeMode {
             this.room.addEvent(event)
             this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
         }
-        this.supplyCount = 10
+        this.supplyCount = 5
     }
 
     doAction(self, event) {
@@ -353,6 +368,7 @@ module.exports = class EscapeMode {
                             }
                             lotto.send(Serialize.SetGameTeam(lotto))
                         }
+                        this.spawnDoor()
                         this.publishToRed(Serialize.NoticeMessage('인간의 탈출을 막고 모두 색출하라.'))
                         this.publishToRed(Serialize.PlaySound('A4'))
                         this.publishToBlue(Serialize.NoticeMessage('오니를 피해 열쇠를 찾아 탈출하라.'))

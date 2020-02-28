@@ -462,6 +462,17 @@ my.MessageGame = function (status) {
     return JSON.stringify(packet)
 }
 
+my.SetAnimation = function (obj, anim, sound = null) {
+    const packet = {}
+    packet._head = ToClient.SET_ANIMATION
+    packet.type = obj.type
+    packet.index = obj.index
+    packet.anim = anim
+    if (sound)
+        packet.sound = sound
+    return JSON.stringify(packet)
+}
+
 module.exports = {
     ...my
 }

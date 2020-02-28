@@ -1,17 +1,6 @@
 {
 	"1": [
 		{
-			"name": "탈출구",
-			"place": 13,
-			"x": 20,
-			"y": 12,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
-		{
 			"name": "",
 			"place": 13,
 			"x": 11,
@@ -408,17 +397,6 @@
 	],
 	"2": [
 		{
-			"name": "탈출구",
-			"place": 57,
-			"x": 21,
-			"y": 4,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
-		{
 			"name": "",
 			"place": 57,
 			"x": 19,
@@ -704,17 +682,6 @@
 	],
 	"3": [
 		{
-			"name": "탈출구",
-			"place": 74,
-			"x": 4,
-			"y": 13,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
-		{
 			"name": "",
 			"place": 74,
 			"x": 14,
@@ -870,17 +837,6 @@
 		}
 	],
 	"4": [
-		{
-			"name": "탈출구",
-			"place": 96,
-			"x": 17,
-			"y": 21,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
 		{
 			"name": "",
 			"place": 96,
@@ -1149,17 +1105,6 @@
 	],
 	"5": [
 		{
-			"name": "탈출구",
-			"place": 122,
-			"x": 13,
-			"y": 4,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
-		{
 			"name": "",
 			"place": 122,
 			"x": 6,
@@ -1283,17 +1228,6 @@
 	],
 	"6": [
 		{
-			"name": "탈출구",
-			"place": 169,
-			"x": 10,
-			"y": 11,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
-		{
 			"name": "",
 			"place": 169,
 			"x": 13,
@@ -1405,17 +1339,6 @@
 		}
 	],
 	"7": [
-		{
-			"name": "탈출구",
-			"place": 191,
-			"x": 11,
-			"y": 12,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
 		{
 			"name": "",
 			"place": 191,
@@ -1540,17 +1463,6 @@
 	],
 	"8": [
 		{
-			"name": "탈출구",
-			"place": 217,
-			"x": 20,
-			"y": 8,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
-		{
 			"name": "",
 			"place": 217,
 			"x": 31,
@@ -1673,17 +1585,6 @@
 		}
 	],
 	"9": [
-		{
-			"name": "탈출구",
-			"place": 255,
-			"x": 15,
-			"y": 5,
-			"graphics": "door-Blackwood_panel",
-			"collider": true,
-			"action": {
-				"command": "escape"
-			}
-		},
 		{
 			"name": "",
 			"place": 255,
