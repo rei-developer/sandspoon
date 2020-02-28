@@ -1,4 +1,4 @@
-const { TeamType, ModeType, MapType } = require('../util/const')
+const { TeamType } = require('../util/const')
 const ToClient = require('./ToClient')
 const moment = require('moment')
 const my = {}
@@ -159,17 +159,6 @@ my.ModeData = function (mode) {
     packet.type = mode.type
     packet.count = mode.count
     packet.maxCount = mode.maxCount
-    switch (mode.type) {
-        case ModeType.RESCUE:
-            packet.hostage = mode.score.red
-            break
-        case ModeType.INFECT:
-            packet.alive = mode.blueTeam.length
-            break
-        case ModeType.HIDE:
-            packet.alive = mode.blueTeam.length
-            break
-    }
     return JSON.stringify(packet)
 }
 

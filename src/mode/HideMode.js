@@ -356,6 +356,13 @@ module.exports = class HideMode {
                     }
                     break
                 case STATE_GAME:
+                    if (this.count === 105) {
+                        this.room.publish(Serialize.InformMessage('<color=red>잠시 후 2차 변신이 시작됩니다...</color>'))
+                        this.room.publish(Serialize.PlaySound('Second'))
+                    } else if (this.count === 100) {
+                        this.change()
+                        this.room.publish(Serialize.PlaySound('A6'))
+                    }
                     if (this.redTeam.length === 0)
                         this.result(TeamType.BLUE)
                     else if (this.blueTeam.length === 0)
