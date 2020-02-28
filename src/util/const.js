@@ -23,7 +23,9 @@ const MapType = {
 const ModeType = {
     RESCUE: 1,
     INFECT: 2,
-    HIDE: 3
+    HIDE: 3,
+    ESCAPE: 4,
+    DEFENSE: 5
 }
 
 module.exports = {

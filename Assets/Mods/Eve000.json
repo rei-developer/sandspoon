@@ -7,7 +7,9 @@
 			"y": 0,
 			"graphics": "Box",
 			"collider": false,
-			"action": { "command": "box" }
+			"action": {
+				"command": "box"
+			}
 		}
 	],
 	"2": [
@@ -18,7 +20,9 @@
 			"y": 0,
 			"graphics": "Rabbit",
 			"collider": false,
-			"action": { "command": "rabbit" }
+			"action": {
+				"command": "rabbit"
+			}
 		}
 	],
 	"3": [
@@ -29,7 +33,22 @@
 			"y": 0,
 			"graphics": "ud_toilet",
 			"collider": true,
-			"action": { "command": "obstacle" }
+			"action": {
+				"command": "obstacle"
+			}
+		}
+	],
+	"4": [
+		{
+			"name": "",
+			"place": 0,
+			"x": 0,
+			"y": 0,
+			"graphics": "key",
+			"collider": false,
+			"action": {
+				"command": "key"
+			}
 		}
 	]
 }

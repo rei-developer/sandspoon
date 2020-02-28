@@ -14,8 +14,10 @@ module.exports = class Score {
         this.blast = 0
         this.rescue = 0
         this.rescueCombo = 0
+        this.escape = 0
         this.survive = 0
         this.surviveForWardrobe = 0
+        this.foundKey = 0
     }
 
     send(self) {
@@ -25,6 +27,7 @@ module.exports = class Score {
         self.blast += this.blast
         self.rescue += this.rescue
         self.rescueCombo += this.rescueCombo
+        self.escape += this.escape
         self.survive += this.survive + this.surviveForWardrobe
         this.init()
     }

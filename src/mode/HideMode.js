@@ -22,7 +22,7 @@ module.exports = class HideMode {
         }
         this.tick = 0
         this.state = STATE_READY
-        this.type = ModeType.INFECT
+        this.type = ModeType.HIDE
         this.room = Room.get(this.roomId)
         const objects = require('../../Assets/Mods/Mod' + ('' + 3).padStart(3, '0') + '.json')[this.map]
         for (const object of objects) {
@@ -34,7 +34,7 @@ module.exports = class HideMode {
     getJSON() {
         return {
             map: this.map,
-            mode: ModeType.INFECT,
+            mode: this.type,
             count: this.count,
             maxCount: this.maxCount,
             red: this.score.red,

@@ -3,6 +3,7 @@ const { ModeType, MapType } = require('./util/const')
 const RescueMode = require('./mode/RescueMode')
 const InfectMode = require('./mode/InfectMode')
 const HideMode = require('./mode/HideMode')
+const EscapeMode = require('./mode/EscapeMode')
 const Event = require('./Event')
 
 module.exports = class GameMode {
@@ -102,7 +103,7 @@ module.exports = class GameMode {
 
     update() {
         if (this.room.users.length >= 4) {
-            const mode = ModeType.RESCUE + parseInt(Math.random() * ModeType.HIDE)
+            const mode = ModeType.ESCAPE // ModeType.RESCUE + parseInt(Math.random() * ModeType.ESCAPE)
             switch (mode) {
                 case ModeType.RESCUE:
                     this.room.changeMode(RescueMode)
@@ -112,6 +113,9 @@ module.exports = class GameMode {
                     break
                 case ModeType.HIDE:
                     this.room.changeMode(HideMode)
+                    break
+                case ModeType.ESCAPE:
+                    this.room.changeMode(EscapeMode)
                     break
             }
             return

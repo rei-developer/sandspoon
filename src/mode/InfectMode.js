@@ -35,7 +35,7 @@ module.exports = class InfectMode {
     getJSON() {
         return {
             map: this.map,
-            mode: ModeType.INFECT,
+            mode: this.type,
             count: this.count,
             maxCount: this.maxCount,
             red: this.score.red,
@@ -179,6 +179,22 @@ module.exports = class InfectMode {
         }
         this.room.draw(target)
         return true
+    }
+
+    supply() {
+        const newObjects = require('../../Assets/Mods/Eve000.json')[1]
+        for (const object of newObjects) {
+            const event = new Event(this.roomId, object)
+            const blue = pix.sample(this.blueTeam.filter(u => u.state !== PlayerState.Tansu), 1)[0]
+            if (!blue) continue
+            event.place = blue.place
+            event.x = blue.x
+            event.y = blue.y
+            this.room.addEvent(event)
+            this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
+        }
+        this.room.publish(Serialize.PlaySound('chopper'))
+        this.supplyCount = 30 + parseInt(Math.random() * 30)
     }
 
     doAction(self, event) {
@@ -338,26 +354,18 @@ module.exports = class InfectMode {
                     }
                     break
                 case STATE_GAME:
-                    if (this.supplyCount === 0) {
-                        const newObjects = require('../../Assets/Mods/Eve000.json')[1]
-                        for (const object of newObjects) {
-                            const event = new Event(this.roomId, object)
-                            const blue = pix.sample(this.blueTeam.filter(u => u.state !== PlayerState.Tansu), 1)[0]
-                            if (!blue) continue
-                            event.place = blue.place
-                            event.x = blue.x
-                            event.y = blue.y
-                            this.room.addEvent(event)
-                            this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
-                        }
-                        this.room.publish(Serialize.PlaySound('chopper'))
-                        this.supplyCount = 30 + parseInt(Math.random() * 30)
-                    }
-                    if (this.redTeam.length > 2)--this.supplyCount
-                    if (this.redTeam.length === 0) this.result(TeamType.BLUE)
-                    else if (this.blueTeam.length === 0) this.result(TeamType.RED)
-                    else if (this.count === 5) this.room.publish(Serialize.PlaySound('Second'))
-                    else if (this.count === 0) this.result(TeamType.BLUE)
+                    if (this.supplyCount === 0)
+                        this.supply()
+                    if (this.redTeam.length > 2)
+                        --this.supplyCount
+                    if (this.redTeam.length === 0)
+                        this.result(TeamType.BLUE)
+                    else if (this.blueTeam.length === 0)
+                        this.result(TeamType.RED)
+                    else if (this.count === 5)
+                        this.room.publish(Serialize.PlaySound('Second'))
+                    else if (this.count === 0)
+                        this.result(TeamType.BLUE)
                     break
             }
             --this.count
