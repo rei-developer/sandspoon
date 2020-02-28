@@ -379,7 +379,8 @@ class EscapeState {
             for (const red of mode.redTeam) {
                 if (red.place === context.place) {
                     const range = Math.abs(red.x - context.x) + Math.abs(red.y - context.y)
-                    if (range >= 12) continue
+                    if (range >= 12)
+                        continue
                     if (red.game.hp < 0) {
                         mode.moveToBase(red)
                         red.game.hp = 100
