@@ -166,6 +166,9 @@ my.ModeData = function (mode) {
         case ModeType.INFECT:
             packet.alive = mode.blueTeam.length
             break
+        case ModeType.HIDE:
+            packet.alive = mode.blueTeam.length
+            break
     }
     return JSON.stringify(packet)
 }

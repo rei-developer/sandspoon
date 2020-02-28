@@ -989,6 +989,21 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 67,
+            "type": "SKIN",
+            "icon": "Railly",
+            "name": "라일리",
+            "creator": "또이339",
+            "creatorId": 13,
+            "description": "인간이 되고 싶었던 고양이는 많은 노력 끝에 인간이 되었다. 그런데 그 방법은 매우 불완전했다.",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }

@@ -2,6 +2,7 @@ const Serialize = require('./protocol/Serialize')
 const { ModeType, MapType } = require('./util/const')
 const RescueMode = require('./mode/RescueMode')
 const InfectMode = require('./mode/InfectMode')
+const HideMode = require('./mode/HideMode')
 const Event = require('./Event')
 
 module.exports = class GameMode {
@@ -101,13 +102,16 @@ module.exports = class GameMode {
 
     update() {
         if (this.room.users.length >= 4) {
-            const mode = ModeType.RESCUE + parseInt(Math.random() * ModeType.INFECT)
+            const mode = ModeType.RESCUE + parseInt(Math.random() * ModeType.HIDE)
             switch (mode) {
                 case ModeType.RESCUE:
                     this.room.changeMode(RescueMode)
                     break
                 case ModeType.INFECT:
                     this.room.changeMode(InfectMode)
+                    break
+                case ModeType.HIDE:
+                    this.room.changeMode(HideMode)
                     break
             }
             return

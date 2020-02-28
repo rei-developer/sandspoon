@@ -23,7 +23,7 @@ const MapType = {
 const ModeType = {
     RESCUE: 1,
     INFECT: 2,
-    TOUCHDOWN: 3
+    HIDE: 3
 }
 
 module.exports = {

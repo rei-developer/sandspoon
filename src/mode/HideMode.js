@@ -8,7 +8,7 @@ const STATE_READY = 0
 const STATE_GAME = 1
 const STATE_RESULT = 3
 
-module.exports = class InfectMode {
+module.exports = class HideMode {
     constructor(roomId) {
         this.roomId = roomId
         this.redTeam = []
@@ -16,7 +16,6 @@ module.exports = class InfectMode {
         this.map = MapType.ASYLUM + parseInt(Math.random() * MapType.DESERT)
         this.count = 230
         this.maxCount = 230
-        this.supplyCount = 30 + parseInt(Math.random() * 30)
         this.score = {
             red: 0,
             blue: 0
@@ -25,7 +24,7 @@ module.exports = class InfectMode {
         this.state = STATE_READY
         this.type = ModeType.INFECT
         this.room = Room.get(this.roomId)
-        const objects = require('../../Assets/Mods/Mod' + ('' + 2).padStart(3, '0') + '.json')[this.map]
+        const objects = require('../../Assets/Mods/Mod' + ('' + 3).padStart(3, '0') + '.json')[this.map]
         for (const object of objects) {
             const event = new Event(this.roomId, object)
             this.room.addEvent(event)
@@ -47,7 +46,7 @@ module.exports = class InfectMode {
     moveToBase(self) {
         switch (this.map) {
             case MapType.ASYLUM:
-                self.teleport(2, 8, 13)
+                self.teleport(21, 9, 7)
                 break
             case MapType.TATAMI:
                 self.teleport(42, 9, 7)
@@ -88,7 +87,7 @@ module.exports = class InfectMode {
                 self.game.team = TeamType.RED
                 self.setGraphics(self.redGraphics)
                 this.redTeam.push(self)
-                self.send(Serialize.NoticeMessage('모든 인간을 남김 없이 감염시켜라.'))
+                self.send(Serialize.NoticeMessage('사물로 변신한 인간을 모두 색출하라.'))
                 self.send(Serialize.PlaySound('A4'))
                 break
         }
@@ -98,43 +97,54 @@ module.exports = class InfectMode {
     }
 
     drawAkari(self) {
-        if (self.game.team === TeamType.BLUE) {
+        if (self.game.team === TeamType.BLUE)
             self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
-        }
     }
 
     drawEvents(self) {
         const { events } = this.room.places[self.place]
-        for (const event of events) {
+        for (const event of events)
             self.send(Serialize.CreateGameObject(event))
-        }
     }
 
     drawUsers(self) {
         let selfHide = false
         const sameMapUsers = this.room.sameMapUsers(self.place)
-        for (const target of sameMapUsers) {
-            if (self === target) continue
-            if (target.state === PlayerState.Tansu) continue
-            let targetHide = false
-            if (self.game.team !== target.game.team) {
-                if (!(self.admin > 0 && target.admin > 0)) {
+        for (const user of sameMapUsers) {
+            if (self === user)
+                continue
+            if (user.state === PlayerState.Tansu)
+                continue
+            let userHide = false
+            if (self.game.team !== user.game.team) {
+                if (!(self.admin > 0 && user.admin > 0)) {
                     if (self.admin > 0)
                         selfHide = true
-                    else if (target.admin > 0)
-                        targetHide = true
+                    else if (user.admin > 0)
+                        userHide = true
                     else
-                        selfHide = targetHide = true
+                        selfHide = userHide = true
+                }
+            } else if (self.game.team === TeamType.BLUE) {
+                if (!(self.admin > 0 && user.admin > 0)) {
+                    if (self.admin > 0)
+                        selfHide = true
+                    else if (user.admin > 0)
+                        userHide = true
+                    else
+                        selfHide = userHide = true
                 }
             }
-            self.send(Serialize.CreateGameObject(target, targetHide))
-            target.send(Serialize.CreateGameObject(self, selfHide))
+            self.send(Serialize.CreateGameObject(user, userHide))
+            user.send(Serialize.CreateGameObject(self, selfHide))
         }
     }
 
     attack(self, target) {
-        if (self.game.team === TeamType.BLUE) return true
-        if (self.game.team === target.game.team) return false
+        if (self.game.team === TeamType.BLUE)
+            return true
+        if (self.game.team === target.game.team)
+            return false
         target.game.team = TeamType.RED
         target.setGraphics(target.redGraphics)
         target.send(Serialize.SetGameTeam(target))
@@ -143,7 +153,7 @@ module.exports = class InfectMode {
         this.blueTeam.splice(this.blueTeam.indexOf(target), 1)
         self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
         self.send(Serialize.PlaySound('Eat'))
-        self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 감염되어 ' + this.blueTeam.length + '명 생존...'))
+        self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 색출되어 ' + (this.blueTeam.length > 0 ? this.blueTeam.length + '명 은닉...' : '전멸.')))
         self.broadcast(Serialize.PlaySound('Shock'))
         self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
         switch (target.state) {
@@ -160,6 +170,30 @@ module.exports = class InfectMode {
         }
         this.room.draw(target)
         return true
+    }
+
+    change() {
+        const skins = [
+            '2door',
+            '170-Door01',
+            'Ball',
+            'Box',
+            'door-Blackwood',
+            'door-Blackwood_panel',
+            'door-Chocolatewood',
+            'ev02',
+            'iron',
+            'iron2',
+            'steel',
+            'tana_black',
+            'tana_red',
+            'tana_white',
+            'tansu',
+            'ud_toilet'
+        ]
+        const i = Math.floor(Math.random() * skins.length)
+        for (const blue of this.blueTeam)
+            blue.setGraphics(skins[i])
     }
 
     doAction(self, event) {
@@ -190,6 +224,7 @@ module.exports = class InfectMode {
             caught: false,
             judgment: false,
             result: false,
+            vaccine: false,
             count: 0
         }
     }
@@ -207,7 +242,7 @@ module.exports = class InfectMode {
     }
 
     sameMapRedTeam(place) {
-        return this.redTeam.filter((red) => red.place === place)
+        return this.redTeam.filter(red => red.place === place)
     }
 
     result(winner) {
@@ -218,9 +253,8 @@ module.exports = class InfectMode {
             user.game.result = true
         }
         Room.remove(this.room)
-        for (const red of this.redTeam) {
+        for (const red of this.redTeam)
             red.score.sum += red.score.kill * 10 + red.score.killForWardrobe * 50
-        }
         if (winner === TeamType.BLUE) {
             for (const blue of this.blueTeam) {
                 if (blue.state === PlayerState.Tansu) {
@@ -233,27 +267,54 @@ module.exports = class InfectMode {
             }
         }
         const ranks = slice.sort((a, b) => b.score.sum - a.score.sum)
+        const persons = slice.length
         for (const red of this.redTeam) {
             const mission = "킬 " + red.score.kill + "\n장농 킬 " + red.score.killForWardrobe
             let exp = 100 + red.score.sum
             let coin = 50 + parseInt(red.score.sum / 2)
-            if (exp < 100) exp = 100
-            if (coin < 50) coin = 50
+            if (exp < 100)
+                exp = 100
+            if (coin < 50)
+                coin = 50
             const rank = ranks.indexOf(red) + 1
             red.reward.exp = exp
             red.reward.coin = coin
-            red.send(Serialize.ResultGame(winner, rank, mission, exp, coin))
+            switch (rank) {
+                case 1:
+                    red.reward.point = 10
+                    break
+                case 2:
+                    red.reward.point = 5
+                    break
+                case 3:
+                    red.reward.point = 1
+                    break
+            }
+            red.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
         for (const blue of this.blueTeam) {
             const mission = "생존" + (blue.state === PlayerState.Tansu ? " (장농)" : "")
             let exp = 100 + blue.score.sum
             let coin = 50 + parseInt(blue.score.sum / 2)
-            if (exp < 100) exp = 100
-            if (coin < 50) coin = 50
+            if (exp < 100)
+                exp = 100
+            if (coin < 50)
+                coin = 50
             const rank = ranks.indexOf(blue) + 1
             blue.reward.exp = exp
             blue.reward.coin = coin
-            blue.send(Serialize.ResultGame(winner, rank, mission, exp, coin))
+            switch (rank) {
+                case 1:
+                    blue.reward.point = 10
+                    break
+                case 2:
+                    blue.reward.point = 5
+                    break
+                case 3:
+                    blue.reward.point = 1
+                    break
+            }
+            blue.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
     }
 
@@ -263,12 +324,13 @@ module.exports = class InfectMode {
             switch (this.state) {
                 case STATE_READY:
                     if (this.count <= 230 && this.count > 200) {
-                        if (this.count === 210) this.room.publish(Serialize.PlaySound('GhostsTen'))
+                        if (this.count === 210)
+                            this.room.publish(Serialize.PlaySound('GhostsTen'))
                         this.room.publish(Serialize.NoticeMessage(this.count - 200))
                     } else if (this.count === 200) {
                         this.room.lock = false // true
                         this.state = STATE_GAME
-                        const lottos = pix.sample(this.blueTeam, this.blueTeam.length > 4 ? 2 : 1)
+                        const lottos = pix.sample(this.blueTeam, this.blueTeam.length / 3)
                         for (const lotto of lottos) {
                             this.blueTeam.splice(this.blueTeam.indexOf(lotto), 1)
                             this.redTeam.push(lotto)
@@ -283,46 +345,23 @@ module.exports = class InfectMode {
                             }
                             lotto.send(Serialize.SetGameTeam(lotto))
                         }
-                        this.publishToRed(Serialize.NoticeMessage('모든 인간을 남김 없이 감염시켜라.'))
+                        this.change()
+                        this.publishToRed(Serialize.NoticeMessage('사물로 변신한 인간을 모두 색출하라.'))
                         this.publishToRed(Serialize.PlaySound('A4'))
-                        this.publishToBlue(Serialize.NoticeMessage('감염되지 않고 최대한 생존하라.'))
+                        this.publishToBlue(Serialize.NoticeMessage('사물로 변신하여 최대한 은닉하라.'))
                         this.publishToBlue(Serialize.PlaySound('A4'))
                         this.room.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
                     }
                     break
                 case STATE_GAME:
-                    if (this.supplyCount === 0) {
-                        const newObjects = require('../../Assets/Mods/Eve000.json')[1]
-                        for (const object of newObjects) {
-                            const event = new Event(this.roomId, object)
-                            const rand = [
-                                [18, 34, 13],
-                                [41, 10, 14],
-                                [58, 19, 17],
-                                [96, 22, 34],
-                                [152, 10, 13],
-                                [156, 8, 19],
-                                [176, 12, 14],
-                                [208, 31, 18],
-                                [242, 19, 17]
-                            ]
-                            const range = 4
-                            const x = Math.floor(-range + Math.random() * (range * 2 + 1))
-                            const y = Math.floor(-range + Math.random() * (range * 2 + 1))
-                            event.place = rand[this.map - 1][0]
-                            event.x = rand[this.map - 1][1] + x
-                            event.y = rand[this.map - 1][2] + y
-                            this.room.addEvent(event)
-                            this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
-                        }
-                        this.room.publish(Serialize.NoticeMessage('보급품 드롭!'))
-                        this.room.publish(Serialize.PlaySound('Fire'))
-                        this.supplyCount = 30 + parseInt(Math.random() * 30)
-                    }
-                    if (this.redTeam.length > 2)--this.supplyCount
-                    if (this.redTeam.length === 0) this.result(TeamType.BLUE)
-                    else if (this.blueTeam.length === 0) this.result(TeamType.RED)
-                    else if (this.count === 0) this.result(TeamType.BLUE)
+                    if (this.redTeam.length === 0)
+                        this.result(TeamType.BLUE)
+                    else if (this.blueTeam.length === 0)
+                        this.result(TeamType.RED)
+                    else if (this.count === 5)
+                        this.room.publish(Serialize.PlaySound('Second'))
+                    else if (this.count === 0)
+                        this.result(TeamType.BLUE)
                     break
             }
             --this.count

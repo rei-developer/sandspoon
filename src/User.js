@@ -48,8 +48,9 @@ global.User = (function () {
             this.rescueCombo = 0
             this.survive = 0
             this.escape = 0
+            this.graphics = 'Mania'
             this.redGraphics = 'ao'
-            this.blueGraphics = 'Mania'
+            this.blueGraphics = this.graphics
             this.memo = ''
             this.lastChatTime = new Date()
             this.alert = 0
@@ -167,6 +168,7 @@ global.User = (function () {
             this.rescueCombo = user.rescue_combo
             this.survive = user.survive
             this.escape = user.escape
+            this.graphics = user.blueGraphics
             this.redGraphics = user.red_graphics
             this.blueGraphics = user.blue_graphics
             this.memo = user.memo
@@ -435,8 +437,8 @@ global.User = (function () {
         }
 
         async tempSkinBuy() {
-            if (this.coin < 5000) return
-
+            if (this.coin < 5000)
+                return
             const skins = [
                 'base',
                 'Bbangdori',
@@ -450,9 +452,7 @@ global.User = (function () {
                 //'Yuzuha',
                 //'YuzuhaBlue'
             ]
-
             const i = Math.floor(Math.random() * skins.length)
-
             this.blueGraphics = skins[i]
             this.coin -= 5000
             this.send(Serialize.TempSkinBuy(this.blueGraphics, this.coin))
