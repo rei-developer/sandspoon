@@ -386,7 +386,7 @@ class EscapeState {
                         red.game.hp = 100
                         red.send(Serialize.InformMessage('<color=red>탈출구에서 벗어나지 않아 강제로 추방되었습니다.</color>'))
                     } else {
-                        red.game.hp -= 50
+                        red.game.hp -= 20
                         red.send(Serialize.InformMessage('<color=red>탈출구에서 벗어나세요!!!!</color>'))
                         red.send(Serialize.PlaySound('Warn'))
                     }
