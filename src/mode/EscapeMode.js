@@ -274,7 +274,7 @@ module.exports = class EscapeMode {
         for (const red of this.redTeam)
             red.score.sum += red.score.kill * 10 + red.score.killForWardrobe * 50
         for (const blue of this.blueTeam)
-            blue.score.sum += blue.score.key * 50 + blue.score.foundKey * 20
+            blue.score.sum += blue.game.key * 50 + blue.score.foundKey * 20
         const ranks = slice.sort((a, b) => b.score.sum - a.score.sum)
         const persons = slice.length
         for (const red of this.redTeam) {
