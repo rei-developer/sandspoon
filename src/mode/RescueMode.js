@@ -360,7 +360,7 @@ module.exports = class RescueMode {
                     } else if (this.count === 200) {
                         this.room.lock = false // true
                         this.state = STATE_GAME
-                        const lottos = pix.sample(this.blueTeam, parseInt(this.blueTeam.length / 4) + 1)
+                        const lottos = pix.sample(this.blueTeam, parseInt(this.blueTeam.length / 5) + 1)
                         for (const lotto of lottos) {
                             this.blueTeam.splice(this.blueTeam.indexOf(lotto), 1)
                             this.redTeam.push(lotto)
