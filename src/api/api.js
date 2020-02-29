@@ -15,4 +15,17 @@ router.post('/notice', async ctx => {
     ctx.body = { status: 'SUCCESS' }
 })
 
+router.post('/charging', async ctx => {
+    const {
+        user_id,
+        point,
+        point_offer,
+        device,
+        ad_name,
+        seq_id,
+    } = ctx.request.body
+    console.log(ctx.request.body)
+    ctx.body = { status: 'SUCCESS' }
+})
+
 module.exports = router
