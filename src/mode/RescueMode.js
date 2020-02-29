@@ -402,12 +402,16 @@ module.exports = class RescueMode {
                             if (--user.game.count < 0) user.game.count = 0
                         }
                     }
-                    if (this.count === 5 || this.count % 40 === 0) {
+                    if (this.count === 15 || this.count % 40 === 10)
+                        this.room.publish(Serialize.InformMessage('<color=#B5E61D>잠시 후 인질 구출이 가능해집니다...</color>'))
+                    else if (this.count === 5 || this.count % 40 === 0) {
                         this.caught = true
                         this.room.publish(Serialize.InformMessage('<color=#B5E61D>인질 구출이 가능합니다!</color>'))
                         this.room.publish(Serialize.PlaySound('thump'))
                     }
-                    if (this.count === 100) {
+                    if (this.count === 110)
+                        this.room.publish(Serialize.InformMessage('<color=#B5E61D>잠시 후 소멸 시간이 다가옵니다...</color>'))
+                    else if (this.count === 100) {
                         for (const red of this.redTeam) {
                             this.moveToBase(red)
                             red.send(Serialize.InformMessage('<color=red>소멸 시간이 되었습니다. 본진으로 돌아갑니다...</color>'))
