@@ -58,7 +58,7 @@
 			"x": 0,
 			"y": 0,
 			"graphics": "door-Blackwood_panel",
-			"collider": true,
+			"collider": false,
 			"action": {
 				"command": "escape"
 			}

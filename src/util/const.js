@@ -25,7 +25,10 @@ const ModeType = {
     INFECT: 2,
     HIDE: 3,
     ESCAPE: 4,
-    DEFENSE: 5
+    DEATH_MATCH: 5,
+    BLAST: 6,
+    TOUCH_DOWN: 7,
+    DEFENSE: 8
 }
 
 module.exports = {

@@ -1,5 +1,4 @@
 const Serialize = require('./protocol/Serialize')
-const { ModeType, MapType } = require('./util/const')
 const RescueMode = require('./mode/RescueMode')
 const InfectMode = require('./mode/InfectMode')
 const HideMode = require('./mode/HideMode')
@@ -9,7 +8,6 @@ const Event = require('./Event')
 module.exports = class GameMode {
     constructor(roomId) {
         this.roomId = roomId
-        this.map = MapType.TATAMI //MapType.ASYLUM + parseInt(Math.random() * MapType.DESERT)
         this.count = 0
         this.type = 0
         this.room = Room.get(this.roomId)
@@ -30,35 +28,7 @@ module.exports = class GameMode {
     }
 
     moveToBase(self) {
-        switch (this.map) {
-            case MapType.ASYLUM:
-                self.teleport(2, 8, 13)
-                break
-            case MapType.TATAMI:
-                self.teleport(42, 9, 7)
-                break
-            case MapType.GON:
-                self.teleport(60, 16, 11)
-                break
-            case MapType.LABORATORY:
-                self.teleport(99, 10, 8)
-                break
-            case MapType.SCHOOL:
-                self.teleport(149, 14, 8)
-                break
-            case MapType.MINE:
-                self.teleport(154, 9, 8)
-                break
-            case MapType.ISLAND:
-                self.teleport(199, 10, 8)
-                break
-            case MapType.MANSION:
-                self.teleport(215, 10, 9)
-                break
-            case MapType.DESERT:
-                self.teleport(249, 7, 17)
-                break
-        }
+        self.teleport(42, 9, 7)
     }
 
     join(self) {
@@ -103,22 +73,14 @@ module.exports = class GameMode {
 
     update() {
         if (this.room.users.length >= 4) {
-            const mode = ModeType.RESCUE + parseInt(Math.random() * ModeType.ESCAPE)
-            switch (mode) {
-                case ModeType.RESCUE:
-                    this.room.changeMode(RescueMode)
-                    break
-                case ModeType.INFECT:
-                    this.room.changeMode(InfectMode)
-                    break
-                case ModeType.HIDE:
-                    this.room.changeMode(HideMode)
-                    break
-                case ModeType.ESCAPE:
-                    this.room.changeMode(EscapeMode)
-                    break
-            }
-            return
+            const modes = [
+                RescueMode,
+                InfectMode,
+                HideMode,
+                EscapeMode
+            ]
+            const i = Math.floor(Math.random() * modes.length)
+            return this.room.changeMode(modes[i])
         } else {
             if (this.count % 100 === 0)
                 this.room.publish(Serialize.NoticeMessage('4명부터 시작합니다. (' + this.room.users.length + '/' + this.room.max + '명)'))

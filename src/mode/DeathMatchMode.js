@@ -8,7 +8,7 @@ const STATE_READY = 0
 const STATE_GAME = 1
 const STATE_RESULT = 3
 
-module.exports = class HideMode {
+module.exports = class DeathMatchMode {
     constructor(roomId) {
         this.roomId = roomId
         this.redTeam = []
@@ -22,9 +22,9 @@ module.exports = class HideMode {
         }
         this.tick = 0
         this.state = STATE_READY
-        this.type = ModeType.HIDE
+        this.type = ModeType.DEATH_MATCH
         this.room = Room.get(this.roomId)
-        const objects = require('../../Assets/Mods/Mod' + ('' + 3).padStart(3, '0') + '.json')[this.map]
+        const objects = require('../../Assets/Mods/Mod' + ('' + 5).padStart(3, '0') + '.json')[this.map]
         for (const object of objects) {
             const event = new Event(this.roomId, object)
             this.room.addEvent(event)
@@ -84,10 +84,17 @@ module.exports = class HideMode {
                 this.blueTeam.push(self)
                 break
             case STATE_GAME:
-                self.game.team = TeamType.RED
-                self.setGraphics(self.redGraphics)
-                this.redTeam.push(self)
-                self.send(Serialize.NoticeMessage('사물로 변신한 인간을 모두 색출하라.'))
+                if (this.redTeam.length >= this.blueTeam.length) {
+                    self.game.team = TeamType.RED
+                    self.setGraphics(self.redGraphics)
+                    this.redTeam.push(self)
+                    self.send(Serialize.NoticeMessage('모든 인간을 섬멸하라.'))
+                } else {
+                    self.game.team = TeamType.BLUE
+                    self.setGraphics(self.blueGraphics)
+                    this.blueTeam.push(self)
+                    self.send(Serialize.NoticeMessage('모든 오니를 소탕하라.'))
+                }
                 self.send(Serialize.PlaySound('A4'))
                 break
         }
@@ -103,118 +110,49 @@ module.exports = class HideMode {
 
     drawEvents(self) {
         const { events } = this.room.places[self.place]
-        for (const event of events)
+        for (const event of events) {
             self.send(Serialize.CreateGameObject(event))
+        }
     }
 
     drawUsers(self) {
-        let selfHide = false
         const sameMapUsers = this.room.sameMapUsers(self.place)
         for (const user of sameMapUsers) {
             if (self === user)
                 continue
             if (user.state === PlayerState.Tansu)
                 continue
-            let userHide = false
-            if (self.game.team !== user.game.team) {
-                if (!(self.admin > 0 && user.admin > 0)) {
-                    if (self.admin > 0)
-                        selfHide = true
-                    else if (user.admin > 0)
-                        userHide = true
-                    else
-                        selfHide = userHide = true
-                }
-            } else if (self.game.team === TeamType.BLUE) {
-                if (!(self.admin > 0 && user.admin > 0)) {
-                    if (self.admin > 0)
-                        selfHide = true
-                    else if (user.admin > 0)
-                        userHide = true
-                    else
-                        selfHide = userHide = true
-                }
-            }
-            self.send(Serialize.CreateGameObject(user, userHide))
-            user.send(Serialize.CreateGameObject(self, selfHide))
+            self.send(Serialize.CreateGameObject(user))
+            user.send(Serialize.CreateGameObject(self))
         }
     }
 
     attack(self, target) {
-        if (self.game.team === TeamType.BLUE)
-            return true
         if (self.game.team === target.game.team)
             return false
-        target.game.team = TeamType.RED
-        target.setGraphics(target.redGraphics)
-        target.send(Serialize.SetGameTeam(target))
-        target.send(Serialize.DeadAnimation())
-        this.redTeam.push(target)
-        this.blueTeam.splice(this.blueTeam.indexOf(target), 1)
-        self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
-        self.send(Serialize.PlaySound('Eat'))
-        self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 색출되어 ' + (this.blueTeam.length > 0 ? this.blueTeam.length + '명 은닉...' : '전멸.')))
-        self.broadcast(Serialize.PlaySound('Shock'))
-        self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
-        switch (target.state) {
-            case PlayerState.Tansu:
-                ++self.score.killForWardrobe
-                ++target.score.deathForWardrobe
-                target.setState('Basic')
-                target.send(Serialize.LeaveWardrobe())
-                break
-            case PlayerState.Basic:
-                ++self.score.kill
-                ++target.score.death
-                break
-        }
-        this.room.draw(target)
-        return true
-    }
+        if (self.game.team === TeamType.RED) {
+            target.send(Serialize.DeadAnimation())
+            self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
+            self.send(Serialize.PlaySound('Eat'))
+            self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 사망하다.'))
+            self.broadcast(Serialize.PlaySound('Shock'))
+            //self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+            switch (target.state) {
+                case PlayerState.Tansu:
+                    ++self.score.killForWardrobe
+                    ++target.score.deathForWardrobe
+                    target.setState('Basic')
+                    target.send(Serialize.LeaveWardrobe())
+                    break
+                case PlayerState.Basic:
+                    ++self.score.kill
+                    ++target.score.death
+                    break
+            }
+        } else {
 
-    change() {
-        for (const blue of this.blueTeam) {
-            const skins = [
-                '2door',
-                '170-Door01',
-                'Ball',
-                'Box',
-                'door-Blackwood',
-                'door-Blackwood_panel',
-                'door-Chocolatewood',
-                'ev02',
-                'iron',
-                'iron2',
-                'steel',
-                'tana_black',
-                'tana_red',
-                'tana_white',
-                'tansu',
-                'ud_toilet',
-                'Books',
-                'Bucket',
-                'Cactus',
-                'Cello',
-                'Chair',
-                'Flowerpot',
-                'Flowerpot2',
-                'Hanger',
-                'HumanBody',
-                'Laggage',
-                'MeasuringHeight',
-                'Mop',
-                'NoneBucket',
-                'Piano',
-                'Rice',
-                'Rion',
-                'Safety',
-                'Scale',
-                'Spot',
-                'TrashBox'
-            ]
-            const i = Math.floor(Math.random() * skins.length)
-            blue.setGraphics(skins[i])
         }
+        return true
     }
 
     doAction(self, event) {
@@ -242,24 +180,20 @@ module.exports = class HideMode {
             spawnTime: 10,
             tansu: null,
             hp: 100,
-            caught: false,
             judgment: false,
             result: false,
-            vaccine: false,
             count: 0
         }
     }
 
     publishToRed(data) {
-        for (const red of this.redTeam) {
+        for (const red of this.redTeam)
             red.send(data)
-        }
     }
 
     publishToBlue(data) {
-        for (const blue of this.blueTeam) {
+        for (const blue of this.blueTeam)
             blue.send(data)
-        }
     }
 
     sameMapRedTeam(place) {
@@ -345,17 +279,15 @@ module.exports = class HideMode {
             switch (this.state) {
                 case STATE_READY:
                     if (this.count <= 230 && this.count > 200) {
-                        if (this.count === 210)
-                            this.room.publish(Serialize.PlaySound('GhostsTen'))
+                        if (this.count === 210) this.room.publish(Serialize.PlaySound('GhostsTen'))
                         this.room.publish(Serialize.NoticeMessage(this.count - 200))
                     } else if (this.count === 200) {
                         this.room.lock = false // true
                         this.state = STATE_GAME
-                        const lottos = pix.sample(this.blueTeam, this.blueTeam.length > 4 ? 2 : 1)
+                        const lottos = pix.sample(this.blueTeam, parseInt(this.blueTeam.length / 2))
                         for (const lotto of lottos) {
                             this.blueTeam.splice(this.blueTeam.indexOf(lotto), 1)
                             this.redTeam.push(lotto)
-                            this.moveToBase(lotto)
                             lotto.game.team = TeamType.RED
                             lotto.setGraphics(lotto.redGraphics)
                             if (lotto.state === PlayerState.Tansu) {
@@ -367,22 +299,13 @@ module.exports = class HideMode {
                             }
                             lotto.send(Serialize.SetGameTeam(lotto))
                         }
-                        this.change()
-                        this.publishToRed(Serialize.NoticeMessage('사물로 변신한 인간을 모두 색출하라.'))
-                        this.publishToRed(Serialize.PlaySound('A4'))
-                        this.publishToBlue(Serialize.NoticeMessage('사물로 변신하여 최대한 은닉하라.'))
-                        this.publishToBlue(Serialize.PlaySound('A4'))
+                        this.publishToRed(Serialize.NoticeMessage('모든 인간을 섬멸하라.'))
+                        this.publishToBlue(Serialize.NoticeMessage('모든 오니를 소탕하라.'))
+                        this.room.publish(Serialize.PlaySound('A4'))
                         this.room.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
                     }
                     break
                 case STATE_GAME:
-                    if (this.count === 105) {
-                        this.room.publish(Serialize.InformMessage('<color=red>잠시 후 2차 변신이 시작됩니다...</color>'))
-                        this.room.publish(Serialize.PlaySound('Second'))
-                    } else if (this.count === 100) {
-                        this.change()
-                        this.room.publish(Serialize.PlaySound('A6'))
-                    }
                     if (this.redTeam.length === 0)
                         this.result(TeamType.BLUE)
                     else if (this.blueTeam.length === 0)
