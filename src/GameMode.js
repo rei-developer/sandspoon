@@ -74,14 +74,14 @@ module.exports = class GameMode {
 
     update() {
         if (this.room.users.length >= 4) {
-            /*const modes = [
+            const modes = [
                 RescueMode,
                 InfectMode,
                 HideMode,
                 EscapeMode,
                 DeathMatchMode
-            ]*/
-            const modes = [DeathMatchMode]
+            ]
+            //const modes = [DeathMatchMode]
             const i = Math.floor(Math.random() * modes.length)
             return this.room.changeMode(modes[i])
         } else {

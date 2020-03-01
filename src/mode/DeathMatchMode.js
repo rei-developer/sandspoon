@@ -196,6 +196,7 @@ module.exports = class DeathMatchMode {
         if (self.coin < item.cost)
             return self.send(Serialize.InformMessage('<color=red>골드가 부족합니다.</color>'))
         self.coin -= item.cost
+        self.send(Serialize.InformMessage('<color=red>' + item.name + ' 구입 완료</color>'))
         this.addItem(self, id, item.num)
     }
 
@@ -218,7 +219,8 @@ module.exports = class DeathMatchMode {
         if (item.num < 1)
             return self.send(Serialize.InformMessage('<color=red>아이템을 모두 소비했습니다.</color>'))
         const itemInfo = Item.get(item.id)
-        itemInfo.doing(self)
+        if (itemInfo)
+            itemInfo.doing(self)
     }
 
     doAction(self, event) {
