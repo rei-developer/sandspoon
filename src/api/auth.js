@@ -151,6 +151,9 @@ router.post('/register', async ctx => {
 
 router.post('/google', async ctx => {
     try {
+
+        return ctx.body = { status: 'BLOCKED', date: '긴급 점검', description: '현재 긴급 점검중이므로, 다음 버전이 업데이트될 때까지 기다려주세요. (구글 승인이 날 때까지)' }
+
         const { token, uuid, version } = ctx.request.body
         const ver = version.replace(/[^0-9]/g, '')
         if (ver < config.VERSION)
