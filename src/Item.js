@@ -14,16 +14,13 @@ global.Item = (function () {
             return Item.items[id]
         }
 
-        constructor(id = 1, type = 0, icon = '', name = '', creator = '', creatorId = 0, description = '', cost = 0, isCash = false, method = { command: '', arguments: {} }) {
+        constructor(id = 1, num = 1, icon = '', name = '', description = '', cost = 0, method = { command: '', arguments: {} }) {
             this.id = id
-            this.type = type
+            this.num = num
             this.icon = icon
             this.name = name
-            this.creator = creator
-            this.creatorId = creatorId
             this.description = description
             this.cost = cost
-            this.isCash = isCash
             this.method = new Methods[method.command](method.arguments)
         }
 

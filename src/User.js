@@ -516,7 +516,7 @@ global.User = (function () {
             const GET_COUNT = 15
             let items = []
             for (let i = ((page - 1) * GET_COUNT) + 1; i <= ((page - 1) * GET_COUNT) + GET_COUNT; ++i) {
-                const item = Item.get(i)
+                const item = Shop.get(i)
                 if (item)
                     items.push(item)
             }
@@ -524,7 +524,7 @@ global.User = (function () {
         }
 
         getInfoItem(id) {
-            const item = Item.get(id)
+            const item = Shop.get(id)
             if (!item)
                 return
             if (item.type === 'SKIN') {
@@ -534,7 +534,7 @@ global.User = (function () {
         }
 
         async buyItem(data) {
-            const item = Item.get(data.id)
+            const item = Shop.get(data.id)
             if (!item)
                 return
             if (item.type === 'ITEM') {
@@ -589,7 +589,7 @@ global.User = (function () {
 
         checkSkinExpiry() {
             this.inventory.map(i => {
-                const item = Item.get(i.id)
+                const item = Shop.get(i.id)
                 if (!item)
                     return
                 if (item.type === 'SKIN' && item.icon === this.blueGraphics) {
@@ -603,7 +603,7 @@ global.User = (function () {
         getSkinList() {
             let skins = []
             this.inventory.map(i => {
-                const item = Item.get(i.id)
+                const item = Shop.get(i.id)
                 if (!item)
                     return
                 if (item.type === 'SKIN') {
@@ -740,7 +740,7 @@ global.User = (function () {
                 const check = this.inventory.find(i => i.id === id)
                 if (!check)
                     return
-                const item = Item.get(id)
+                const item = Shop.get(id)
                 if (!item)
                     return
                 const min = moment().diff(moment(check.expiry), 'minutes')

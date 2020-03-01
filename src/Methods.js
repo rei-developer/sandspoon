@@ -8,31 +8,37 @@ class DefaultMethod {
     doing(self, item) { }
 }
 
-class YuzuhaMethod {
+class FireMethod {
     constructor(args = {}) { }
 
     doing(self, item) {
         const room = Room.get(self.roomId)
-        const { users } = room.places[self.place]
-        for (const user of users) {
-            if (self === user)
-                continue
-            if (!(self.x === user.x && self.y === user.y || self.x + self.direction.x === user.x && self.y - self.direction.y === user.y))
-                continue
-            const blood = user.game.status.find(s => s === StatusType.BLOOD)
-            const washedBlood = user.game.status.find(s => s === StatusType.WASHED_BLOOD)
-            const result = blood || washedBlood ? true : false
-            self.send(Serialize.UpdateRoomGameInfo('루미놀 검사 결과', result ? '양성' : '음성', `${user.name}의 몸을 루미놀 검사 지시약으로 판독해보니, ${result ? '혈흔이 묻혀진 것으로 판단된다.' : '아무런 이상이 없는 것으로 판단된다.'}`))
-            if (result)
-                ++self.score.assist
-            return self.send(Serialize.PlaySound('result'))
+        for (const red of room.mode.redTeam) {
+            if (red.place === self.place) {
+                const range = Math.abs(red.x - self.x) + Math.abs(red.y - self.y)
+                if (range > 1)
+                    continue
+                if (red.game.hp < 0) {
+                    mode.moveToBase(red)
+                    red.game.hp = 100
+                    ++self.score.kill
+                    ++red.score.death
+                    red.send(Serialize.InformMessage('<color=red>사망했습니다.</color>'))
+                    self.publish(Serialize.UpdateModeUserCount(mode.score.red, mode.score.blue))
+                } else {
+                    red.game.hp -= 30
+                    self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
+                }
+                const inventory = self.game.inventory.filter(i => i.id === item.id)
+                if (inventory)
+                    --inventory.num
+            }
         }
-        self.send(Serialize.InformMessage('<color=red>앞에 대상이 없습니다.</color>'))
     }
 }
 
 module.exports = new Proxy({
-    Yuzuha: YuzuhaMethod,
+    Fire: FireMethod,
 }, {
     get: function (target, name) {
         return target.hasOwnProperty(name) ? target[name] : DefaultMethod

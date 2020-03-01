@@ -1,4 +1,5 @@
 require('./src/Clan')
+require('./src/Shop')
 require('./src/Item')
 require('./src/Room')
 require('./src/User')

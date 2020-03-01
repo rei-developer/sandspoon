@@ -144,6 +144,14 @@ my.UpdateModeUserCount = function (count) {
     return JSON.stringify(packet)
 }
 
+my.UpdateModeUserCount = function (red, blue) {
+    const packet = {}
+    packet._head = ToClient.UPDATE_MODE_USER_COUNT
+    packet.red = red
+    packet.blue = blue
+    return
+}
+
 my.SetGameTeam = function (obj) {
     const packet = {}
     packet._head = ToClient.SET_GAME_TEAM

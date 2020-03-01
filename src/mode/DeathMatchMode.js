@@ -130,13 +130,17 @@ module.exports = class DeathMatchMode {
     attack(self, target) {
         if (self.game.team === target.game.team)
             return false
-        if (self.game.team === TeamType.RED) {
+        if (self.game.team === TeamType.BLUE)
+            this.useItem(self)
+        else {
+            ++this.score.red
+            this.moveToBase(target)
             target.send(Serialize.DeadAnimation())
             self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
             self.send(Serialize.PlaySound('Eat'))
             self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 사망하다.'))
             self.broadcast(Serialize.PlaySound('Shock'))
-            //self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+            self.publish(Serialize.UpdateModeUserCount(this.score.red, this.score.blue))
             switch (target.state) {
                 case PlayerState.Tansu:
                     ++self.score.killForWardrobe
@@ -149,10 +153,40 @@ module.exports = class DeathMatchMode {
                     ++target.score.death
                     break
             }
-        } else {
-
         }
         return true
+    }
+
+    buyItem(self, id) {
+        const item = Item.get(id)
+        if (!item)
+            return
+        if (self.coin < item.cost)
+            return self.send(Serialize.InformMessage('<color=red>골드가 부족합니다.</color>'))
+        self.coin -= item.cost
+        this.addItem(self, id, item.num)
+    }
+
+    addItem(self, id, num = 1) {
+        const inventory = self.game.inventory.filter(item => item.id === id)
+        if (inventory) {
+            inventory.num += num
+        } else {
+            self.game.inventory.push({ id, num })
+        }
+        self.game.useItemId = id
+    }
+
+    useItem(self) {
+        if (self.game.useItemId < 1)
+            return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
+        const item = self.game.inventory.filter(item => item.id === self.game.useItemId)
+        if (!item)
+            return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
+        if (item.num < 1)
+            return self.send(Serialize.InformMessage('<color=red>아이템을 모두 소비했습니다.</color>'))
+        const itemInfo = Item.get(item.id)
+        itemInfo.doing(self)
     }
 
     doAction(self, event) {
@@ -171,7 +205,6 @@ module.exports = class DeathMatchMode {
         }
         self.game = {}
         self.setGraphics(self.blueGraphics)
-        self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
     }
 
     gameObject() {
@@ -180,6 +213,8 @@ module.exports = class DeathMatchMode {
             spawnTime: 10,
             tansu: null,
             hp: 100,
+            inventory: [],
+            useItemId: 0,
             judgment: false,
             result: false,
             count: 0
@@ -302,7 +337,6 @@ module.exports = class DeathMatchMode {
                         this.publishToRed(Serialize.NoticeMessage('모든 인간을 섬멸하라.'))
                         this.publishToBlue(Serialize.NoticeMessage('모든 오니를 소탕하라.'))
                         this.room.publish(Serialize.PlaySound('A4'))
-                        this.room.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
                     }
                     break
                 case STATE_GAME:

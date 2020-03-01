@@ -8,6 +8,7 @@ module.exports = (function () {
     return class Data {
         static async loadData() {
             await Data.loadMaps()
+            await Data.loadShops()
             await Data.loadItems()
             await Data.loadRanks()
             await Data.loadClans()
@@ -22,12 +23,23 @@ module.exports = (function () {
             console.log('맵 로딩 완료.')
         }
 
+        static async loadShops() {
+            console.log('상점 로딩중...')
+            const shops = require(`../Assets/Shops.json`)['shops']
+            for (let i = 0; i < shops.length; ++i) {
+                const shopData = shops[i]
+                const shop = new Item(shopData.id, shopData.type, shopData.icon, shopData.name, shopData.creator, shopData.creatorId, shopData.description, shopData.cost, shopData.isCash, shopData.method)
+                Shop.shops[i + 1] = shop
+            }
+            console.log('상점 로딩 완료.')
+        }
+
         static async loadItems() {
             console.log('아이템 로딩중...')
             const items = require(`../Assets/Items.json`)['items']
             for (let i = 0; i < items.length; ++i) {
                 const itemData = items[i]
-                const item = new Item(itemData.id, itemData.type, itemData.icon, itemData.name, itemData.creator, itemData.creatorId, itemData.description, itemData.cost, itemData.isCash, itemData.method)
+                const item = new Item(itemData.id, itemData.num, itemData.icon, itemData.name, itemData.description, itemData.cost, itemData.method)
                 Item.items[i + 1] = item
             }
             console.log('아이템 로딩 완료.')

@@ -48,6 +48,19 @@ class DoorState {
     }
 }
 
+class FireShopState {
+    constructor(args = {}) {
+        this.count = 0
+    }
+
+    doAction(context, self) {
+        const { mode } = Room.get(context.roomId)
+        if (self.game.team === TeamType.RED)
+            return
+        mode.buyItem(self, 1)
+    }
+}
+
 class RescueState {
     constructor(args = {}) {
         this.count = 0
@@ -602,6 +615,7 @@ module.exports = new Proxy({
     obstacle: ObstacleState,
     akari: AkariState,
     tansu: TansuState,
+    fireShop: FireShopState,
     rescue: RescueState,
     mania: ManiaState,
     rabbit: RabbitState,
