@@ -75,6 +75,38 @@ module.exports = class DeathMatchMode {
         }
     }
 
+    moveToKickOut(self) {
+        switch (this.map) {
+            case MapType.ASYLUM:
+                self.teleport(19, 9, 8)
+                break
+            case MapType.TATAMI:
+                self.teleport(47, 17, 6)
+                break
+            case MapType.GON:
+                self.teleport(72, 15, 8)
+                break
+            case MapType.LABORATORY:
+                self.teleport(89, 16, 12)
+                break
+            case MapType.SCHOOL:
+                self.teleport(118, 5, 15)
+                break
+            case MapType.MINE:
+                self.teleport(166, 34, 31)
+                break
+            case MapType.ISLAND:
+                self.teleport(174, 12, 7)
+                break
+            case MapType.MANSION:
+                self.teleport(218, 19, 8)
+                break
+            case MapType.DESERT:
+                self.teleport(243, 13, 22)
+                break
+        }
+    }
+
     join(self) {
         self.game = this.gameObject()
         switch (this.state) {
@@ -323,6 +355,7 @@ module.exports = class DeathMatchMode {
                         for (const lotto of lottos) {
                             this.blueTeam.splice(this.blueTeam.indexOf(lotto), 1)
                             this.redTeam.push(lotto)
+                            this.moveToKickOut(lotto)
                             lotto.game.team = TeamType.RED
                             lotto.setGraphics(lotto.redGraphics)
                             if (lotto.state === PlayerState.Tansu) {

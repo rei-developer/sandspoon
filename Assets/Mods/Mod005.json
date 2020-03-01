@@ -2,9 +2,9 @@
 	"1": [
 		{
 			"name": "화염방사기 100G",
-			"place": 13,
-			"x": 20,
-			"y": 12,
+			"place": 21,
+			"x": 9,
+			"y": 7,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
@@ -552,9 +552,9 @@
 	"2": [
 		{
 			"name": "화염방사기 100G",
-			"place": 57,
-			"x": 21,
-			"y": 4,
+			"place": 42,
+			"x": 9,
+			"y": 7,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
@@ -958,9 +958,9 @@
 	"3": [
 		{
 			"name": "화염방사기 100G",
-			"place": 74,
-			"x": 4,
-			"y": 13,
+			"place": 60,
+			"x": 16,
+			"y": 11,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
@@ -1202,9 +1202,9 @@
 	"4": [
 		{
 			"name": "화염방사기 100G",
-			"place": 96,
-			"x": 17,
-			"y": 21,
+			"place": 99,
+			"x": 10,
+			"y": 8,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
@@ -1546,9 +1546,9 @@
 	"5": [
 		{
 			"name": "화염방사기 100G",
-			"place": 122,
-			"x": 13,
-			"y": 4,
+			"place": 149,
+			"x": 14,
+			"y": 8,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
@@ -1768,9 +1768,9 @@
 	"6": [
 		{
 			"name": "화염방사기 100G",
-			"place": 169,
-			"x": 10,
-			"y": 11,
+			"place": 154,
+			"x": 9,
+			"y": 8,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
@@ -1946,9 +1946,9 @@
 	"7": [
 		{
 			"name": "화염방사기 100G",
-			"place": 191,
-			"x": 11,
-			"y": 12,
+			"place": 199,
+			"x": 10,
+			"y": 8,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
@@ -2146,9 +2146,9 @@
 	"8": [
 		{
 			"name": "화염방사기 100G",
-			"place": 217,
-			"x": 20,
-			"y": 8,
+			"place": 215,
+			"x": 10,
+			"y": 9,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
@@ -2346,9 +2346,9 @@
 	"9": [
 		{
 			"name": "화염방사기 100G",
-			"place": 255,
-			"x": 15,
-			"y": 5,
+			"place": 249,
+			"x": 7,
+			"y": 17,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
