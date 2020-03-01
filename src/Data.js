@@ -28,7 +28,7 @@ module.exports = (function () {
             const shops = require(`../Assets/Shops.json`)['shops']
             for (let i = 0; i < shops.length; ++i) {
                 const shopData = shops[i]
-                const shop = new Item(shopData.id, shopData.type, shopData.icon, shopData.name, shopData.creator, shopData.creatorId, shopData.description, shopData.cost, shopData.isCash, shopData.method)
+                const shop = new Shop(shopData.id, shopData.type, shopData.icon, shopData.name, shopData.creator, shopData.creatorId, shopData.description, shopData.cost, shopData.isCash, shopData.method)
                 Shop.shops[i + 1] = shop
             }
             console.log('상점 로딩 완료.')
