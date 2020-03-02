@@ -2,8 +2,8 @@
     "items": [
         {
             "id": 1,
-            "num": 5,
-            "icon": "",
+            "num": 10,
+            "icon": "Fire",
             "name": "화염방사기",
             "description": "",
             "cost": 100,
