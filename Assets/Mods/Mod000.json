@@ -33,6 +33,39 @@
 					]
 				}
 			}
+		},
+		{
+			"name": "",
+			"place": 79,
+			"x": 29,
+			"y": 61,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
+		},
+		{
+			"name": "",
+			"place": 79,
+			"x": 30,
+			"y": 62,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
+		},
+		{
+			"name": "",
+			"place": 79,
+			"x": 31,
+			"y": 63,
+			"graphics": "Ball",
+			"collider": true,
+			"action": {
+				"command": "obstacle"
+			}
 		}
 	]
 }
