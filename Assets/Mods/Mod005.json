@@ -12,6 +12,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 19,
+			"x": 9,
+			"y": 8,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 13,
 			"x": 11,
@@ -37,149 +48,6 @@
 						"X를 눌러 JOY를 표하십시오"
 					]
 				}
-			}
-		},
-		{
-			"name": "",
-			"place": 2,
-			"x": 13,
-			"y": 9,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 2,
-			"x": 13,
-			"y": 16,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 3,
-			"x": 39,
-			"y": 9,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 1,
-			"x": 42,
-			"y": 8,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 9,
-			"x": 7,
-			"y": 13,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 9,
-			"x": 26,
-			"y": 15,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 4,
-			"x": 11,
-			"y": 13,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 4,
-			"x": 36,
-			"y": 17,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 12,
-			"x": 20,
-			"y": 10,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 12,
-			"x": 46,
-			"y": 12,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 18,
-			"x": 11,
-			"y": 13,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 9,
-			"x": 51,
-			"y": 11,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 18,
-			"x": 36,
-			"y": 13,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{
@@ -562,6 +430,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 47,
+			"x": 17,
+			"y": 6,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 57,
 			"x": 19,
@@ -570,116 +449,6 @@
 			"collider": true,
 			"action": {
 				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 42,
-			"x": 7,
-			"y": 15,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 41,
-			"x": 11,
-			"y": 14,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 41,
-			"x": 7,
-			"y": 30,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 38,
-			"x": 7,
-			"y": 10,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 39,
-			"x": 10,
-			"y": 8,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 40,
-			"x": 11,
-			"y": 5,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 45,
-			"x": 10,
-			"y": 5,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 46,
-			"x": 18,
-			"y": 9,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 47,
-			"x": 9,
-			"y": 20,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 47,
-			"x": 4,
-			"y": 6,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{
@@ -968,6 +737,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 72,
+			"x": 15,
+			"y": 8,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 74,
 			"x": 14,
@@ -976,83 +756,6 @@
 			"collider": true,
 			"action": {
 				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 58,
-			"x": 14,
-			"y": 17,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 58,
-			"x": 21,
-			"y": 5,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 62,
-			"x": 3,
-			"y": 27,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 62,
-			"x": 18,
-			"y": 9,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 62,
-			"x": 5,
-			"y": 9,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 66,
-			"x": 14,
-			"y": 5,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 67,
-			"x": 14,
-			"y": 5,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{
@@ -1212,6 +915,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 89,
+			"x": 16,
+			"y": 12,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 96,
 			"x": 7,
@@ -1342,72 +1056,6 @@
 			"collider": false,
 			"action": {
 				"command": "tansu"
-			}
-		},
-		{
-			"name": "",
-			"place": 100,
-			"x": 11,
-			"y": 7,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 100,
-			"x": 15,
-			"y": 16,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 94,
-			"x": 16,
-			"y": 6,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 95,
-			"x": 13,
-			"y": 10,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 97,
-			"x": 5,
-			"y": 7,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 96,
-			"x": 21,
-			"y": 33,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{
@@ -1556,6 +1204,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 118,
+			"x": 5,
+			"y": 15,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 122,
 			"x": 6,
@@ -1564,94 +1223,6 @@
 			"collider": true,
 			"action": {
 				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 145,
-			"x": 8,
-			"y": 9,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 152,
-			"x": 3,
-			"y": 16,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 152,
-			"x": 6,
-			"y": 6,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 125,
-			"x": 82,
-			"y": 10,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 125,
-			"x": 59,
-			"y": 11,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 117,
-			"x": 60,
-			"y": 16,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 117,
-			"x": 50,
-			"y": 12,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 117,
-			"x": 41,
-			"y": 12,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{
@@ -1778,6 +1349,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 116,
+			"x": 34,
+			"y": 31,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 169,
 			"x": 13,
@@ -1786,61 +1368,6 @@
 			"collider": true,
 			"action": {
 				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 155,
-			"x": 3,
-			"y": 8,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 155,
-			"x": 23,
-			"y": 8,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 164,
-			"x": 8,
-			"y": 24,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 164,
-			"x": 19,
-			"y": 18,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 164,
-			"x": 5,
-			"y": 12,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{
@@ -1956,6 +1483,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 174,
+			"x": 12,
+			"y": 7,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 191,
 			"x": 11,
@@ -1964,72 +1502,6 @@
 			"collider": true,
 			"action": {
 				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 200,
-			"x": 15,
-			"y": 6,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 200,
-			"x": 4,
-			"y": 6,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 203,
-			"x": 18,
-			"y": 11,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 203,
-			"x": 8,
-			"y": 6,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 207,
-			"x": 4,
-			"y": 11,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 190,
-			"x": 5,
-			"y": 9,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{
@@ -2156,6 +1628,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 218,
+			"x": 19,
+			"y": 8,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 217,
 			"x": 31,
@@ -2164,72 +1647,6 @@
 			"collider": true,
 			"action": {
 				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 236,
-			"x": 16,
-			"y": 7,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 227,
-			"x": 49,
-			"y": 7,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 227,
-			"x": 34,
-			"y": 7,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 227,
-			"x": 29,
-			"y": 7,
-			"graphics": "arrow2",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 217,
-			"x": 25,
-			"y": 18,
-			"graphics": "arrow4",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 217,
-			"x": 20,
-			"y": 18,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{
@@ -2356,6 +1773,17 @@
 			}
 		},
 		{
+			"name": "보호석",
+			"place": 243,
+			"x": 13,
+			"y": 22,
+			"graphics": "Safety",
+			"collider": true,
+			"action": {
+				"command": "protecter"
+			}
+		},
+		{
 			"name": "",
 			"place": 255,
 			"x": 20,
@@ -2364,83 +1792,6 @@
 			"collider": true,
 			"action": {
 				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 239,
-			"x": 6,
-			"y": 16,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 239,
-			"x": 11,
-			"y": 10,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 240,
-			"x": 18,
-			"y": 10,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 242,
-			"x": 19,
-			"y": 23,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 242,
-			"x": 31,
-			"y": 9,
-			"graphics": "arrow6",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 243,
-			"x": 14,
-			"y": 13,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
-			}
-		},
-		{
-			"name": "",
-			"place": 255,
-			"x": 6,
-			"y": 16,
-			"graphics": "arrow8",
-			"collider": false,
-			"action": {
-				"command": ""
 			}
 		},
 		{

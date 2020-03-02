@@ -27,6 +27,8 @@ class FireMethod {
                         ++red.score.death
                         red.send(Serialize.InformMessage('<color=red>사망했습니다.</color>'))
                         self.send(Serialize.InformMessage('<color=red>' + red.name + ' 소탕 완료!</color>'))
+                        self.publish(Serialize.NoticeMessage(red.name + (pix.maker(red.name) ? '가' : '이') + ' 소탕되다.'))
+                        self.publish(Serialize.PlaySound('A3'))
                         self.publish(Serialize.UpdateModeCount(room.mode.score.red, room.mode.score.blue))
                     } else {
                         red.game.hp -= parseInt(Math.random() * 70) + 30

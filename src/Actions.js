@@ -84,6 +84,37 @@ class FireShopState {
     }
 }
 
+class ProtecterState {
+    constructor(args = {}) {
+        this.count = 0
+    }
+
+    doAction(context, self) { }
+
+    update(context) {
+        if (++this.count % 10 == 0) {
+            const { mode } = Room.get(context.roomId)
+            for (const blue of mode.blueTeam) {
+                if (blue.place === context.place) {
+                    const range = Math.abs(blue.x - context.x) + Math.abs(blue.y - context.y)
+                    if (range > 10)
+                        continue
+                    if (blue.game.hp < 0) {
+                        mode.moveToBase(blue)
+                        blue.game.hp = 100
+                        blue.send(Serialize.InformMessage('<color=red>오니진영에서 추방되었습니다.</color>'))
+                    } else {
+                        blue.game.hp -= 40
+                        blue.send(Serialize.InformMessage('<color=red>오니진영에서 벗어나세요!!!!</color>'))
+                        blue.send(Serialize.PlaySound('Warn'))
+                    }
+                }
+            }
+            this.count = 0
+        }
+    }
+}
+
 class RescueState {
     constructor(args = {}) {
         this.count = 0
@@ -644,6 +675,7 @@ module.exports = new Proxy({
     akari: AkariState,
     tansu: TansuState,
     fireShop: FireShopState,
+    protecter: ProtecterState,
     rescue: RescueState,
     mania: ManiaState,
     rabbit: RabbitState,
