@@ -201,7 +201,6 @@ global.Room = (function () {
         }
 
         useItem(self) {
-            console.log("C")
             this.mode.useItem(self)
         }
 

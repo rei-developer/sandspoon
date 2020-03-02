@@ -970,10 +970,8 @@ global.User = (function () {
         }
 
         useItem() {
-            console.log("A")
             if (!this.roomId)
                 return
-            console.log("B")
             Room.get(this.roomId).useItem(this)
         }
 
