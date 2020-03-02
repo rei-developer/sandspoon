@@ -16,7 +16,7 @@ class FireMethod {
         for (const red of room.mode.redTeam) {
             if (red.place === self.place) {
                 const range = Math.abs(red.x - self.x) + Math.abs(red.y - self.y)
-                if (range > 2)
+                if (range > 1)
                     continue
                 if (red.game.hp < 0) {
                     room.mode.moveToKickOut(red)
@@ -24,7 +24,8 @@ class FireMethod {
                     ++self.score.kill
                     ++red.score.death
                     red.send(Serialize.InformMessage('<color=red>사망했습니다.</color>'))
-                    self.publish(Serialize.UpdateModeCount(mode.score.red, mode.score.blue))
+                    self.send(Serialize.InformMessage('<color=red>' + red.name + ' 소탕 완료!</color>'))
+                    self.publish(Serialize.UpdateModeCount(room.mode.score.red, room.mode.score.blue))
                 } else {
                     red.game.hp -= 40
                     self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
