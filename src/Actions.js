@@ -69,7 +69,7 @@ class FireShopState {
                     if (range > 10)
                         continue
                     if (red.game.hp < 0) {
-                        mode.moveToBase(red)
+                        mode.moveToKickOut(red)
                         red.game.hp = 100
                         red.send(Serialize.InformMessage('<color=red>인간진영에서 추방되었습니다.</color>'))
                     } else {

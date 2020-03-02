@@ -210,7 +210,6 @@ module.exports = class DeathMatchMode {
     }
 
     useItem(self) {
-        console.log("D")
         if (self.game.useItemId < 1)
             return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
         const item = self.game.inventory.filter(item => item.id === self.game.useItemId)
