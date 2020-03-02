@@ -182,7 +182,6 @@ module.exports = class HideMode {
                 'door-Blackwood',
                 'door-Blackwood_panel',
                 'door-Chocolatewood',
-                'ev02',
                 'iron',
                 'iron2',
                 'steel',
