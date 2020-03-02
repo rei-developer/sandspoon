@@ -33,7 +33,7 @@ class FireMethod {
                     red.game.hp -= parseInt(Math.random() * 35) + 35
                     self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
                 }
-                const inventory = self.game.inventory.filter(i => i.id === item.id)
+                const inventory = self.game.inventory.find(i => i.id === item.id)
                 if (!inventory)
                     return
                 --inventory.num
