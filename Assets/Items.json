@@ -6,7 +6,7 @@
             "icon": "Fire",
             "name": "화염방사기",
             "description": "",
-            "cost": 100,
+            "cost": 10,
             "method": {
                 "command": "Fire",
                 "arguments": {}
