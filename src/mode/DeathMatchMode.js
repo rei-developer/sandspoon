@@ -215,13 +215,16 @@ module.exports = class DeathMatchMode {
         const inventory = self.game.inventory.filter(item => item.id === self.game.useItemId)
         if (!inventory)
             return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
-        if (inventory.num < 1)
+        if (--inventory.num < 1)
             return self.send(Serialize.InformMessage('<color=red>아이템을 모두 소비했습니다.</color>'))
         const itemInfo = Item.get(self.game.useItemId)
         if (!itemInfo)
             return
+        console.log("A")
         itemInfo.doing(self)
-        self.send(Serialize.UpdateGameItem(itemInfo.icon, --inventory.num))
+        console.log("B")
+        self.send(Serialize.UpdateGameItem(itemInfo.icon, inventory.num))
+        console.log("C")
         if (inventory.num < 1)
             self.send(Serialize.RemoveGameItem())
     }
