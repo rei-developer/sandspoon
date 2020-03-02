@@ -74,19 +74,15 @@ module.exports = class GameMode {
 
     update() {
         if (this.room.users.length >= 4) {
-            const r = parseInt(Math.random() * 3)
-            if (r === 0) {
-                const modes = [
-                    RescueMode,
-                    InfectMode,
-                    HideMode,
-                    EscapeMode,
-                    DeathMatchMode
-                ]
-                const i = Math.floor(Math.random() * modes.length)
-                return this.room.changeMode(modes[i])
-            } else
-                return this.room.changeMode(DeathMatchMode)
+            const modes = [
+                RescueMode,
+                InfectMode,
+                HideMode,
+                EscapeMode,
+                DeathMatchMode
+            ]
+            const i = Math.floor(Math.random() * modes.length)
+            return this.room.changeMode(modes[i])
         } else {
             if (this.count % 100 === 0)
                 this.room.publish(Serialize.NoticeMessage('4명부터 시작합니다. (' + this.room.users.length + '/' + this.room.max + '명)'))
