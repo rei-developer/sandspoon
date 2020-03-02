@@ -30,7 +30,7 @@ class FireMethod {
                     self.send(Serialize.InformMessage('<color=red>' + red.name + ' 소탕 완료!</color>'))
                     self.publish(Serialize.UpdateModeCount(room.mode.score.red, room.mode.score.blue))
                 } else {
-                    red.game.hp -= 35
+                    red.game.hp -= parseInt(Math.random() * 35) + 35
                     self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
                 }
                 const inventory = self.game.inventory.filter(i => i.id === item.id)
