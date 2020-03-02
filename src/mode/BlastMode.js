@@ -1,5 +1,4 @@
 const Serialize = require('../protocol/Serialize')
-const GameMap = require('../GameMap')
 const { TeamType, ModeType, MapType } = require('../util/const')
 const PlayerState = require('../PlayerState')
 const Event = require('../Event')
@@ -9,7 +8,7 @@ const STATE_READY = 0
 const STATE_GAME = 1
 const STATE_RESULT = 3
 
-module.exports = class EscapeMode {
+module.exports = class BlastMode {
     constructor(roomId) {
         this.roomId = roomId
         this.redTeam = []
@@ -17,17 +16,17 @@ module.exports = class EscapeMode {
         this.map = MapType.ASYLUM + parseInt(Math.random() * MapType.DESERT)
         this.count = 230
         this.maxCount = 230
-        this.supplyCount = 5
+        this.bombCount = 10
+        this.bomb = false
         this.score = {
             red: 0,
             blue: 0
         }
-        this.type = ModeType.ESCAPE
-        this.persons = 0
         this.tick = 0
         this.state = STATE_READY
+        this.type = ModeType.BLAST
         this.room = Room.get(this.roomId)
-        const objects = require('../../Assets/Mods/Mod' + ('' + 4).padStart(3, '0') + '.json')[this.map]
+        const objects = require('../../Assets/Mods/Mod' + ('' + 6).padStart(3, '0') + '.json')[this.map]
         for (const object of objects) {
             const event = new Event(this.roomId, object)
             this.room.addEvent(event)
@@ -42,97 +41,98 @@ module.exports = class EscapeMode {
             maxCount: this.maxCount,
             red: this.score.red,
             blue: this.score.blue,
-            persons: this.score.red
+            persons: this.blueTeam.length
         }
     }
 
     moveToBase(self) {
         switch (this.map) {
             case MapType.ASYLUM:
-                if (self.game.team === TeamType.RED) self.teleport(29, 9, 19)
-                else self.teleport(2, 8, 13)
+                self.teleport(21, 9, 7)
                 break
             case MapType.TATAMI:
-                if (self.game.team === TeamType.RED) self.teleport(54, 10, 5)
-                else self.teleport(42, 9, 7)
+                self.teleport(42, 9, 7)
                 break
             case MapType.GON:
-                if (self.game.team === TeamType.RED) self.teleport(75, 20, 26)
-                else self.teleport(60, 16, 11)
+                self.teleport(60, 16, 11)
                 break
             case MapType.LABORATORY:
-                if (self.game.team === TeamType.RED) self.teleport(86, 9, 11)
-                else self.teleport(99, 10, 8)
+                self.teleport(99, 10, 8)
                 break
             case MapType.SCHOOL:
-                if (self.game.team === TeamType.RED) self.teleport(115, 13, 9)
-                else self.teleport(149, 14, 8)
+                self.teleport(149, 14, 8)
                 break
             case MapType.MINE:
-                if (self.game.team === TeamType.RED) self.teleport(172, 6, 8)
-                else self.teleport(154, 9, 8)
+                self.teleport(154, 9, 8)
                 break
             case MapType.ISLAND:
-                if (self.game.team === TeamType.RED) self.teleport(189, 7, 7)
-                else self.teleport(199, 10, 8)
+                self.teleport(199, 10, 8)
                 break
             case MapType.MANSION:
-                if (self.game.team === TeamType.RED) self.teleport(226, 10, 9)
-                else self.teleport(238, 17, 8)
+                self.teleport(215, 10, 9)
                 break
             case MapType.DESERT:
-                if (self.game.team === TeamType.RED) self.teleport(244, 9, 11)
-                else self.teleport(249, 7, 17)
+                self.teleport(249, 7, 17)
                 break
         }
     }
 
-    moveToPrison(self) {
+    moveToKickOut(self) {
         switch (this.map) {
             case MapType.ASYLUM:
-                self.teleport(13, 11, 15)
+                self.teleport(19, 9, 8)
                 break
             case MapType.TATAMI:
-                self.teleport(57, 19, 13)
+                self.teleport(47, 17, 6)
                 break
             case MapType.GON:
-                self.teleport(74, 14, 12)
+                self.teleport(72, 15, 8)
                 break
             case MapType.LABORATORY:
-                self.teleport(96, 7, 30)
+                self.teleport(89, 16, 12)
                 break
             case MapType.SCHOOL:
-                self.teleport(122, 6, 12)
+                self.teleport(118, 5, 15)
                 break
             case MapType.MINE:
-                self.teleport(169, 13, 6)
+                self.teleport(166, 34, 31)
                 break
             case MapType.ISLAND:
-                self.teleport(191, 11, 7)
+                self.teleport(174, 12, 7)
                 break
             case MapType.MANSION:
-                self.teleport(217, 31, 8)
+                self.teleport(218, 19, 8)
                 break
             case MapType.DESERT:
-                self.teleport(255, 20, 17)
+                self.teleport(243, 13, 22)
                 break
         }
     }
 
     join(self) {
         self.game = this.gameObject()
-        self.setGraphics(self.blueGraphics)
-        this.blueTeam.push(self)
         switch (this.state) {
             case STATE_READY:
-                this.moveToBase(self)
+                self.game.team = TeamType.BLUE
+                self.setGraphics(self.blueGraphics)
+                this.blueTeam.push(self)
                 break
             case STATE_GAME:
-                self.game.camera = true
-                self.setGraphics('Camera')
-                this.moveToBase(self)
+                if (this.redTeam.length >= this.blueTeam.length) {
+                    self.game.team = TeamType.RED
+                    self.setGraphics(self.redGraphics)
+                    this.redTeam.push(self)
+                    self.send(Serialize.NoticeMessage('인간의 폭발물 설치를 저지하라.'))
+                } else {
+                    self.game.team = TeamType.BLUE
+                    self.setGraphics(self.blueGraphics)
+                    this.blueTeam.push(self)
+                    self.send(Serialize.NoticeMessage('폭발물을 설치하여 폭파하라.'))
+                }
+                self.send(Serialize.PlaySound('A4'))
                 break
         }
+        this.moveToBase(self)
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
     }
@@ -144,32 +144,20 @@ module.exports = class EscapeMode {
 
     drawEvents(self) {
         const { events } = this.room.places[self.place]
-        for (const event of events)
+        for (const event of events) {
             self.send(Serialize.CreateGameObject(event))
+        }
     }
 
     drawUsers(self) {
-        let selfHide = false
         const sameMapUsers = this.room.sameMapUsers(self.place)
         for (const user of sameMapUsers) {
             if (self === user)
                 continue
             if (user.state === PlayerState.Tansu)
                 continue
-            let userHide = false
-            if (self.game.team !== user.game.team) {
-                if (!(self.admin > 0 && user.admin > 0)) {
-                    if (self.admin > 0)
-                        selfHide = true
-                    else if (user.admin > 0)
-                        userHide = true
-                    else
-                        selfHide = userHide = true
-                }
-            }
-            self.send(Serialize.CreateGameObject(user, userHide))
-            if (!self.camera || (self.camera && user.camera))
-                user.send(Serialize.CreateGameObject(self, selfHide))
+            self.send(Serialize.CreateGameObject(user))
+            user.send(Serialize.CreateGameObject(self))
         }
     }
 
@@ -178,18 +166,14 @@ module.exports = class EscapeMode {
             return true
         if (self.game.team === target.game.team)
             return false
-        if (self.game.camera || target.game.camera)
-            return false
-        target.game.team = TeamType.RED
-        target.setGraphics(target.redGraphics)
-        target.send(Serialize.SetGameTeam(target))
+        ++this.score.red
+        this.moveToBase(target)
         target.send(Serialize.DeadAnimation())
-        this.redTeam.push(target)
-        this.blueTeam.splice(this.blueTeam.indexOf(target), 1)
         self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
         self.send(Serialize.PlaySound('Eat'))
-        self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 색출되다.'))
+        self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 사망하다.'))
         self.broadcast(Serialize.PlaySound('Shock'))
+        self.publish(Serialize.UpdateModeCount(this.score.red, this.score.blue))
         switch (target.state) {
             case PlayerState.Tansu:
                 ++self.score.killForWardrobe
@@ -202,46 +186,51 @@ module.exports = class EscapeMode {
                 ++target.score.death
                 break
         }
-        this.room.draw(target)
         return true
     }
 
-    useItem(self) { }
-
-    spawnDoor() {
-        const newObjects = require('../../Assets/Mods/Eve000.json')[5]
-        for (const object of newObjects) {
-            const event = new Event(this.roomId, object)
-            const red = pix.sample(this.redTeam, 1)[0]
-            if (!red)
-                continue
-            event.place = red.place
-            event.x = red.x
-            event.y = red.y
-            this.room.addEvent(event)
-            this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
-        }
+    buyItem(self, id) {
+        const item = Item.get(id)
+        if (!item)
+            return
+        if (self.coin < item.cost)
+            return self.send(Serialize.InformMessage('<color=red>골드가 부족합니다.</color>'))
+        self.coin -= item.cost
+        self.game.useItemId = id
+        this.addItem(self, id, item.num)
+        self.send(Serialize.InformMessage('<color=red>' + item.name + ' 구입 완료</color>'))
     }
 
-    spawnKey() {
-        const newObjects = require('../../Assets/Mods/Eve000.json')[4]
-        for (const object of newObjects) {
-            const event = new Event(this.roomId, object)
-            const red = pix.sample(this.redTeam, 1)[0]
-            if (!red)
-                continue
-            event.place = red.place
-            event.x = red.x
-            event.y = red.y
-            this.room.addEvent(event)
-            this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
-        }
-        this.supplyCount = 5
+    addItem(self, id, num = 1) {
+        const inventory = self.game.inventory.find(item => item.id === id)
+        if (inventory)
+            inventory.num += num
+        else
+            self.game.inventory.push({ id, num })
+        const item = Item.get(id)
+        if (!item)
+            return
+        self.send(Serialize.UpdateGameItem(item.icon, inventory.num))
+    }
+
+    useItem(self) {
+        if (self.game.useItemId < 1)
+            return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
+        const inventory = self.game.inventory.find(item => item.id === self.game.useItemId)
+        if (!inventory)
+            return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
+        if (--inventory.num === 0)
+            return self.send(Serialize.InformMessage('<color=red>아이템을 모두 소비했습니다.</color>'))
+        const itemInfo = Item.get(self.game.useItemId)
+        if (!itemInfo)
+            return
+        itemInfo.doing(self)
+        self.send(Serialize.UpdateGameItem(itemInfo.icon, inventory.num))
+        if (inventory.num < 1)
+            self.send(Serialize.RemoveGameItem())
     }
 
     doAction(self, event) {
-        if (self.game.camera)
-            return false
         event.doAction(self)
         return true
     }
@@ -257,7 +246,6 @@ module.exports = class EscapeMode {
         }
         self.game = {}
         self.setGraphics(self.blueGraphics)
-        self.publish(Serialize.UpdateModeCount(this.score.blue))
     }
 
     gameObject() {
@@ -266,8 +254,9 @@ module.exports = class EscapeMode {
             spawnTime: 10,
             tansu: null,
             hp: 100,
-            key: 0,
-            camera: false,
+            inventory: [],
+            useItemId: 0,
+            judgment: false,
             result: false,
             count: 0
         }
@@ -297,8 +286,17 @@ module.exports = class EscapeMode {
         Room.remove(this.room)
         for (const red of this.redTeam)
             red.score.sum += red.score.kill * 10 + red.score.killForWardrobe * 50
-        for (const blue of this.blueTeam)
-            blue.score.sum += blue.game.key * 50 + blue.score.foundKey * 20
+        if (winner === TeamType.BLUE) {
+            for (const blue of this.blueTeam) {
+                if (blue.state === PlayerState.Tansu) {
+                    blue.score.sum += 800
+                    blue.score.surviveForWardrobe += 1
+                } else {
+                    blue.score.sum += 400
+                    blue.score.survive += 1
+                }
+            }
+        }
         const ranks = slice.sort((a, b) => b.score.sum - a.score.sum)
         const persons = slice.length
         for (const red of this.redTeam) {
@@ -326,7 +324,7 @@ module.exports = class EscapeMode {
             red.send(Serialize.ResultGame(winner, rank, persons, mission, exp, coin))
         }
         for (const blue of this.blueTeam) {
-            const mission = "구출 " + blue.score.rescue + " (" + blue.score.rescueCombo + "콤보)\n수감 " + (blue.score.death + blue.score.deathForWardrobe)
+            const mission = "생존" + (blue.state === PlayerState.Tansu ? " (장농)" : "")
             let exp = 100 + blue.score.sum
             let coin = 50 + parseInt(blue.score.sum / 2)
             if (exp < 100)
@@ -362,10 +360,11 @@ module.exports = class EscapeMode {
                     } else if (this.count === 200) {
                         this.room.lock = false // true
                         this.state = STATE_GAME
-                        const lottos = pix.sample(this.blueTeam, this.blueTeam.length > 4 ? 2 : 1)
+                        const lottos = pix.sample(this.blueTeam, parseInt(this.blueTeam.length / 2))
                         for (const lotto of lottos) {
                             this.blueTeam.splice(this.blueTeam.indexOf(lotto), 1)
                             this.redTeam.push(lotto)
+                            this.moveToKickOut(lotto)
                             lotto.game.team = TeamType.RED
                             lotto.setGraphics(lotto.redGraphics)
                             if (lotto.state === PlayerState.Tansu) {
@@ -377,43 +376,29 @@ module.exports = class EscapeMode {
                             }
                             lotto.send(Serialize.SetGameTeam(lotto))
                         }
-                        this.spawnDoor()
-                        this.publishToRed(Serialize.NoticeMessage('인간의 탈출을 막고 모두 색출하라.'))
-                        this.publishToRed(Serialize.PlaySound('A4'))
-                        this.publishToBlue(Serialize.NoticeMessage('오니를 피해 열쇠를 찾아 탈출하라.'))
-                        this.publishToBlue(Serialize.PlaySound('A4'))
+                        this.publishToRed(Serialize.NoticeMessage('인간의 폭발물 설치를 저지하라.'))
+                        this.publishToBlue(Serialize.NoticeMessage('폭발물을 설치하여 폭파하라.'))
+                        this.room.publish(Serialize.PlaySound('A4'))
                     }
                     break
                 case STATE_GAME:
-                    for (const user of this.redTeam) {
-                        const map = GameMap.get(user.place)
-                        if ((map.rangePortal(user.x, user.y, 2))) {
-                            if (++user.game.count >= 3) {
-                                user.game.count = 0
-                                if (user.game.hp < 0) {
-                                    this.moveToBase(user)
-                                    user.game.hp = 100
-                                    user.send(Serialize.InformMessage('<color=red>지속적인 게임 플레이 방해로 본진으로 추방되었습니다.</color>'))
-                                } else {
-                                    user.game.hp -= 40
-                                    user.send(Serialize.InformMessage('<color=red>경고!!! 포탈 주변을 막지 마십시오.</color>'))
-                                    user.send(Serialize.PlaySound('Warn'))
-                                }
-                            }
-                        } else {
-                            if (--user.game.count < 0) user.game.count = 0
-                        }
+                    if (this.bomb) {
+                        if (this.bombCount > 5)
+                            this.room.publish(Serialize.NoticeMessage(this.bombCount - 5))
+                        else if (this.bombCount === 5)
+                            this.room.publish(Serialize.PlaySound('A4'))
+                        else if (this.bombCount === 0)
+                            this.result(TeamType.BLUE)
+                        --this.bombCount
                     }
-                    if (--this.supplyCount === 0)
-                        this.spawnKey()
-                    if (this.score.blue >= parseInt(this.blueTeam.length / 3) || this.redTeam.length === 0)
+                    if (this.redTeam.length === 0)
                         this.result(TeamType.BLUE)
                     else if (this.blueTeam.length === 0)
                         this.result(TeamType.RED)
-                    else if (this.count === 5)
+                    if (this.count === 5)
                         this.room.publish(Serialize.PlaySound('Second'))
                     else if (this.count === 0)
-                        this.result(this.score.blue > 0 ? TeamType.BLUE : TeamType.RED)
+                        this.result(TeamType.BLUE)
                     break
             }
             --this.count

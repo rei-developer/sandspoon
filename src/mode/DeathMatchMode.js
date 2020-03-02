@@ -194,18 +194,20 @@ module.exports = class DeathMatchMode {
         if (self.coin < item.cost)
             return self.send(Serialize.InformMessage('<color=red>골드가 부족합니다.</color>'))
         self.coin -= item.cost
-        self.send(Serialize.InformMessage('<color=red>' + item.name + ' 구입 완료</color>'))
+        self.game.useItemId = id
         this.addItem(self, id, item.num)
+        self.send(Serialize.InformMessage('<color=red>' + item.name + ' 구입 완료</color>'))
     }
 
     addItem(self, id, num = 1) {
         const inventory = self.game.inventory.find(item => item.id === id)
-        if (inventory) {
+        if (inventory)
             inventory.num += num
-        } else {
+        else
             self.game.inventory.push({ id, num })
-        }
-        self.game.useItemId = id
+        const item = Item.get(id)
+        if (!item)
+            return
         self.send(Serialize.UpdateGameItem(item.icon, inventory.num))
     }
 
@@ -215,7 +217,7 @@ module.exports = class DeathMatchMode {
         const inventory = self.game.inventory.find(item => item.id === self.game.useItemId)
         if (!inventory)
             return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
-        if (--inventory.num < 1)
+        if (--inventory.num === 0)
             return self.send(Serialize.InformMessage('<color=red>아이템을 모두 소비했습니다.</color>'))
         const itemInfo = Item.get(self.game.useItemId)
         if (!itemInfo)
