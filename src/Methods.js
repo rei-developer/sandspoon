@@ -12,6 +12,8 @@ class FireMethod {
     constructor(args = {}) { }
 
     doing(self, item) {
+        if (self.game.team === TeamType.RED)
+            return
         const room = Room.get(self.roomId)
         for (const red of room.mode.redTeam) {
             if (red.place === self.place) {
@@ -21,13 +23,14 @@ class FireMethod {
                 if (red.game.hp < 0) {
                     room.mode.moveToKickOut(red)
                     red.game.hp = 100
+                    ++room.mode.score.blue
                     ++self.score.kill
                     ++red.score.death
                     red.send(Serialize.InformMessage('<color=red>사망했습니다.</color>'))
                     self.send(Serialize.InformMessage('<color=red>' + red.name + ' 소탕 완료!</color>'))
                     self.publish(Serialize.UpdateModeCount(room.mode.score.red, room.mode.score.blue))
                 } else {
-                    red.game.hp -= 40
+                    red.game.hp -= 30
                     self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
                 }
                 const inventory = self.game.inventory.filter(i => i.id === item.id)
