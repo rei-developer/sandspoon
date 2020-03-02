@@ -352,32 +352,32 @@ module.exports = class DeathMatchMode {
                     } else if (this.count === 200) {
                         this.room.lock = false // true
                         this.state = STATE_GAME
-                        /* const lottos = pix.sample(this.blueTeam, parseInt(this.blueTeam.length / 2))
-                         for (const lotto of lottos) {
-                             this.blueTeam.splice(this.blueTeam.indexOf(lotto), 1)
-                             this.redTeam.push(lotto)
-                             this.moveToKickOut(lotto)
-                             lotto.game.team = TeamType.RED
-                             lotto.setGraphics(lotto.redGraphics)
-                             if (lotto.state === PlayerState.Tansu) {
-                                 lotto.setState('Basic')
-                                 lotto.send(Serialize.LeaveWardrobe())
-                                 this.drawAkari(lotto)
-                                 lotto.game.tansu.users.splice(lotto.game.tansu.users.indexOf(lotto), 1)
-                                 lotto.game.tansu = null
-                             }
-                             lotto.send(Serialize.SetGameTeam(lotto))
-                         }*/
+                        const lottos = pix.sample(this.blueTeam, parseInt(this.blueTeam.length / 2))
+                        for (const lotto of lottos) {
+                            this.blueTeam.splice(this.blueTeam.indexOf(lotto), 1)
+                            this.redTeam.push(lotto)
+                            this.moveToKickOut(lotto)
+                            lotto.game.team = TeamType.RED
+                            lotto.setGraphics(lotto.redGraphics)
+                            if (lotto.state === PlayerState.Tansu) {
+                                lotto.setState('Basic')
+                                lotto.send(Serialize.LeaveWardrobe())
+                                this.drawAkari(lotto)
+                                lotto.game.tansu.users.splice(lotto.game.tansu.users.indexOf(lotto), 1)
+                                lotto.game.tansu = null
+                            }
+                            lotto.send(Serialize.SetGameTeam(lotto))
+                        }
                         this.publishToRed(Serialize.NoticeMessage('모든 인간을 섬멸하라.'))
                         this.publishToBlue(Serialize.NoticeMessage('모든 오니를 소탕하라.'))
                         this.room.publish(Serialize.PlaySound('A4'))
                     }
                     break
                 case STATE_GAME:
-                    //if (this.redTeam.length === 0)
-                    //    this.result(TeamType.BLUE)
-                    //else if (this.blueTeam.length === 0)
-                    //    this.result(TeamType.RED)
+                    if (this.redTeam.length === 0)
+                        this.result(TeamType.BLUE)
+                    else if (this.blueTeam.length === 0)
+                        this.result(TeamType.RED)
                     if (this.count === 5)
                         this.room.publish(Serialize.PlaySound('Second'))
                     else if (this.count === 0)
