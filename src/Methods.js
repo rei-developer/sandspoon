@@ -33,18 +33,6 @@ class FireMethod {
                     red.game.hp -= parseInt(Math.random() * 60) + 30
                     self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
                 }
-                const inventory = self.game.inventory.filter(i => i.id === self.game.useItemId)
-                console.log(inventory)
-                if (!inventory)
-                    return
-                console.log("================")
-                console.log(inventory)
-                console.log("변경 후")
-                --inventory.num
-                console.log(inventory)
-                self.send(Serialize.UpdateGameItem(item.icon, inventory.num))
-                if (inventory.num < 1)
-                    self.send(Serialize.RemoveGameItem())
             }
         }
     }
