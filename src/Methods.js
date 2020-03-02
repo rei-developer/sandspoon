@@ -30,13 +30,17 @@ class FireMethod {
                     self.send(Serialize.InformMessage('<color=red>' + red.name + ' 소탕 완료!</color>'))
                     self.publish(Serialize.UpdateModeCount(room.mode.score.red, room.mode.score.blue))
                 } else {
-                    red.game.hp -= parseInt(Math.random() * 35) + 35
+                    red.game.hp -= parseInt(Math.random() * 70) + 30
                     self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
                 }
                 const inventory = self.game.inventory.find(i => i.id === item.id)
                 if (!inventory)
                     return
+                console.log("================")
+                console.log(inventory)
+                console.log("변경 후")
                 --inventory.num
+                console.log(inventory)
                 self.send(Serialize.UpdateGameItem(item.icon, inventory.num))
                 if (inventory.num < 1)
                     self.send(Serialize.RemoveGameItem())
