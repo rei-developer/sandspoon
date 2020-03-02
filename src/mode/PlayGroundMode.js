@@ -55,6 +55,8 @@ module.exports = class PlayGroundMode {
         return true
     }
 
+    useItem(self) { }
+
     doAction(self, target) {
         target.doAction(self)
         return true

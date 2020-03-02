@@ -200,6 +200,10 @@ global.Room = (function () {
             }
         }
 
+        useItem(self) {
+            this.mode.useItem(self)
+        }
+
         canJoin() {
             return this.users.length < this.max && !this.lock
         }

@@ -172,6 +172,8 @@ module.exports = class HideMode {
         return true
     }
 
+    useItem(self) { }
+
     change() {
         for (const blue of this.blueTeam) {
             const skins = [

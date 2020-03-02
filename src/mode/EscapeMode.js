@@ -202,6 +202,8 @@ module.exports = class EscapeMode {
         return true
     }
 
+    useItem(self) { }
+
     spawnDoor() {
         const newObjects = require('../../Assets/Mods/Eve000.json')[5]
         for (const object of newObjects) {

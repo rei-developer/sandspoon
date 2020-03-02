@@ -234,6 +234,8 @@ module.exports = class RescueMode {
         return true
     }
 
+    useItem(self) { }
+
     doAction(self, event) {
         event.doAction(self)
         return true

@@ -47,6 +47,7 @@ module.exports = {
         'RESTORE_NOTICE_MESSAGE',
         'CLEAR_NOTICE_MESSAGE',
         'ADD_NOTICE_MESSAGE',
-        'ADD_USER_REPORT'
+        'ADD_USER_REPORT',
+        'USE_ITEM'
     )
 }

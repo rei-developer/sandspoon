@@ -160,31 +160,29 @@ module.exports = class DeathMatchMode {
     }
 
     attack(self, target) {
+        if (self.game.team === TeamType.BLUE)
+            return true
         if (self.game.team === target.game.team)
             return false
-        if (self.game.team === TeamType.BLUE)
-            this.useItem(self)
-        else {
-            ++this.score.red
-            this.moveToBase(target)
-            target.send(Serialize.DeadAnimation())
-            self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
-            self.send(Serialize.PlaySound('Eat'))
-            self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 사망하다.'))
-            self.broadcast(Serialize.PlaySound('Shock'))
-            self.publish(Serialize.UpdateModeCount(this.score.red, this.score.blue))
-            switch (target.state) {
-                case PlayerState.Tansu:
-                    ++self.score.killForWardrobe
-                    ++target.score.deathForWardrobe
-                    target.setState('Basic')
-                    target.send(Serialize.LeaveWardrobe())
-                    break
-                case PlayerState.Basic:
-                    ++self.score.kill
-                    ++target.score.death
-                    break
-            }
+        ++this.score.red
+        this.moveToBase(target)
+        target.send(Serialize.DeadAnimation())
+        self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
+        self.send(Serialize.PlaySound('Eat'))
+        self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 사망하다.'))
+        self.broadcast(Serialize.PlaySound('Shock'))
+        self.publish(Serialize.UpdateModeCount(this.score.red, this.score.blue))
+        switch (target.state) {
+            case PlayerState.Tansu:
+                ++self.score.killForWardrobe
+                ++target.score.deathForWardrobe
+                target.setState('Basic')
+                target.send(Serialize.LeaveWardrobe())
+                break
+            case PlayerState.Basic:
+                ++self.score.kill
+                ++target.score.death
+                break
         }
         return true
     }

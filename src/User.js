@@ -969,6 +969,12 @@ global.User = (function () {
             Room.get(this.roomId).hit(this)
         }
 
+        useItem() {
+            if (!this.roomId)
+                return
+            Room.get(this.roomId).useItem(this)
+        }
+
         portal(place, x, y, dx = 0, dy = 0) {
             this.timestamp = 0
             this.broadcastToMap(Serialize.RemoveGameObject(this))

@@ -181,6 +181,8 @@ module.exports = class InfectMode {
         return true
     }
 
+    useItem(self) { }
+
     supply() {
         const newObjects = require('../../Assets/Mods/Eve000.json')[1]
         for (const object of newObjects) {

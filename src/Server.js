@@ -266,6 +266,8 @@ module.exports = class Server {
 
         handler[ToServer.ADD_USER_REPORT] = async data => user.addUserReport(JSON.parse(utf8.decode(data)))
 
+        handler[ToServer.USE_ITEM] = async () => user.useItem()
+
         return handler
     }
 
