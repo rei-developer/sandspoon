@@ -400,10 +400,10 @@ class EscapeState {
         const r = parseInt(Math.random() * 3)
         if (r === 0) {
             ++room.mode.score.blue
+            self.game.camera = true
             self.setGraphics('Camera')
             self.publish(Serialize.NoticeMessage(self.name + ' 탈출 성공!'))
             self.publish(Serialize.PlaySound('Rescue'))
-            self.game.camera = true
             ++self.score.escape
             room.mode.publishToMap(self.place, Serialize.RemoveGameObject(self))
         } else {

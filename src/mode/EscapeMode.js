@@ -128,8 +128,9 @@ module.exports = class EscapeMode {
                 this.moveToBase(self)
                 break
             case STATE_GAME:
+                self.game.camera = true
+                self.setGraphics('Camera')
                 this.moveToBase(self)
-                self.send(Serialize.NoticeMessage('오니를 피해 열쇠를 찾아 탈출하라.'))
                 break
         }
         self.publishToMap(Serialize.SetGameTeam(self))
@@ -178,7 +179,7 @@ module.exports = class EscapeMode {
             return true
         if (self.game.team === target.game.team)
             return false
-        if (self.game.camera)
+        if (self.game.camera || target.game.camera)
             return false
         target.game.team = TeamType.RED
         target.setGraphics(target.redGraphics)
@@ -404,7 +405,7 @@ module.exports = class EscapeMode {
                     }
                     if (--this.supplyCount === 0)
                         this.spawnKey()
-                    if (this.score.blue >= parseInt(this.blueTeam.length / 2) || this.redTeam.length === 0)
+                    if (this.score.blue >= parseInt(this.blueTeam.length / 3) || this.redTeam.length === 0)
                         this.result(TeamType.BLUE)
                     else if (this.blueTeam.length === 0)
                         this.result(TeamType.RED)
