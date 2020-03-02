@@ -19,7 +19,7 @@ class FireMethod {
                 if (range > 2)
                     continue
                 if (red.game.hp < 0) {
-                    mode.moveToKickOut(red)
+                    room.mode.moveToKickOut(red)
                     red.game.hp = 100
                     ++self.score.kill
                     ++red.score.death

@@ -241,6 +241,8 @@ module.exports = class EscapeMode {
     }
 
     doAction(self, event) {
+        if (self.game.camera)
+            return false
         event.doAction(self)
         return true
     }
