@@ -210,6 +210,7 @@ module.exports = class DeathMatchMode {
     }
 
     useItem(self) {
+        console.log("D")
         if (self.game.useItemId < 1)
             return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
         const item = self.game.inventory.filter(item => item.id === self.game.useItemId)
@@ -217,7 +218,7 @@ module.exports = class DeathMatchMode {
             return self.send(Serialize.InformMessage('<color=red>구입한 아이템이 없습니다.</color>'))
         if (item.num < 1)
             return self.send(Serialize.InformMessage('<color=red>아이템을 모두 소비했습니다.</color>'))
-        const itemInfo = Item.get(item.id)
+        const itemInfo = Item.get(self.game.useItemId)
         if (itemInfo)
             itemInfo.doing(self)
     }
