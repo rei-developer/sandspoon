@@ -249,7 +249,7 @@ module.exports = class EscapeMode {
         }
         self.game = {}
         self.setGraphics(self.blueGraphics)
-        self.publish(Serialize.UpdateModeUserCount(this.score.blue))
+        self.publish(Serialize.UpdateModeCount(this.score.blue))
     }
 
     gameObject() {

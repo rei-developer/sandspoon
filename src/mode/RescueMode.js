@@ -230,7 +230,7 @@ module.exports = class RescueMode {
                 break
         }
         ++this.score.red
-        self.publish(Serialize.UpdateModeUserCount(this.score.red))
+        self.publish(Serialize.UpdateModeCount(this.score.red))
         return true
     }
 
@@ -252,7 +252,7 @@ module.exports = class RescueMode {
         }
         self.game = {}
         self.setGraphics(self.blueGraphics)
-        self.publish(Serialize.UpdateModeUserCount(this.score.red))
+        self.publish(Serialize.UpdateModeCount(this.score.red))
     }
 
     gameObject() {

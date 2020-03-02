@@ -24,14 +24,17 @@ class FireMethod {
                     ++self.score.kill
                     ++red.score.death
                     red.send(Serialize.InformMessage('<color=red>사망했습니다.</color>'))
-                    self.publish(Serialize.UpdateModeUserCount(mode.score.red, mode.score.blue))
+                    self.publish(Serialize.UpdateModeCount(mode.score.red, mode.score.blue))
                 } else {
                     red.game.hp -= 30
                     self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
                 }
                 const inventory = self.game.inventory.filter(i => i.id === item.id)
-                if (inventory)
-                    --inventory.num
+                if (!inventory)
+                    return
+                self.send(Serialize.UpdateGameItem(item.icon, --inventory.num))
+                if (inventory.num < 1)
+                    self.send(Serialize.RemoveGameItem())
             }
         }
     }

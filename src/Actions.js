@@ -107,7 +107,7 @@ class RescueState {
         mode.caught = false
         self.publish(Serialize.NoticeMessage(self.name + ' 인질 ' + count + '명 구출!'))
         self.publish(Serialize.PlaySound('Rescue'))
-        self.publish(Serialize.UpdateModeUserCount(0))
+        self.publish(Serialize.UpdateModeCount(0))
         self.score.rescue += count
         ++self.score.rescueCombo
     }
@@ -355,7 +355,7 @@ class BoxState {
             mode.redTeam.splice(mode.redTeam.indexOf(self), 1)
             // mode.moveToBase(self)
             self.publish(Serialize.NoticeMessage(self.name + (pix.maker(self.name) ? '가' : '이') + ' 보급품 사용!'))
-            self.publish(Serialize.UpdateModeUserCount(mode.blueTeam.length))
+            self.publish(Serialize.UpdateModeCount(mode.blueTeam.length))
         }
         self.publish(Serialize.PlaySound('squeaky'))
         context.publishToMap(Serialize.RemoveGameObject(context))

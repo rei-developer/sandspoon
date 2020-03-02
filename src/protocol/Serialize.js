@@ -137,19 +137,33 @@ my.UpdateRoomUserCount = function (count) {
     return JSON.stringify(packet)
 }
 
-my.UpdateModeUserCount = function (count) {
+my.UpdateModeCount = function (count) {
     const packet = {}
-    packet._head = ToClient.UPDATE_MODE_USER_COUNT
+    packet._head = ToClient.UPDATE_MODE_COUNT
     packet.count = count
     return JSON.stringify(packet)
 }
 
-my.UpdateModeUserCount = function (red, blue) {
+my.UpdateModeCount = function (red, blue) {
     const packet = {}
-    packet._head = ToClient.UPDATE_MODE_USER_COUNT
+    packet._head = ToClient.UPDATE_MODE_COUNT
     packet.red = red
     packet.blue = blue
-    return
+    return JSON.stringify(packet)
+}
+
+my.UpdateGameItem = function (name, num) {
+    const packet = {}
+    packet._head = ToClient.UPDATE_GAME_ITEM
+    packet.name = name
+    packet.num = num
+    return JSON.stringify(packet)
+}
+
+my.RemoveGameItem = function () {
+    const packet = {}
+    packet._head = ToClient.REMOVE_GAME_ITEM
+    return JSON.stringify(packet)
 }
 
 my.SetGameTeam = function (obj) {

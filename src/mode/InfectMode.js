@@ -150,7 +150,7 @@ module.exports = class InfectMode {
             this.blueTeam.push(self)
             this.redTeam.splice(this.redTeam.indexOf(self), 1)
             self.publish(Serialize.NoticeMessage(self.name + (pix.maker(self.name) ? '가 ' : '이 ') + target.name + '의 보급품 사용!'))
-            self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+            self.publish(Serialize.UpdateModeCount(this.blueTeam.length))
             self.publish(Serialize.PlaySound('squeaky'))
             return true
         }
@@ -164,7 +164,7 @@ module.exports = class InfectMode {
         self.send(Serialize.PlaySound('Eat'))
         self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 감염되어 ' + (this.blueTeam.length > 0 ? this.blueTeam.length + '명 생존...' : '전멸.')))
         self.broadcast(Serialize.PlaySound('Shock'))
-        self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+        self.publish(Serialize.UpdateModeCount(this.blueTeam.length))
         switch (target.state) {
             case PlayerState.Tansu:
                 ++self.score.killForWardrobe
@@ -213,7 +213,7 @@ module.exports = class InfectMode {
         }
         self.game = {}
         self.setGraphics(self.blueGraphics)
-        self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+        self.publish(Serialize.UpdateModeCount(this.blueTeam.length))
     }
 
     gameObject() {
@@ -350,7 +350,7 @@ module.exports = class InfectMode {
                         this.publishToRed(Serialize.PlaySound('A4'))
                         this.publishToBlue(Serialize.NoticeMessage('감염되지 않고 최대한 생존하라.'))
                         this.publishToBlue(Serialize.PlaySound('A4'))
-                        this.room.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+                        this.room.publish(Serialize.UpdateModeCount(this.blueTeam.length))
                     }
                     break
                 case STATE_GAME:

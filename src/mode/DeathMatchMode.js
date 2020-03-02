@@ -172,7 +172,7 @@ module.exports = class DeathMatchMode {
             self.send(Serialize.PlaySound('Eat'))
             self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 사망하다.'))
             self.broadcast(Serialize.PlaySound('Shock'))
-            self.publish(Serialize.UpdateModeUserCount(this.score.red, this.score.blue))
+            self.publish(Serialize.UpdateModeCount(this.score.red, this.score.blue))
             switch (target.state) {
                 case PlayerState.Tansu:
                     ++self.score.killForWardrobe
@@ -196,6 +196,7 @@ module.exports = class DeathMatchMode {
         if (self.coin < item.cost)
             return self.send(Serialize.InformMessage('<color=red>골드가 부족합니다.</color>'))
         self.coin -= item.cost
+        self.send(Serialize.UpdateGameItem(item.icon, item.num))
         self.send(Serialize.InformMessage('<color=red>' + item.name + ' 구입 완료</color>'))
         this.addItem(self, id, item.num)
     }

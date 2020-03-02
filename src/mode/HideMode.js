@@ -155,7 +155,7 @@ module.exports = class HideMode {
         self.send(Serialize.PlaySound('Eat'))
         self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 색출되어 ' + (this.blueTeam.length > 0 ? this.blueTeam.length + '명 은닉...' : '전멸.')))
         self.broadcast(Serialize.PlaySound('Shock'))
-        self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+        self.publish(Serialize.UpdateModeCount(this.blueTeam.length))
         switch (target.state) {
             case PlayerState.Tansu:
                 ++self.score.killForWardrobe
@@ -233,7 +233,7 @@ module.exports = class HideMode {
         }
         self.game = {}
         self.setGraphics(self.blueGraphics)
-        self.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+        self.publish(Serialize.UpdateModeCount(this.blueTeam.length))
     }
 
     gameObject() {
@@ -372,7 +372,7 @@ module.exports = class HideMode {
                         this.publishToRed(Serialize.PlaySound('A4'))
                         this.publishToBlue(Serialize.NoticeMessage('사물로 변신하여 최대한 은닉하라.'))
                         this.publishToBlue(Serialize.PlaySound('A4'))
-                        this.room.publish(Serialize.UpdateModeUserCount(this.blueTeam.length))
+                        this.room.publish(Serialize.UpdateModeCount(this.blueTeam.length))
                     }
                     break
                 case STATE_GAME:
