@@ -372,7 +372,7 @@ class KeyState {
         const room = Room.get(context.roomId)
         if (!room)
             return
-        if (self.game.team !== TeamType.BLUE)
+        if (self.game.team !== TeamType.BLUE || self.game.camera)
             return
         ++self.game.key
         ++self.score.foundKey
@@ -390,7 +390,9 @@ class EscapeState {
 
     doAction(context, self) {
         const room = Room.get(context.roomId)
-        if (self.game.team === TeamType.RED)
+        if (!room)
+            return
+        if (self.game.team === TeamType.RED || self.game.camera)
             return
         if (self.game.key < 1)
             return self.send(Serialize.InformMessage('<color=red>열쇠가 부족합니다.</color>'))
@@ -401,6 +403,7 @@ class EscapeState {
             self.setGraphics('Camera')
             self.publish(Serialize.NoticeMessage(self.name + ' 탈출 성공!'))
             self.publish(Serialize.PlaySound('Rescue'))
+            self.game.camera = true
             ++self.score.escape
             room.mode.publishToMap(self.place, Serialize.RemoveGameObject(self))
         } else {

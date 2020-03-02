@@ -178,6 +178,8 @@ module.exports = class EscapeMode {
             return true
         if (self.game.team === target.game.team)
             return false
+        if (self.game.camera)
+            return false
         target.game.team = TeamType.RED
         target.setGraphics(target.redGraphics)
         target.send(Serialize.SetGameTeam(target))
