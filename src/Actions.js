@@ -389,7 +389,7 @@ class EscapeState {
     }
 
     doAction(context, self) {
-        const { mode } = Room.get(context.roomId)
+        const room = Room.get(context.roomId)
         if (self.game.team === TeamType.RED)
             return
         if (self.game.key < 1)
@@ -397,10 +397,12 @@ class EscapeState {
         --self.game.key
         const r = parseInt(Math.random() * 3)
         if (r === 0) {
-            ++mode.score.blue
+            ++room.mode.score.blue
+            self.setGraphics('Camera')
             self.publish(Serialize.NoticeMessage(self.name + ' 탈출 성공!'))
             self.publish(Serialize.PlaySound('Rescue'))
             ++self.score.escape
+            room.mode.publishToMap(self.place, Serialize.RemoveGameObject(self))
         } else {
             self.send(Serialize.InformMessage('<color=red>가짜 열쇠였습니다.</color>'))
             self.publish(Serialize.NoticeMessage(self.name + ' 탈출 시도...'))

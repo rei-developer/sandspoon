@@ -167,6 +167,8 @@ module.exports = class EscapeMode {
                 }
             }
             self.send(Serialize.CreateGameObject(user, userHide))
+            if (self.camera && !user.camera)
+                continue
             user.send(Serialize.CreateGameObject(self, selfHide))
         }
     }
@@ -261,6 +263,7 @@ module.exports = class EscapeMode {
             tansu: null,
             hp: 100,
             key: 0,
+            camera: false,
             result: false,
             count: 0
         }
@@ -399,7 +402,7 @@ module.exports = class EscapeMode {
                     }
                     if (--this.supplyCount === 0)
                         this.spawnKey()
-                    if (this.score.blue > 0 || this.redTeam.length === 0)
+                    if (this.score.blue >= parseInt(this.blueTeam.length / 2) || this.redTeam.length === 0)
                         this.result(TeamType.BLUE)
                     else if (this.blueTeam.length === 0)
                         this.result(TeamType.RED)
