@@ -223,9 +223,9 @@ module.exports = {
             console.error(e)
         }
     },
-    async InsertBlock(loginType, uid, uuid, description, date) {
+    async InsertBlock(loginType, uid, uuid, name, description, date) {
         try {
-            await this.query('INSERT INTO blocks (`login_type`, `uid`, `uuid`, `description`, `date`) VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL ? DAY))', [loginType, uid, uuid, description, date])
+            await this.query('INSERT INTO blocks (`login_type`, `uid`, `uuid`, `name`, `description`, `date`) VALUES (?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL ? DAY))', [loginType, uid, uuid, name, description, date])
             return true
         } catch (e) {
             console.error(e)

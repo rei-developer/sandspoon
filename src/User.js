@@ -918,14 +918,14 @@ global.User = (function () {
 
         async ban(user, name, description, days) {
             if (user) {
-                await DB.InsertBlock(user.verify.loginType, user.verify.id, user.verify.uuid, description, days)
+                await DB.InsertBlock(user.verify.loginType, user.verify.id, user.verify.uuid, name, description, days)
                 user.send(Serialize.QuitGame())
                 this.publish(Serialize.SystemMessage('<color=red>' + name + (pix.maker(name) ? '를' : '을') + ' ' + days + '일 동안 접속을 차단함. (' + description + ')</color>'))
                 console.log(name + (pix.maker(name) ? '를' : '을') + ' ' + days + '일 동안 접속을 차단함. (' + description + ')')
             } else {
                 const findUser = await DB.FindUserByName(name)
                 if (findUser) {
-                    await DB.InsertBlock(findUser.login_type, findUser.uid, findUser.uuid, description, days)
+                    await DB.InsertBlock(findUser.login_type, findUser.uid, findUser.uuid, name, description, days)
                     this.publish(Serialize.SystemMessage('<color=red>' + name + (pix.maker(name) ? '를' : '을') + ' ' + days + '일 동안 접속을 차단함. (' + description + ')</color>'))
                     console.log(name + (pix.maker(name) ? '를' : '을') + ' ' + days + '일 동안 접속을 차단함. (' + description + ')')
                 }

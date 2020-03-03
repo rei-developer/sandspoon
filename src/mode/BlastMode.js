@@ -210,7 +210,7 @@ module.exports = class BlastMode {
         const item = Item.get(id)
         if (!item)
             return
-        self.send(Serialize.UpdateGameItem(item.icon, inventory.num))
+        self.send(Serialize.UpdateGameItem(item.icon, inventory ? inventory.num : num))
     }
 
     useItem(self) {
