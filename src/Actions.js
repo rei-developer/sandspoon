@@ -384,7 +384,7 @@ class OniState {
     doAction(context, self) { }
 
     update(context) {
-        if (++this.count % 10 == 0) {
+        if (++this.count % 5 == 0) {
             if (this.fixed)
                 return
             const room = Room.get(context.roomId)

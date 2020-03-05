@@ -56,7 +56,7 @@ class FireMethod {
                         self.publishToMap(Serialize.RemoveGameObject(event))
                         room.removeEvent(event)
                     } else {
-                        event.hp -= parseInt(Math.random() * 10) + 90
+                        event.setUpHp(-(parseInt(Math.random() * 10) + 90))
                         self.publishToMap(Serialize.SetAnimation(event, 'Fire', 'Fire'))
                     }
                 }

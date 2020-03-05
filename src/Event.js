@@ -80,6 +80,10 @@ module.exports = class Event extends Character {
         }
     }
 
+    setUpHp(value) {
+        this.hp += value
+    }
+
     turn(x, y) {
         super.turn(x, y)
     }
