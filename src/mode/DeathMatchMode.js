@@ -388,7 +388,7 @@ module.exports = class DeathMatchMode {
                     if (this.count === 5)
                         this.room.publish(Serialize.PlaySound('Second'))
                     else if (this.count === 0)
-                        this.result(TeamType.BLUE)
+                        this.result(this.score.red >= this.score.blue ? TeamType.RED : TeamType.BLUE)
                     break
             }
             --this.count
