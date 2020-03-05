@@ -61,27 +61,31 @@ class FireShopState {
     }
 
     update(context) {
-        if (++this.count % 10 == 0) {
-            const { mode } = Room.get(context.roomId)
-            if (mode.redTeam.length > 0) {
-                for (const red of mode.redTeam) {
-                    if (red.place === context.place) {
-                        const range = Math.abs(red.x - context.x) + Math.abs(red.y - context.y)
-                        if (range > 10)
-                            continue
-                        if (red.game.hp < 0) {
-                            mode.moveToKickOut(red)
-                            red.game.hp = 100
-                            red.send(Serialize.InformMessage('<color=red>인간진영에서 추방되었습니다.</color>'))
-                        } else {
-                            red.game.hp -= 40
-                            red.send(Serialize.InformMessage('<color=red>인간진영에서 벗어나세요!!!!</color>'))
-                            red.send(Serialize.PlaySound('Warn'))
+        try {
+            if (++this.count % 10 == 0) {
+                const { mode } = Room.get(context.roomId)
+                if (mode.redTeam.length > 0) {
+                    for (const red of mode.redTeam) {
+                        if (red.place === context.place) {
+                            const range = Math.abs(red.x - context.x) + Math.abs(red.y - context.y)
+                            if (range > 10)
+                                continue
+                            if (red.game.hp < 0) {
+                                mode.moveToKickOut(red)
+                                red.game.hp = 100
+                                red.send(Serialize.InformMessage('<color=red>인간진영에서 추방되었습니다.</color>'))
+                            } else {
+                                red.game.hp -= 40
+                                red.send(Serialize.InformMessage('<color=red>인간진영에서 벗어나세요!!!!</color>'))
+                                red.send(Serialize.PlaySound('Warn'))
+                            }
                         }
                     }
                 }
+                this.count = 0
             }
-            this.count = 0
+        } catch (e) {
+            console.log(e)
         }
     }
 }
