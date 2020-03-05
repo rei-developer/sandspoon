@@ -48,7 +48,8 @@ class FireMethod {
                     continue
                 const range = Math.abs(event.x - self.x) + Math.abs(event.y - self.y)
                 if (range <= 1) {
-                    if (event.hp < 0) {
+                    const r = parseInt(Math.random() * 2)
+                    if (r === 0) {
                         ++room.mode.score.blue
                         ++self.game.kill
                         self.send(Serialize.InformMessage('<color=red>' + event.name + ' 소탕 완료!</color>'))
