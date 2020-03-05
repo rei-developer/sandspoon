@@ -406,12 +406,14 @@ class OniState {
             if (mode.blueTeam.length > 0) {
                 for (const blue of mode.blueTeam) {
                     if (blue.place === context.place) {
+                        if (blue.game.camera)
+                            continue
                         if (!(blue.x === context.x && blue.y === context.y || blue.x + blue.direction.x === context.x && blue.y - blue.direction.y === context.y))
                             continue
                         blue.game.camera = true
                         blue.setGraphics('Camera')
                         blue.send(Serialize.DeadAnimation())
-                        blue.publishToMap(self.place, Serialize.RemoveGameObject(self))
+                        blue.publishToMap(blue.place, Serialize.RemoveGameObject(blue))
                     }
                 }
             }
