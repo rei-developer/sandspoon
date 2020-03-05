@@ -14,6 +14,8 @@ class FireMethod {
     doing(self, item) {
         if (self.game.team === TeamType.RED)
             return
+        if (self.game.camera)
+            return
         const room = Room.get(self.roomId)
         if (room.mode.redTeam.length > 0) {
             for (const red of room.mode.redTeam) {
