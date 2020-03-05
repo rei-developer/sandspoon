@@ -49,9 +49,9 @@ module.exports = class ProtectMode {
         self.game.team = TeamType.BLUE
         self.setGraphics(self.blueGraphics)
         this.blueTeam.push(self)
+        this.moveToBase(self)
         switch (this.state) {
             case STATE_GAME:
-                this.moveToBase(self)
                 self.send(Serialize.NoticeMessage('마을을 침입하는 오니들을 모두 소탕하라.'))
                 self.send(Serialize.PlaySound('A4'))
                 break
@@ -229,6 +229,8 @@ module.exports = class ProtectMode {
                     } else if (this.count === 200) {
                         this.room.lock = false // true
                         this.state = STATE_GAME
+                        for (const blue of this.blueTeam)
+                            this.moveToBase(blue)
                         this.publishToBlue(Serialize.NoticeMessage('마을을 침입하는 오니들을 모두 소탕하라.'))
                         this.room.publish(Serialize.PlaySound('A4'))
                     }
