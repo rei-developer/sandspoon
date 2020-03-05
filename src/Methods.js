@@ -47,8 +47,8 @@ class FireMethod {
                 if (event.graphics !== 'ao')
                     continue
                 const range = Math.abs(event.x - self.x) + Math.abs(event.y - self.y)
-                if (range <= 1) {
-                    const r = parseInt(Math.random() * 2)
+                if (range <= 2) {
+                    const r = parseInt(Math.random() * 1)
                     if (r === 0) {
                         ++room.mode.score.blue
                         ++self.game.kill

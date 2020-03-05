@@ -81,13 +81,6 @@ module.exports = class GameMode {
                 HideMode,
                 EscapeMode,
                 DeathMatchMode,
-                ProtectMode,
-                ProtectMode,
-                ProtectMode,
-                ProtectMode,
-                ProtectMode,
-                ProtectMode,
-                ProtectMode,
                 ProtectMode
             ]
             const i = Math.floor(Math.random() * modes.length)
