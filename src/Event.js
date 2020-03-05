@@ -5,6 +5,7 @@ module.exports = class Event extends Character {
     constructor(roomId, {
         name,
         graphics,
+        hp,
         place,
         x,
         y,
@@ -13,6 +14,7 @@ module.exports = class Event extends Character {
     } = {
             name: '',
             graphics: '',
+            hp: 100,
             place: 0,
             x: 0,
             y: 0,
@@ -25,6 +27,7 @@ module.exports = class Event extends Character {
         this.roomId = roomId
         this.name = name
         this.graphics = graphics
+        this.hp = hp
         this.place = place
         this.x = x
         this.y = y

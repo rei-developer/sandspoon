@@ -1,0 +1,15 @@
+{
+    "1": [
+        {
+            "name": "화염방사기 10G",
+            "place": 79,
+            "x": 30,
+            "y": 62,
+            "graphics": "Mery",
+            "collider": true,
+            "action": {
+                "command": "fireShop"
+            }
+        }
+    ]
+}

@@ -63,5 +63,18 @@
 				"command": "escape"
 			}
 		}
+	],
+	"6": [
+		{
+			"name": "",
+			"place": 0,
+			"x": 0,
+			"y": 0,
+			"graphics": "ao",
+			"collider": false,
+			"action": {
+				"command": "oni"
+			}
+		}
 	]
 }

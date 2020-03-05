@@ -4,6 +4,7 @@ const InfectMode = require('./mode/InfectMode')
 const HideMode = require('./mode/HideMode')
 const EscapeMode = require('./mode/EscapeMode')
 const DeathMatchMode = require('./mode/DeathMatchMode')
+const ProtectMode = require('./mode/ProtectMode')
 const Event = require('./Event')
 
 module.exports = class GameMode {
@@ -79,7 +80,15 @@ module.exports = class GameMode {
                 InfectMode,
                 HideMode,
                 EscapeMode,
-                DeathMatchMode
+                DeathMatchMode,
+                ProtectMode,
+                ProtectMode,
+                ProtectMode,
+                ProtectMode,
+                ProtectMode,
+                ProtectMode,
+                ProtectMode,
+                ProtectMode
             ]
             const i = Math.floor(Math.random() * modes.length)
             return this.room.changeMode(modes[i])
