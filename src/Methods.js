@@ -42,7 +42,7 @@ class FireMethod {
         const { events } = room.places[self.place]
         if (events.length > 0) {
             for (const event of events) {
-                if (event.action.command !== 'oni')
+                if (event.graphics !== 'ao')
                     continue
                 const range = Math.abs(event.x - self.x) + Math.abs(event.y - self.y)
                 if (range <= 1) {
