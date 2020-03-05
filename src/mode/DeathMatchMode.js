@@ -120,17 +120,18 @@ module.exports = class DeathMatchMode {
                     self.game.team = TeamType.RED
                     self.setGraphics(self.redGraphics)
                     this.redTeam.push(self)
+                    this.moveToBase(self)
                     self.send(Serialize.NoticeMessage('모든 인간을 섬멸하라.'))
                 } else {
                     self.game.team = TeamType.BLUE
                     self.setGraphics(self.blueGraphics)
                     this.blueTeam.push(self)
+                    this.moveToKickOut(self)
                     self.send(Serialize.NoticeMessage('모든 오니를 소탕하라.'))
                 }
                 self.send(Serialize.PlaySound('A4'))
                 break
         }
-        this.moveToBase(self)
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
     }

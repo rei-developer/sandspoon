@@ -167,7 +167,8 @@ module.exports = class EscapeMode {
                         selfHide = userHide = true
                 }
             }
-            self.send(Serialize.CreateGameObject(user, userHide))
+            if (!self.camera || (self.camera && user.camera))
+                self.send(Serialize.CreateGameObject(user, userHide))
             if (!self.camera || (self.camera && user.camera))
                 user.send(Serialize.CreateGameObject(self, selfHide))
         }

@@ -426,18 +426,17 @@ class EscapeState {
             return
         if (self.game.team === TeamType.RED || self.game.camera)
             return
-        if (self.game.key < 1)
+        if (--self.game.key < 1)
             return self.send(Serialize.InformMessage('<color=red>열쇠가 부족합니다.</color>'))
-        --self.game.key
         const r = parseInt(Math.random() * 3)
         if (r === 0) {
             ++room.mode.score.blue
+            ++self.score.escape
             self.game.camera = true
             self.setGraphics('Camera')
             self.publish(Serialize.NoticeMessage(self.name + ' 탈출 성공!'))
             self.publish(Serialize.PlaySound('Rescue'))
-            ++self.score.escape
-            room.mode.publishToMap(self.place, Serialize.RemoveGameObject(self))
+            self.publishToMap(self.place, Serialize.RemoveGameObject(self))
         } else {
             self.send(Serialize.InformMessage('<color=red>가짜 열쇠였습니다.</color>'))
             self.publish(Serialize.NoticeMessage(self.name + ' 탈출 시도...'))
