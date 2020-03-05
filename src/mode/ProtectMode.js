@@ -11,6 +11,7 @@ const STATE_RESULT = 3
 module.exports = class ProtectMode {
     constructor(roomId) {
         this.roomId = roomId
+        this.redTeam = []
         this.blueTeam = []
         this.count = 230
         this.maxCount = 230

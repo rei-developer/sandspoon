@@ -63,19 +63,21 @@ class FireShopState {
     update(context) {
         if (++this.count % 10 == 0) {
             const { mode } = Room.get(context.roomId)
-            for (const red of mode.redTeam) {
-                if (red.place === context.place) {
-                    const range = Math.abs(red.x - context.x) + Math.abs(red.y - context.y)
-                    if (range > 10)
-                        continue
-                    if (red.game.hp < 0) {
-                        mode.moveToKickOut(red)
-                        red.game.hp = 100
-                        red.send(Serialize.InformMessage('<color=red>인간진영에서 추방되었습니다.</color>'))
-                    } else {
-                        red.game.hp -= 40
-                        red.send(Serialize.InformMessage('<color=red>인간진영에서 벗어나세요!!!!</color>'))
-                        red.send(Serialize.PlaySound('Warn'))
+            if (mode.redTeam.length > 0) {
+                for (const red of mode.redTeam) {
+                    if (red.place === context.place) {
+                        const range = Math.abs(red.x - context.x) + Math.abs(red.y - context.y)
+                        if (range > 10)
+                            continue
+                        if (red.game.hp < 0) {
+                            mode.moveToKickOut(red)
+                            red.game.hp = 100
+                            red.send(Serialize.InformMessage('<color=red>인간진영에서 추방되었습니다.</color>'))
+                        } else {
+                            red.game.hp -= 40
+                            red.send(Serialize.InformMessage('<color=red>인간진영에서 벗어나세요!!!!</color>'))
+                            red.send(Serialize.PlaySound('Warn'))
+                        }
                     }
                 }
             }
@@ -362,6 +364,55 @@ class RabbitState {
         }
         this.count++
         if (this.count > 1500) this.count = 0
+    }
+}
+
+class OniState {
+    constructor(args = {}) {
+        this.count = 0
+        this.step = 0
+        this.i = 0
+        this.msgCount = -1
+        this.message = args['message']
+        this.fixed = args['fixed']
+    }
+
+    doAction(context, self) { }
+
+    update(context) {
+        if (this.fixed) return
+        const room = Room.get(context.roomId)
+        if (!room) return
+        if (this.step <= 0) {
+            this.i = parseInt(Math.random() * 4)
+            this.step = parseInt(Math.random() * 5) + 1
+        }
+        context.dirty = true
+        let i = this.i
+        --this.step
+        context.direction.x = dr[i][0]
+        context.direction.y = -dr[i][1]
+        const direction = context.getDirection(dr[i][0], -dr[i][1])
+        if (room.isPassable(context.place, context.x, context.y, direction, false) && room.isPassable(context.place, context.x + dr[i][0], context.y + dr[i][1], 10 - direction, true)) {
+            context.x += dr[i][0]
+            context.y += dr[i][1]
+        }
+        if (++this.count % 10 == 0) {
+            const { mode } = Room.get(context.roomId)
+            if (mode.blueTeam.length > 0) {
+                for (const blue of mode.blueTeam) {
+                    if (blue.place === context.place) {
+                        if (!(blue.x === context.x && blue.y === context.y || blue.x + blue.direction.x === context.x && blue.y - blue.direction.y === context.y))
+                            continue
+                        blue.game.camera = true
+                        blue.setGraphics('Camera')
+                        blue.send(Serialize.DeadAnimation())
+                        blue.publishToMap(self.place, Serialize.RemoveGameObject(self))
+                    }
+                }
+            }
+            this.count = 0
+        }
     }
 }
 
@@ -678,6 +729,7 @@ module.exports = new Proxy({
     rescue: RescueState,
     mania: ManiaState,
     rabbit: RabbitState,
+    oni: OniState,
     box: BoxState,
     key: KeyState,
     escape: EscapeState,
