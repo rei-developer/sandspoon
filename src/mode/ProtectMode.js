@@ -15,7 +15,7 @@ module.exports = class ProtectMode {
         this.blueTeam = []
         this.count = 230
         this.maxCount = 230
-        this.supplyCount = 15
+        this.supplyCount = 10
         this.score = {
             blue: 0
         }
@@ -132,7 +132,7 @@ module.exports = class ProtectMode {
         const range = 10
         const objects = require('../../Assets/Mods/Eve000.json')[6]
         for (const object of objects) {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 5; i++) {
                 const event = new Event(this.roomId, object)
                 const x = Math.floor(-range + Math.random() * (range * 2 + 1))
                 const y = Math.floor(-range + Math.random() * (range * 2 + 1))
@@ -144,7 +144,7 @@ module.exports = class ProtectMode {
             }
         }
         this.room.publish(Serialize.PlaySound('BEEP'))
-        this.supplyCount = 15
+        this.supplyCount = 10
     }
 
     doAction(self, event) {

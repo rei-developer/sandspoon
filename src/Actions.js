@@ -413,6 +413,7 @@ class OniState {
                         blue.game.camera = true
                         blue.setGraphics('Camera')
                         blue.send(Serialize.DeadAnimation())
+                        blue.send(Serialize.InformMessage('<color=red>사망했습니다.</color>'))
                         blue.publishToMap(blue.place, Serialize.RemoveGameObject(blue))
                     }
                 }
