@@ -384,24 +384,26 @@ class OniState {
     doAction(context, self) { }
 
     update(context) {
-        if (this.fixed) return
-        const room = Room.get(context.roomId)
-        if (!room) return
-        if (this.step <= 0) {
-            this.i = parseInt(Math.random() * 4)
-            this.step = parseInt(Math.random() * 5) + 1
-        }
-        context.dirty = true
-        let i = this.i
-        --this.step
-        context.direction.x = dr[i][0]
-        context.direction.y = -dr[i][1]
-        const direction = context.getDirection(dr[i][0], -dr[i][1])
-        if (room.isPassable(context.place, context.x, context.y, direction, false) && room.isPassable(context.place, context.x + dr[i][0], context.y + dr[i][1], 10 - direction, true)) {
-            context.x += dr[i][0]
-            context.y += dr[i][1]
-        }
         if (++this.count % 10 == 0) {
+            if (this.fixed)
+                return
+            const room = Room.get(context.roomId)
+            if (!room)
+                return
+            if (this.step <= 0) {
+                this.i = parseInt(Math.random() * 4)
+                this.step = parseInt(Math.random() * 5) + 1
+            }
+            context.dirty = true
+            let i = this.i
+            --this.step
+            context.direction.x = dr[i][0]
+            context.direction.y = -dr[i][1]
+            const direction = context.getDirection(dr[i][0], -dr[i][1])
+            if (room.isPassable(context.place, context.x, context.y, direction, false) && room.isPassable(context.place, context.x + dr[i][0], context.y + dr[i][1], 10 - direction, true)) {
+                context.x += dr[i][0]
+                context.y += dr[i][1]
+            }
             const { mode } = Room.get(context.roomId)
             if (mode.blueTeam.length > 0) {
                 for (const blue of mode.blueTeam) {
