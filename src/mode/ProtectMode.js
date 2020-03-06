@@ -15,7 +15,7 @@ module.exports = class ProtectMode {
         this.blueTeam = []
         this.count = 230
         this.maxCount = 230
-        this.supplyCount = 15
+        this.supplyCount = 5
         this.score = {
             blue: 0
         }
@@ -144,7 +144,7 @@ module.exports = class ProtectMode {
             }
         }
         this.room.publish(Serialize.PlaySound('BEEP'))
-        this.supplyCount = 15
+        this.supplyCount = 35 - this.blueTeam.length
     }
 
     doAction(self, event) {
