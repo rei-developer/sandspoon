@@ -413,7 +413,7 @@ module.exports = class EscapeMode {
                     else if (this.count === 5)
                         this.room.publish(Serialize.PlaySound('Second'))
                     else if (this.count === 0)
-                        this.result(this.score.blue > 0 ? TeamType.BLUE : TeamType.RED)
+                        this.result(this.score.blue >= parseInt(this.blueTeam.length / 3) ? TeamType.BLUE : TeamType.RED)
                     break
             }
             --this.count

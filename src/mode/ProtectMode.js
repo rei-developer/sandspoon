@@ -132,7 +132,7 @@ module.exports = class ProtectMode {
         const range = 10
         const objects = require('../../Assets/Mods/Eve000.json')[6]
         for (const object of objects) {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < parseInt(this.blueTeam.length / 2) + 1; i++) {
                 const event = new Event(this.roomId, object)
                 const x = Math.floor(-range + Math.random() * (range * 2 + 1))
                 const y = Math.floor(-range + Math.random() * (range * 2 + 1))
