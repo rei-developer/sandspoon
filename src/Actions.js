@@ -62,7 +62,7 @@ class FireShopState {
 
     update(context) {
         try {
-            if (++this.count % 10 == 0) {
+            if (++this.count % 5 == 0) {
                 const { mode } = Room.get(context.roomId)
                 if (mode.redTeam.length > 0) {
                     for (const red of mode.redTeam) {
@@ -98,7 +98,7 @@ class ProtecterState {
     doAction(context, self) { }
 
     update(context) {
-        if (++this.count % 10 == 0) {
+        if (++this.count % 5 == 0) {
             const { mode } = Room.get(context.roomId)
             for (const blue of mode.blueTeam) {
                 if (blue.place === context.place) {

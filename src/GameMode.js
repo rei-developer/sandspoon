@@ -81,7 +81,7 @@ module.exports = class GameMode {
                 HideMode,
                 EscapeMode,
                 DeathMatchMode,
-                ProtectMode
+                //ProtectMode
             ]
             const i = Math.floor(Math.random() * modes.length)
             return this.room.changeMode(modes[i])
