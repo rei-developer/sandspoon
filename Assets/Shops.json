@@ -1019,6 +1019,141 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 69,
+            "type": "RED_SKIN",
+            "icon": "ao2",
+            "name": "젤리 오니",
+            "creator": "화이트",
+            "creatorId": 70,
+            "description": "",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 70,
+            "type": "SKIN",
+            "icon": "Knight",
+            "name": "호위 기사",
+            "creator": "리벨",
+            "creatorId": 1000,
+            "description": "성을 지키는 호위기사단의 하급 기사이다.",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 71,
+            "type": "SKIN",
+            "icon": "Welder",
+            "name": "용접공",
+            "creator": "리벨",
+            "creatorId": 1000,
+            "description": "오니를 피해 도망치다가 용접 도구를 잃어버린 용접공이다.",
+            "cost": 30,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 72,
+            "type": "SKIN",
+            "icon": "Firefighter",
+            "name": "소방관",
+            "creator": "리벨",
+            "creatorId": 1000,
+            "description": "",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 73,
+            "type": "SKIN",
+            "icon": "Beggar",
+            "name": "거지 소년",
+            "creator": "국밥",
+            "creatorId": 492,
+            "description": "불쌍한 거지소년. 특징은 머릿니.",
+            "cost": 3000,
+            "isCash": false,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 74,
+            "type": "SKIN",
+            "icon": "Piracy",
+            "name": "해적",
+            "creator": "대머리",
+            "creatorId": 124,
+            "description": "대머리 해적단의 선장.",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 75,
+            "type": "SKIN",
+            "icon": "Future",
+            "name": "미래",
+            "creator": "설명",
+            "creatorId": 78,
+            "description": "",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 76,
+            "type": "SKIN",
+            "icon": "Apple",
+            "name": "사과",
+            "creator": "사과",
+            "creatorId": 62,
+            "description": "베어물면 사과 맛이 난다.",
+            "cost": 30,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 77,
+            "type": "SKIN",
+            "icon": "LightGirl",
+            "name": "밝은 소녀",
+            "creator": "쳔호",
+            "creatorId": 665,
+            "description": "그저 활짝 웃고있다.",
+            "cost": 30,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }

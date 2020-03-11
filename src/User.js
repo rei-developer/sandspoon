@@ -527,7 +527,7 @@ global.User = (function () {
             const item = Shop.get(id)
             if (!item)
                 return
-            if (item.type === 'SKIN') {
+            if (item.type === 'SKIN' || item.type === 'RED_SKIN') {
                 const check = this.inventory.find(i => i.id === id)
                 this.send(Serialize.GetSkinItem(item, check ? moment(check.expiry, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss') : '-'))
             }
@@ -550,7 +550,7 @@ global.User = (function () {
                 this.addItem(data.id, data.num)
                 this.send(Serialize.MessageShop('BUY_SUCCESS'))
                 this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
-            } else if (item.type === 'SKIN') {
+            } else if (item.type === 'SKIN' || item.type === 'RED_SKIN') {
                 if (item.isCash) {
                     if (this.cash < item.cost * data.days)
                         return this.send(Serialize.MessageShop('NOT_ENOUGH_CASH'))
@@ -578,7 +578,10 @@ global.User = (function () {
                     this.addItem(data.id, 1, date)
                     this.send(Serialize.MessageShop('BUY_SUCCESS'))
                 }
-                this.blueGraphics = item.icon
+                if (item.type === 'SKIN')
+                    this.blueGraphics = item.icon
+                else if (item.type === 'RED_SKIN')
+                    this.redGraphics = item.icon
                 this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
             }
         }
@@ -597,6 +600,11 @@ global.User = (function () {
                     if (min > 0)
                         this.blueGraphics = 'Mania'
                 }
+                if (item.type === 'RED_SKIN' && item.icon === this.redGraphics) {
+                    const min = moment().diff(moment(i.expiry), 'minutes')
+                    if (min > 0)
+                        this.redGraphics = 'ao'
+                }
             })
         }
 
@@ -606,7 +614,7 @@ global.User = (function () {
                 const item = Shop.get(i.id)
                 if (!item)
                     return
-                if (item.type === 'SKIN') {
+                if (item.type === 'SKIN' || item.type === 'RED_SKIN') {
                     const min = moment().diff(moment(i.expiry), 'minutes')
                     if (min < 0) {
                         skins.push({
