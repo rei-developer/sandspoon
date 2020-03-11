@@ -754,7 +754,10 @@ global.User = (function () {
                 const min = moment().diff(moment(check.expiry), 'minutes')
                 if (min > 0)
                     return
-                this.blueGraphics = item.icon
+                if (item.type === 'SKIN')
+                    this.blueGraphics = item.icon
+                else if (item.type === 'RED_SKIN')
+                    this.redGraphics = item.icon
             }
             this.send(Serialize.UserData(this))
         }
