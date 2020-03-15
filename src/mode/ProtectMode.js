@@ -58,6 +58,8 @@ module.exports = class ProtectMode {
         }
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
+
+        self.send(Serialize.SystemMessage('<color=red>★ 이제부터 30초 광고 시청이 가능합니다. 보석 10개를 얻어보세요!!</color>'))
     }
 
     drawAkari(self) {

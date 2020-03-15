@@ -24,6 +24,8 @@ module.exports = class PlayGroundMode {
         self.game = {}
         self.setGraphics(self.blueGraphics)
         self.teleport(79, 30, 62)
+
+        self.send(Serialize.SystemMessage('<color=red>★ 이제부터 30초 광고 시청이 가능합니다. 보석 10개를 얻어보세요!!</color>'))
     }
 
     leave(self) {
