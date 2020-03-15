@@ -1154,6 +1154,66 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 78,
+            "type": "RED_SKIN",
+            "icon": "ao3",
+            "name": "주술사 오니",
+            "creator": "화이트",
+            "creatorId": 70,
+            "description": "오니를 사냥하는 주술사가 도리어 인간을 사냥하는 오니가 되었다.",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 79,
+            "type": "SKIN",
+            "icon": "Police",
+            "name": "경찰관",
+            "creator": "리벨",
+            "creatorId": 1000,
+            "description": "경찰서에 막 입사한 신입경찰관이다",
+            "cost": 40,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 80,
+            "type": "SKIN",
+            "icon": "Trump",
+            "name": "트럼프 괴도",
+            "creator": "리벨",
+            "creatorId": 1000,
+            "description": "트럼프 카드의 모습과 일부 흡사하여 붙여진 이름의 괴도이다.",
+            "cost": 40,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
+        },
+        {
+            "id": 81,
+            "type": "RED_SKIN",
+            "icon": "ao4",
+            "name": "고양이 오니",
+            "creator": "또이339",
+            "creatorId": 13,
+            "description": "한때 인간이었던 고양이는 소원의 부작용으로 오니가 되었다. 결국 이제는 오니의 형태마저 잃고있다.",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }

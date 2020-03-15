@@ -1010,7 +1010,7 @@ global.User = (function () {
                     this.entry(RoomType.GAME)
                     break
                 case 2:
-                    this.reward.cash += 2
+                    this.reward.cash += 10
                     break
             }
             this.reward.send(this)
