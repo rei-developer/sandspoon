@@ -1229,6 +1229,21 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 83,
+            "type": "SKIN",
+            "icon": "Sanz",
+            "name": "피난중인 해골",
+            "creator": "야츠무",
+            "creatorId": 626,
+            "description": "여전히 도망치는 중.",
+            "cost": 50,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }
