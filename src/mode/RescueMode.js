@@ -188,6 +188,7 @@ module.exports = class RescueMode {
         self.publish(Serialize.ModeData(this))
 
         self.send(Serialize.SystemMessage('<color=red>★ 이제부터 30초 광고 시청이 가능합니다. 보석 10개를 얻어보세요!!</color>'))
+        self.send(Serialize.SystemMessage('<color=yellow>[이벤트] 경험치 2배 이벤트 진행중 (2020년 3월 16일까지)</color>'))
     }
 
     drawAkari(self) {
