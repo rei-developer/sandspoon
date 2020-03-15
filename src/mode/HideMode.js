@@ -67,7 +67,7 @@ module.exports = class HideMode {
                 self.teleport(199, 10, 8)
                 break
             case MapType.MANSION:
-                self.teleport(215, 10, 9)
+                self.teleport(226, 10, 9)
                 break
             case MapType.DESERT:
                 self.teleport(249, 7, 17)
