@@ -1214,6 +1214,21 @@
                 "command": "",
                 "arguments": {}
             }
+        },
+        {
+            "id": 82,
+            "type": "SKIN",
+            "icon": "Rabbit",
+            "name": "토깽이",
+            "creator": "",
+            "creatorId": 0,
+            "description": "이벤트 한정 판매",
+            "cost": 500,
+            "isCash": true,
+            "method": {
+                "command": "",
+                "arguments": {}
+            }
         }
     ]
 }
