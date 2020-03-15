@@ -352,7 +352,7 @@ module.exports = class HideMode {
                             this.room.publish(Serialize.PlaySound('GhostsTen'))
                         this.room.publish(Serialize.NoticeMessage(this.count - 200))
                     } else if (this.count === 200) {
-                        this.room.lock = false // true
+                        this.room.lock = true
                         this.state = STATE_GAME
                         const lottos = pix.sample(this.blueTeam, this.blueTeam.length > 4 ? 2 : 1)
                         for (const lotto of lottos) {
