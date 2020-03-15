@@ -2,9 +2,9 @@
 	"1": [
 		{
 			"name": "화염방사기 10G",
-			"place": 21,
-			"x": 9,
-			"y": 7,
+			"place": 2,
+			"x": 8,
+			"y": 13,
 			"graphics": "Mery",
 			"collider": true,
 			"action": {
