@@ -677,6 +677,7 @@ global.User = (function () {
             if (!await DB.UpdateNotieMessageRewarded(id))
                 return this.send(Serialize.MessageLobby('FAILED'))
             this.setUpCash(item.cash)
+            this.coin += item.coin
             this.send(Serialize.MessageLobby('WITHDRAW_SUCCESS'))
             this.send(Serialize.UpdateCashAndCoin(this.cash, this.coin))
         }
