@@ -232,7 +232,7 @@ global.User = (function () {
             if (member.clanLevel < 3)
                 return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
             const memberCount = this.clan.members.length
-            if (memberCount >= 40)
+            if (memberCount >= 50)
                 return this.send(Serialize.MessageClan('FULL_MEMBER'))
             if (memberCount >= this.clan.level * 10)
                 return this.send(Serialize.MessageClan('LOW_LEVEL'))
@@ -372,7 +372,7 @@ global.User = (function () {
                 return
             if (member.clanLevel < 4)
                 return this.send(Serialize.MessageClan('NO_PERMISSIONS'))
-            if (this.clan.level >= 4)
+            if (this.clan.level >= 5)
                 return this.send(Serialize.MessageClan('HIGH_LEVEL'))
             const cost = (this.clan.level * this.clan.level) * 100000
             if (this.clan.coin < cost)
@@ -820,7 +820,7 @@ global.User = (function () {
             if (this.admin < 1)
                 return false
             if (message.substring(0, 1) === '#') {
-                this.notice(Serialize.SystemMessage('<color=#EFE4B0>@[' + (this.admin === 1 ? '운영자' : '개발자') + '] ' + this.name + ': ' + message.substring(1) + '</color>'))
+                this.notice(Serialize.SystemMessage('<color=#EFE4B0>@[' + (this.admin === 1 ? '클린유저' : '운영진') + '] ' + this.name + ': ' + message.substring(1) + '</color>'))
                 return true
             }
             const piece = message.split(',')
@@ -831,6 +831,8 @@ global.User = (function () {
             let cash
             switch (message.substring(0, 3)) {
                 case '!tp':
+                    if (this.admin < 2)
+                        return false
                     if (piece.length <= 1)
                         return true
                     target = Room.get(this.roomId).users.find(u => u.name === piece[1])
@@ -845,6 +847,8 @@ global.User = (function () {
                     }
                     break
                 case '!보석':
+                    if (this.admin < 2)
+                        return false
                     if (piece.length <= 1) {
                         this.send(Serialize.SystemMessage('<color=red>!보석,지급 개수 (1 ~ 10000)</color>'))
                         return true

@@ -69,6 +69,13 @@ my.NoticeMessage = function (message) {
     return JSON.stringify(packet)
 }
 
+my.ComboMessage = function (message) {
+    const packet = {}
+    packet._head = ToClient.COMBO_MESSAGE
+    packet.text = message
+    return JSON.stringify(packet)
+}
+
 my.ChatMessage = function (type, index, name, text) {
     const packet = {}
     packet._head = ToClient.CHAT_MESSAGE

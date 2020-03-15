@@ -50,6 +50,7 @@ module.exports = {
         'GET_INFO_NOTICE_MESSAGE',
         'DELETE_NOTICE_MESSAGE',
         'MESSAGE_GAME',
-        'SET_ANIMATION'
+        'SET_ANIMATION',
+        'COMBO_MESSAGE'
     )
 }
