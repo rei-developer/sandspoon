@@ -34,7 +34,7 @@ class FireMethod {
                             self.publish(Serialize.PlaySound('A3'))
                             self.publish(Serialize.UpdateModeCount(room.mode.score.red, room.mode.score.blue))
                         } else {
-                            red.game.hp -= parseInt(Math.random() * 10) + 90
+                            red.game.hp -= parseInt(Math.random() * 5) + 95
                             self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
                         }
                     }
@@ -57,7 +57,7 @@ class FireMethod {
                         self.publishToMap(Serialize.RemoveGameObject(event))
                         room.removeEvent(event)
                     } else {
-                        event.setUpHp(-(parseInt(Math.random() * 10) + 90))
+                        event.setUpHp(-(parseInt(Math.random() * 20) + 80))
                         self.publishToMap(Serialize.SetAnimation(event, 'Fire', 'Fire'))
                     }
                 }
