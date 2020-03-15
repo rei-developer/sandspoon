@@ -48,7 +48,7 @@ module.exports = class BlastMode {
     moveToBase(self) {
         switch (this.map) {
             case MapType.ASYLUM:
-                self.teleport(21, 9, 7)
+                self.teleport(2, 8, 13)
                 break
             case MapType.TATAMI:
                 self.teleport(42, 9, 7)
@@ -175,7 +175,7 @@ module.exports = class BlastMode {
         self.send(Serialize.PlaySound('Eat'))
         self.broadcast(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '가' : '이') + ' 사망하다.'))
         self.broadcast(Serialize.PlaySound('Shock'))
-        self.publish(Serialize.UpdateModeCount(this.score.red, this.score.blue))
+        self.publish(Serialize.UpdateModeRedAndBlue(this.score.red, this.score.blue))
         switch (target.state) {
             case PlayerState.Tansu:
                 ++self.score.killForWardrobe

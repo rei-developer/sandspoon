@@ -144,7 +144,7 @@ my.UpdateModeCount = function (count) {
     return JSON.stringify(packet)
 }
 
-my.UpdateModeCount = function (red, blue) {
+my.UpdateModeRedAndBlue = function (red, blue) {
     const packet = {}
     packet._head = ToClient.UPDATE_MODE_COUNT
     packet.red = red

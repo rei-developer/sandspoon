@@ -46,7 +46,7 @@ module.exports = class HideMode {
     moveToBase(self) {
         switch (this.map) {
             case MapType.ASYLUM:
-                self.teleport(21, 9, 7)
+                self.teleport(2, 8, 13)
                 break
             case MapType.TATAMI:
                 self.teleport(42, 9, 7)

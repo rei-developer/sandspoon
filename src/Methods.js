@@ -32,7 +32,7 @@ class FireMethod {
                             self.send(Serialize.InformMessage('<color=red>' + red.name + ' 소탕 완료!</color>'))
                             self.publish(Serialize.NoticeMessage(red.name + (pix.maker(red.name) ? '가' : '이') + ' 소탕되다.'))
                             self.publish(Serialize.PlaySound('A3'))
-                            self.publish(Serialize.UpdateModeCount(room.mode.score.red, room.mode.score.blue))
+                            self.publish(Serialize.UpdateModeRedAndBlue(room.mode.score.red, room.mode.score.blue))
                         } else {
                             red.game.hp -= parseInt(Math.random() * 5) + 95
                             self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))

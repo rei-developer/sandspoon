@@ -49,40 +49,58 @@ module.exports = class EscapeMode {
     moveToBase(self) {
         switch (this.map) {
             case MapType.ASYLUM:
-                if (self.game.team === TeamType.RED) self.teleport(29, 9, 19)
-                else self.teleport(2, 8, 13)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(29, 9, 19)
+                else
+                    self.teleport(2, 8, 13)
                 break
             case MapType.TATAMI:
-                if (self.game.team === TeamType.RED) self.teleport(54, 10, 5)
-                else self.teleport(42, 9, 7)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(54, 10, 5)
+                else
+                    self.teleport(42, 9, 7)
                 break
             case MapType.GON:
-                if (self.game.team === TeamType.RED) self.teleport(75, 20, 26)
-                else self.teleport(60, 16, 11)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(75, 20, 26)
+                else
+                    self.teleport(60, 16, 11)
                 break
             case MapType.LABORATORY:
-                if (self.game.team === TeamType.RED) self.teleport(86, 9, 11)
-                else self.teleport(99, 10, 8)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(86, 9, 11)
+                else
+                    self.teleport(99, 10, 8)
                 break
             case MapType.SCHOOL:
-                if (self.game.team === TeamType.RED) self.teleport(115, 13, 9)
-                else self.teleport(149, 14, 8)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(115, 13, 9)
+                else
+                    self.teleport(149, 14, 8)
                 break
             case MapType.MINE:
-                if (self.game.team === TeamType.RED) self.teleport(172, 6, 8)
-                else self.teleport(154, 9, 8)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(172, 6, 8)
+                else
+                    self.teleport(154, 9, 8)
                 break
             case MapType.ISLAND:
-                if (self.game.team === TeamType.RED) self.teleport(189, 7, 7)
-                else self.teleport(199, 10, 8)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(189, 7, 7)
+                else
+                    self.teleport(199, 10, 8)
                 break
             case MapType.MANSION:
-                if (self.game.team === TeamType.RED) self.teleport(226, 10, 9)
-                else self.teleport(238, 17, 8)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(226, 10, 9)
+                else
+                    self.teleport(238, 17, 8)
                 break
             case MapType.DESERT:
-                if (self.game.team === TeamType.RED) self.teleport(244, 9, 11)
-                else self.teleport(249, 7, 17)
+                if (self.game.team === TeamType.RED)
+                    self.teleport(244, 9, 11)
+                else
+                    self.teleport(249, 7, 17)
                 break
         }
     }
