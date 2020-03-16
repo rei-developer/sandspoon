@@ -135,7 +135,7 @@ router.post('/register', async ctx => {
                 if (!isNaN(recommendId) && recommendId > 0) {
                     const target = await FindUserById(recommendId)
                     if (target) {
-                        await InsertNoticeMessage(user.id, target.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${target.name}]님의 추천으로 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 500개를 지급해드립니다.`, 500)
+                        await InsertNoticeMessage(user.id, target.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${target.name}]님의 추천으로 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 100개를 지급해드립니다.`, 100)
                         await InsertNoticeMessage(target.id, user.id, '추천인 가입 보석 지급 안내', `안녕하세요?<br><br>[${name}]님께서 추천인 가입을 통해 계정을 생성하셨기 때문에 보석 100개를 지급해드립니다.<br><br><color=red>(추천인 코드를 절대 악용하지 마세요. 운영진이 로그를 통해 모두 확인이 가능합니다. 부정 수급 또는 어뷰징 행위시 계정이 정지될 수 있습니다.)</color>`, 100)
                     }
                 }

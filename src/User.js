@@ -820,7 +820,7 @@ global.User = (function () {
             if (message.substring(0, 1) === '#') {
                 if (this.admin < 1) {
                     if (this.cash < 20)
-                        this.send(Serialize.SystemMessage('<color=red>!채금,닉네임,일 단위 (1 ~ 3650)</color>'))
+                        this.send(Serialize.SystemMessage('<color=red>보석이 부족합니다. 보석 20개가 필요합니다.</color>'))
                     else {
                         this.notice(Serialize.SystemMessage('<color=#1DDB16>' + this.name + '#' + this.roomId + ': ' + message.substring(1) + '</color>'))
                         this.setUpCash(-20)
