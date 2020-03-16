@@ -802,7 +802,7 @@ global.User = (function () {
             }
             if (this.command(message))
                 return
-            // console.log(this.name + '(#' + this.roomId + '@' + this.place + '): ' + message)
+            console.log(this.name + '(#' + this.roomId + '@' + this.place + '): ' + message)
             switch (room.type) {
                 case RoomType.GAME:
                     if (this.game.team === TeamType.RED)
