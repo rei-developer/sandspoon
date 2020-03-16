@@ -171,23 +171,36 @@ module.exports = class RescueMode {
 
     join(self) {
         self.game = this.gameObject()
-        self.setGraphics(self.blueGraphics)
-        this.blueTeam.push(self)
         switch (this.state) {
             case STATE_READY:
+                self.game.team = TeamType.BLUE
+                self.setGraphics(self.blueGraphics)
+                this.blueTeam.push(self)
                 this.moveToBase(self)
                 break
             case STATE_GAME:
-                this.moveToPrison(self)
-                self.game.caught = true
-                ++this.score.red
-                self.send(Serialize.NoticeMessage('감옥에 갇힌 인질을 전원 구출하라.'))
+                if (this.blueTeam.length > parseInt(this.redTeam.length / 5) + 1) {
+                    self.game.team = TeamType.RED
+                    self.setGraphics(self.redGraphics)
+                    this.redTeam.push(self)
+                    this.moveToKickOut(self)
+                    self.send(Serialize.NoticeMessage('단 한 명의 인간이라도 감옥에 가둬라.'))
+                } else {
+                    self.game.team = TeamType.BLUE
+                    self.game.caught = true
+                    self.setGraphics(self.blueGraphics)
+                    this.blueTeam.push(self)
+                    this.moveToPrison(self)
+                    ++this.score.red
+                    self.send(Serialize.NoticeMessage('감옥에 갇힌 인질을 전원 구출하라.'))
+                }
                 break
         }
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
 
         self.send(Serialize.SystemMessage('<color=red>★ 이제부터 30초 광고 시청이 가능합니다. 보석 10개를 얻어보세요!!</color>'))
+        self.send(Serialize.SystemMessage('<color=green>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
         self.send(Serialize.SystemMessage('<color=yellow>[이벤트] 경험치 2배 이벤트 진행중 (2020년 3월 16일까지)</color>'))
     }
 

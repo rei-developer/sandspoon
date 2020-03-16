@@ -802,7 +802,7 @@ global.User = (function () {
                 }
                 return
             }
-            console.log(this.name + '(#' + this.roomId + '@' + this.place + '): ' + message)
+            // console.log(this.name + '(#' + this.roomId + '@' + this.place + '): ' + message)
             switch (room.type) {
                 case RoomType.GAME:
                     if (this.game.team === TeamType.RED)
@@ -817,12 +817,20 @@ global.User = (function () {
         }
 
         command(message) {
-            if (this.admin < 1)
-                return false
             if (message.substring(0, 1) === '#') {
-                this.notice(Serialize.SystemMessage('<color=#EFE4B0>@[' + (this.admin === 1 ? '클린유저' : '운영진') + '] ' + this.name + ': ' + message.substring(1) + '</color>'))
+                if (this.admin < 1) {
+                    if (this.cash < 20)
+                        this.send(Serialize.SystemMessage('<color=red>!채금,닉네임,일 단위 (1 ~ 3650)</color>'))
+                    else {
+                        this.notice(Serialize.SystemMessage('<color=#1DDB16>' + this.name + '#' + this.roomId + ': ' + message.substring(1) + '</color>'))
+                        this.setUpCash(-20)
+                    }
+                } else
+                    this.notice(Serialize.SystemMessage('<color=#EFE4B0>@[' + (this.admin === 1 ? '클린유저' : '운영진') + '] ' + this.name + ': ' + message.substring(1) + '</color>'))
                 return true
             }
+            if (this.admin < 1)
+                return false
             const piece = message.split(',')
             let name
             let target

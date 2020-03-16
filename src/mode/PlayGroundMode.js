@@ -26,6 +26,7 @@ module.exports = class PlayGroundMode {
         self.teleport(79, 30, 62)
 
         self.send(Serialize.SystemMessage('<color=red>★ 이제부터 30초 광고 시청이 가능합니다. 보석 10개를 얻어보세요!!</color>'))
+        self.send(Serialize.SystemMessage('<color=green>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
         self.send(Serialize.SystemMessage('<color=yellow>[이벤트] 경험치 2배 이벤트 진행중 (2020년 3월 16일까지)</color>'))
     }
 
