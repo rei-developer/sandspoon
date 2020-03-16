@@ -830,7 +830,7 @@ global.User = (function () {
                 return true
             }
             if (this.admin < 1)
-                return true
+                return false
             const piece = message.split(',')
             let name
             let target
