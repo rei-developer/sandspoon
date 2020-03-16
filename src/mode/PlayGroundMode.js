@@ -17,13 +17,13 @@ module.exports = class PlayGroundMode {
     }
 
     moveToPlaza(self) {
-        self.teleport(79, 30, 62)
+        self.teleport(79, 36, 24)
     }
 
     join(self) {
         self.game = {}
         self.setGraphics(self.blueGraphics)
-        self.teleport(79, 30, 62)
+        self.teleport(79, 36, 24)
         self.send(Serialize.SystemMessage('<color=yellow>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
     }
 
@@ -72,8 +72,8 @@ module.exports = class PlayGroundMode {
                 const x = Math.floor(-range + Math.random() * (range * 2 + 1))
                 const y = Math.floor(-range + Math.random() * (range * 2 + 1))
                 event.place = 79
-                event.x = 30 + x
-                event.y = 62 + y
+                event.x = 36 + x
+                event.y = 24 + y
                 this.room.addEvent(event)
                 this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
             }

@@ -18,10 +18,10 @@
 			}
 		},
 		{
-			"name": "집나간 마니아",
+			"name": "마니아",
 			"place": 79,
-			"x": 30,
-			"y": 62,
+			"x": 36,
+			"y": 24,
 			"graphics": "Mania",
 			"collider": false,
 			"action": {
@@ -29,7 +29,7 @@
 				"arguments": {
 					"fixed": false,
 					"message": [
-						"이번에는 어떤 업데이트를 해야하나..."
+						"룰루랄라~"
 					]
 				}
 			}
@@ -37,30 +37,8 @@
 		{
 			"name": "",
 			"place": 79,
-			"x": 29,
-			"y": 61,
-			"graphics": "Ball",
-			"collider": true,
-			"action": {
-				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 79,
-			"x": 30,
-			"y": 62,
-			"graphics": "Ball",
-			"collider": true,
-			"action": {
-				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 79,
-			"x": 31,
-			"y": 63,
+			"x": 36,
+			"y": 26,
 			"graphics": "Ball",
 			"collider": true,
 			"action": {
