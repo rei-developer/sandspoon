@@ -179,21 +179,13 @@ module.exports = class RescueMode {
                 this.moveToBase(self)
                 break
             case STATE_GAME:
-                if (this.redTeam.length < parseInt(this.blueTeam.length * 2)) {
-                    self.game.team = TeamType.RED
-                    self.setGraphics(self.redGraphics)
-                    this.redTeam.push(self)
-                    this.moveToKickOut(self)
-                    self.send(Serialize.NoticeMessage('단 한 명의 인간이라도 감옥에 가둬라.'))
-                } else {
-                    self.game.team = TeamType.BLUE
-                    self.game.caught = true
-                    self.setGraphics(self.blueGraphics)
-                    this.blueTeam.push(self)
-                    this.moveToPrison(self)
-                    ++this.score.red
-                    self.send(Serialize.NoticeMessage('감옥에 갇힌 인질을 전원 구출하라.'))
-                }
+                self.game.team = TeamType.BLUE
+                self.game.caught = true
+                self.setGraphics(self.blueGraphics)
+                this.blueTeam.push(self)
+                this.moveToPrison(self)
+                ++this.score.red
+                self.send(Serialize.NoticeMessage('감옥에 갇힌 인질을 전원 구출하라.'))
                 break
         }
         self.publishToMap(Serialize.SetGameTeam(self))

@@ -782,8 +782,6 @@ global.User = (function () {
         }
 
         chat(message) {
-            if (this.command(message))
-                return
             const room = Room.get(this.roomId)
             if (!room)
                 return
@@ -802,6 +800,8 @@ global.User = (function () {
                 }
                 return
             }
+            if (this.command(message))
+                return
             // console.log(this.name + '(#' + this.roomId + '@' + this.place + '): ' + message)
             switch (room.type) {
                 case RoomType.GAME:
@@ -830,7 +830,7 @@ global.User = (function () {
                 return true
             }
             if (this.admin < 1)
-                return false
+                return true
             const piece = message.split(',')
             let name
             let target

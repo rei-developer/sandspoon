@@ -34,7 +34,7 @@ class FireMethod {
                             self.publish(Serialize.PlaySound('A3'))
                             self.publish(Serialize.UpdateModeRedAndBlue(room.mode.score.red, room.mode.score.blue))
                         } else {
-                            red.game.hp -= (parseInt(Math.random() * 10) + 90) - ((range - 1) * 40)
+                            red.game.hp -= (parseInt(Math.random() * 20) + 80) - ((range - 1) * 60)
                             self.publishToMap(Serialize.SetAnimation(red, 'Fire', 'Fire'))
                         }
                     }
