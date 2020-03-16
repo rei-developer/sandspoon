@@ -117,7 +117,7 @@ module.exports = class DeathMatchMode {
                 this.moveToBase(self)
                 break
             case STATE_GAME:
-                if (this.redTeam.length < parseInt(this.blueTeam.length - 1)) {
+                if (this.redTeam.length < parseInt(this.blueTeam.length - 2)) {
                     self.game.team = TeamType.RED
                     self.setGraphics(self.redGraphics)
                     this.redTeam.push(self)
