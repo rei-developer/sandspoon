@@ -117,7 +117,7 @@ module.exports = class DeathMatchMode {
                 this.moveToBase(self)
                 break
             case STATE_GAME:
-                if (this.redTeam.length < this.blueTeam.length) {
+                if (this.redTeam.length < parseInt(this.blueTeam.length - 1)) {
                     self.game.team = TeamType.RED
                     self.setGraphics(self.redGraphics)
                     this.redTeam.push(self)
@@ -362,7 +362,7 @@ module.exports = class DeathMatchMode {
                         if (this.count === 210) this.room.publish(Serialize.PlaySound('GhostsTen'))
                         this.room.publish(Serialize.NoticeMessage(this.count - 200))
                     } else if (this.count === 200) {
-                        this.room.lock = false // true
+                        this.room.lock = true
                         this.state = STATE_GAME
                         const lottos = pix.sample(this.blueTeam, parseInt(this.blueTeam.length / 2))
                         for (const lotto of lottos) {
