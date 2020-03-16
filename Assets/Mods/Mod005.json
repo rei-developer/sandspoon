@@ -53,8 +53,8 @@
 		{
 			"name": "",
 			"place": 17,
-			"x": 9,
-			"y": 15,
+			"x": 10,
+			"y": 14,
 			"graphics": "ev02",
 			"collider": true,
 			"action": {
@@ -67,8 +67,8 @@
 		{
 			"name": "엘레베이터 버튼",
 			"place": 17,
-			"x": 10,
-			"y": 15,
+			"x": 11,
+			"y": 13,
 			"graphics": "blank",
 			"collider": true,
 			"action": {
@@ -934,117 +934,6 @@
 			"collider": true,
 			"action": {
 				"command": "obstacle"
-			}
-		},
-		{
-			"name": "",
-			"place": 105,
-			"x": 9,
-			"y": 13,
-			"graphics": "ev02",
-			"collider": true,
-			"action": {
-				"command": "elevator",
-				"arguments": {
-					"inside": true
-				}
-			}
-		},
-		{
-			"name": "엘레베이터 버튼",
-			"place": 105,
-			"x": 10,
-			"y": 13,
-			"graphics": "blank",
-			"collider": true,
-			"action": {
-				"command": "elevin",
-				"arguments": {
-					"elevId": 105,
-					"outerId": {
-						"1": "94",
-						"2": "103",
-						"3": "89"
-					}
-				}
-			}
-		},
-		{
-			"name": "",
-			"place": 94,
-			"x": 22,
-			"y": 5,
-			"graphics": "ev02",
-			"collider": true,
-			"action": {
-				"command": "elevator"
-			}
-		},
-		{
-			"name": "1층 엘레베이터",
-			"place": 94,
-			"x": 23,
-			"y": 5,
-			"graphics": "blank",
-			"collider": true,
-			"action": {
-				"command": "elevout",
-				"arguments": {
-					"elevId": 105,
-					"floor": "1"
-				}
-			}
-		},
-		{
-			"name": "",
-			"place": 103,
-			"x": 15,
-			"y": 9,
-			"graphics": "ev02",
-			"collider": true,
-			"action": {
-				"command": "elevator"
-			}
-		},
-		{
-			"name": "2층 엘레베이터",
-			"place": 103,
-			"x": 16,
-			"y": 9,
-			"graphics": "blank",
-			"collider": true,
-			"action": {
-				"command": "elevout",
-				"arguments": {
-					"elevId": 105,
-					"floor": "2"
-				}
-			}
-		},
-		{
-			"name": "",
-			"place": 89,
-			"x": 4,
-			"y": 24,
-			"graphics": "ev02",
-			"collider": true,
-			"action": {
-				"command": "elevator"
-			}
-		},
-		{
-			"name": "3층 엘레베이터",
-			"place": 89,
-			"x": 5,
-			"y": 24,
-			"graphics": "blank",
-			"collider": true,
-			"action": {
-				"command": "elevout",
-				"arguments": {
-					"elevId": 105,
-					"floor": "3"
-				}
 			}
 		},
 		{

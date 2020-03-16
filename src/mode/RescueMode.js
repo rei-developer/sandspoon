@@ -111,7 +111,7 @@ module.exports = class RescueMode {
                 self.teleport(13, 11, 15)
                 break
             case MapType.TATAMI:
-                self.teleport(57, 19, 13)
+                self.teleport(57, 21, 6)
                 break
             case MapType.GON:
                 self.teleport(74, 14, 12)
@@ -129,7 +129,7 @@ module.exports = class RescueMode {
                 self.teleport(191, 11, 7)
                 break
             case MapType.MANSION:
-                self.teleport(217, 31, 8)
+                self.teleport(217, 25, 7)
                 break
             case MapType.DESERT:
                 self.teleport(255, 20, 17)
@@ -190,10 +190,7 @@ module.exports = class RescueMode {
         }
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
-
-        self.send(Serialize.SystemMessage('<color=red>★ 이제부터 30초 광고 시청이 가능합니다. 보석 10개를 얻어보세요!!</color>'))
-        self.send(Serialize.SystemMessage('<color=green>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
-        self.send(Serialize.SystemMessage('<color=yellow>[이벤트] 경험치 2배 이벤트 진행중 (2020년 3월 16일까지)</color>'))
+        self.send(Serialize.SystemMessage('<color=yellow>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
     }
 
     drawAkari(self) {

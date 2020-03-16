@@ -11,7 +11,7 @@ module.exports = class Reward {
     }
 
     send(self) {
-        self.setUpExp(Math.floor(this.exp) * 2)
+        self.setUpExp(Math.floor(this.exp))
         self.setUpCash(Math.floor(this.cash))
         self.coin += Math.floor(this.coin)
         self.point += Math.floor(this.point)

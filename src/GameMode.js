@@ -4,8 +4,6 @@ const InfectMode = require('./mode/InfectMode')
 const HideMode = require('./mode/HideMode')
 const EscapeMode = require('./mode/EscapeMode')
 const DeathMatchMode = require('./mode/DeathMatchMode')
-const ProtectMode = require('./mode/ProtectMode')
-const Event = require('./Event')
 
 module.exports = class GameMode {
     constructor(roomId) {
@@ -13,20 +11,6 @@ module.exports = class GameMode {
         this.count = 0
         this.type = 0
         this.room = Room.get(this.roomId)
-        const objects = require('../Assets/Mods/Eve000.json')[3]
-        for (const object of objects) {
-            const range = 3
-            for (let i = 0; i < 10; i++) {
-                const event = new Event(this.roomId, object)
-                const x = Math.floor(-range + Math.random() * (range * 2 + 1))
-                const y = Math.floor(-range + Math.random() * (range * 2 + 1))
-                event.place = 42
-                event.x = 9 + x
-                event.y = 7 + y
-                this.room.addEvent(event)
-                this.room.publishToMap(event.place, Serialize.CreateGameObject(event))
-            }
-        }
     }
 
     moveToBase(self) {
@@ -68,6 +52,8 @@ module.exports = class GameMode {
         return true
     }
 
+    useItem(self) { }
+
     doAction(self, event) {
         event.doAction(self)
         return true
@@ -80,8 +66,7 @@ module.exports = class GameMode {
                 InfectMode,
                 HideMode,
                 EscapeMode,
-                DeathMatchMode,
-                //ProtectMode
+                DeathMatchMode
             ]
             const i = Math.floor(Math.random() * modes.length)
             return this.room.changeMode(modes[i])

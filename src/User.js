@@ -792,11 +792,11 @@ global.User = (function () {
             let text = message.replace(/[^ㄱ-ㅎ가-힣]/g, '')
             if (!filtering.check(text)) {
                 ++this.alert
-                if (this.alert >= 5)
+                if (this.alert >= 3)
                     this.send(Serialize.QuitGame())
                 else {
                     this.send(Serialize.Vibrate())
-                    this.send(Serialize.SystemMessage('<color=red>금칙어를 언급하여 경고 ' + this.alert + '회를 받았습니다. 5회 이상시 자동 추방됩니다.</color>'))
+                    this.send(Serialize.SystemMessage('<color=red>금칙어를 언급하여 경고 ' + this.alert + '회를 받았습니다. 3회 이상시 자동 추방됩니다.</color>'))
                 }
                 return
             }
