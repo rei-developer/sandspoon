@@ -883,7 +883,7 @@ global.User = (function () {
                         const d = new Date()
                         d.setDate(d.getDate() + days)
                         target.lastChatTime = d
-                        target.send(Serialize.SystemMessage('<color=red>운영진에 의해 채팅이 금지되었습니다.</color>'))
+                        target.send(Serialize.SystemMessage('<color=red>클린유저 또는 운영진에 의해 채팅이 금지되었습니다.</color>'))
                         this.send(Serialize.SystemMessage('<color=red>' + name + (pix.maker(name) ? '를' : '을') + ' ' + days + '일 동안 채팅을 금지함.</color>'))
                     } else
                         this.send(Serialize.SystemMessage('<color=red>' + name + (pix.maker(name) ? '는' : '은') + ' 접속하지 않았거나 존재하지 않음.</color>'))
@@ -898,7 +898,7 @@ global.User = (function () {
                     if (target) {
                         const d = new Date()
                         target.lastChatTime = d
-                        target.send(Serialize.SystemMessage('<color=red>운영진에 의해 채팅 금지가 해제되었습니다.</color>'))
+                        target.send(Serialize.SystemMessage('<color=red>클린유저 또는 운영진에 의해 채팅 금지가 해제되었습니다.</color>'))
                         this.send(Serialize.SystemMessage('<color=red>' + name + (pix.maker(name) ? '를' : '을') + ' 채팅 금지를 해제함.</color>'))
                     } else
                         this.send(Serialize.SystemMessage('<color=red>' + name + (pix.maker(name) ? '는' : '은') + ' 접속하지 않았거나 존재하지 않음.</color>'))

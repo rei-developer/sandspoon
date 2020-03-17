@@ -118,19 +118,19 @@ module.exports = class InfectMode {
             if (user.state === PlayerState.Tansu) continue
             let userHide = false
             if (self.game.team !== user.game.team) {
-                if (!(self.admin > 0 && user.admin > 0)) {
-                    if (self.admin > 0)
+                if (!(self.admin > 1 && user.admin > 1)) {
+                    if (self.admin > 1)
                         selfHide = true
-                    else if (user.admin > 0)
+                    else if (user.admin > 1)
                         userHide = true
                     else
                         selfHide = userHide = true
                 }
             } else if (self.game.team === TeamType.BLUE) {
-                if (!(self.admin > 0 && user.admin > 0)) {
-                    if (self.admin > 0)
+                if (!(self.admin > 1 && user.admin > 1)) {
+                    if (self.admin > 1)
                         selfHide = true
-                    else if (user.admin > 0)
+                    else if (user.admin > 1)
                         userHide = true
                     else
                         selfHide = userHide = true
