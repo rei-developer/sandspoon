@@ -383,6 +383,26 @@ module.exports = class DeathMatchMode {
                     }
                     break
                 case STATE_GAME:
+                    for (const user of this.redTeam) {
+                        const map = GameMap.get(user.place)
+                        if ((map.rangePortal(user.x, user.y, 2))) {
+                            if (++user.game.count >= 3) {
+                                user.game.count = 0
+                                if (user.game.hp < 0) {
+                                    this.moveToBase(user)
+                                    user.game.hp = 100
+                                    user.send(Serialize.InformMessage('<color=red>지속적인 게임 플레이 방해로 본진으로 추방되었습니다.</color>'))
+                                } else {
+                                    user.game.hp -= 40
+                                    user.send(Serialize.InformMessage('<color=red>경고!!! 포탈 주변을 막지 마십시오.</color>'))
+                                    user.send(Serialize.PlaySound('Warn'))
+                                }
+                            }
+                        } else {
+                            if (--user.game.count < 0)
+                                user.game.count = 0
+                        }
+                    }
                     if (this.redTeam.length === 0)
                         this.result(TeamType.BLUE)
                     else if (this.blueTeam.length === 0)
