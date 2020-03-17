@@ -32,9 +32,7 @@ module.exports = class PlayGroundMode {
         self.setGraphics(self.blueGraphics)
     }
 
-    drawAkari(self) {
-        self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
-    }
+    drawAkari(self) { }
 
     drawEvents(self) {
         const { events } = this.room.places[self.place]

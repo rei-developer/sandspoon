@@ -75,7 +75,7 @@ global.Room = (function () {
                     return target.hasOwnProperty(name) ? target[name] : target[name] = new Place(this.index, name)
                 }
             })
-            this.max = 40
+            this.max = 30
             this.mode = null
             this.loop = null
             this.isRunning = false

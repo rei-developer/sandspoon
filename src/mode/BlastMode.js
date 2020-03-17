@@ -133,14 +133,14 @@ module.exports = class BlastMode {
                 break
         }
         this.moveToBase(self)
+        this.drawAkari(self)
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
         self.send(Serialize.SystemMessage('<color=yellow>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
     }
 
     drawAkari(self) {
-        if (self.game.team === TeamType.BLUE)
-            self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
+        self.send(Serialize.SwitchLight(self.game.team === TeamType.RED))
     }
 
     drawEvents(self) {
@@ -359,7 +359,7 @@ module.exports = class BlastMode {
                         if (this.count === 210) this.room.publish(Serialize.PlaySound('GhostsTen'))
                         this.room.publish(Serialize.NoticeMessage(this.count - 200))
                     } else if (this.count === 200) {
-                        this.room.lock = false // true
+                        this.room.lock = true
                         this.state = STATE_GAME
                         const lottos = pix.sample(this.blueTeam, parseInt(this.blueTeam.length / 2))
                         for (const lotto of lottos) {
@@ -371,11 +371,11 @@ module.exports = class BlastMode {
                             if (lotto.state === PlayerState.Tansu) {
                                 lotto.setState('Basic')
                                 lotto.send(Serialize.LeaveWardrobe())
-                                this.drawAkari(lotto)
                                 lotto.game.tansu.users.splice(lotto.game.tansu.users.indexOf(lotto), 1)
                                 lotto.game.tansu = null
                             }
                             lotto.send(Serialize.SetGameTeam(lotto))
+                            this.drawAkari(lotto)
                         }
                         this.publishToRed(Serialize.NoticeMessage('인간의 폭발물 설치를 저지하라.'))
                         this.publishToBlue(Serialize.NoticeMessage('폭발물을 설치하여 폭파하라.'))

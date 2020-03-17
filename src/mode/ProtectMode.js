@@ -56,13 +56,14 @@ module.exports = class ProtectMode {
                 self.send(Serialize.PlaySound('A4'))
                 break
         }
+        this.drawAkari(self)
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
         self.send(Serialize.SystemMessage('<color=yellow>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
     }
 
     drawAkari(self) {
-        self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
+        self.send(Serialize.SwitchLight(self.game.team === TeamType.RED))
     }
 
     drawEvents(self) {

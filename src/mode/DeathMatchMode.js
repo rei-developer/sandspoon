@@ -133,14 +133,14 @@ module.exports = class DeathMatchMode {
                 self.send(Serialize.PlaySound('A4'))
                 break
         }
+        this.drawAkari(self)
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
         self.send(Serialize.SystemMessage('<color=yellow>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
     }
 
     drawAkari(self) {
-        if (self.game.team === TeamType.BLUE)
-            self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
+        self.send(Serialize.SwitchLight(self.game.team === TeamType.RED))
     }
 
     drawEvents(self) {
@@ -371,11 +371,11 @@ module.exports = class DeathMatchMode {
                             if (lotto.state === PlayerState.Tansu) {
                                 lotto.setState('Basic')
                                 lotto.send(Serialize.LeaveWardrobe())
-                                this.drawAkari(lotto)
                                 lotto.game.tansu.users.splice(lotto.game.tansu.users.indexOf(lotto), 1)
                                 lotto.game.tansu = null
                             }
                             lotto.send(Serialize.SetGameTeam(lotto))
+                            this.drawAkari(lotto)
                         }
                         this.publishToRed(Serialize.NoticeMessage('모든 인간을 섬멸하라.'))
                         this.publishToBlue(Serialize.NoticeMessage('모든 오니를 소탕하라.'))

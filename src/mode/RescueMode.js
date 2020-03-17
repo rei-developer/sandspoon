@@ -188,15 +188,14 @@ module.exports = class RescueMode {
                 self.send(Serialize.NoticeMessage('감옥에 갇힌 인질을 전원 구출하라.'))
                 break
         }
+        this.drawAkari(self)
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
         self.send(Serialize.SystemMessage('<color=yellow>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
     }
 
     drawAkari(self) {
-        if (self.game.team === TeamType.BLUE) {
-            self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
-        }
+        self.send(Serialize.SwitchLight(self.game.team === TeamType.RED))
     }
 
     drawEvents(self) {
@@ -381,7 +380,8 @@ module.exports = class RescueMode {
             switch (this.state) {
                 case STATE_READY:
                     if (this.count <= 230 && this.count > 200) {
-                        if (this.count === 210) this.room.publish(Serialize.PlaySound('GhostsTen'))
+                        if (this.count === 210)
+                            this.room.publish(Serialize.PlaySound('GhostsTen'))
                         this.room.publish(Serialize.NoticeMessage(this.count - 200))
                     } else if (this.count === 200) {
                         this.room.lock = false // true
@@ -395,11 +395,11 @@ module.exports = class RescueMode {
                             if (lotto.state === PlayerState.Tansu) {
                                 lotto.setState('Basic')
                                 lotto.send(Serialize.LeaveWardrobe())
-                                this.drawAkari(lotto)
                                 lotto.game.tansu.users.splice(lotto.game.tansu.users.indexOf(lotto), 1)
                                 lotto.game.tansu = null
                             }
                             lotto.send(Serialize.SetGameTeam(lotto))
+                            this.drawAkari(lotto)
                         }
                         this.publishToRed(Serialize.NoticeMessage('단 한 명의 인간이라도 감옥에 가둬라.'))
                         this.publishToRed(Serialize.PlaySound('A4'))
@@ -424,21 +424,27 @@ module.exports = class RescueMode {
                                 }
                             }
                         } else {
-                            if (--user.game.count < 0) user.game.count = 0
+                            if (--user.game.count < 0)
+                                user.game.count = 0
                         }
                     }
-                    if (this.count === 10 || this.count % 30 === 5)
+                    if (this.count === 10 || this.count % 40 === 5)
                         this.room.publish(Serialize.InformMessage('<color=#B5E61D>잠시 후 인질 구출이 가능해집니다...</color>'))
-                    else if (this.count === 5 || this.count % 30 === 0) {
+                    else if (this.count === 5 || this.count % 40 === 0) {
                         this.caught = true
                         this.room.publish(Serialize.InformMessage('<color=#B5E61D>인질 구출이 가능합니다!</color>'))
                         this.room.publish(Serialize.PlaySound('thump'))
                     }
-                    if (this.redTeam.length === 0) this.result(TeamType.BLUE)
-                    else if (this.blueTeam.length === 0) this.result(TeamType.RED)
-                    else if (this.score.red === this.blueTeam.length) this.result(TeamType.RED)
-                    else if (this.count === 5) this.room.publish(Serialize.PlaySound('Second'))
-                    else if (this.count === 0) this.result(this.score.red > 0 ? TeamType.RED : TeamType.BLUE)
+                    if (this.redTeam.length === 0)
+                        this.result(TeamType.BLUE)
+                    else if (this.blueTeam.length === 0)
+                        this.result(TeamType.RED)
+                    else if (this.score.red === this.blueTeam.length)
+                        this.result(TeamType.RED)
+                    else if (this.count === 5)
+                        this.room.publish(Serialize.PlaySound('Second'))
+                    else if (this.count === 0)
+                        this.result(this.score.red > 0 ? TeamType.RED : TeamType.BLUE)
                     break
             }
             // if (this.count % 10 === 0) room.publish('gameInfo', { count: this.count, maxCount: this.maxCount })

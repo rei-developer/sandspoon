@@ -92,14 +92,14 @@ module.exports = class HideMode {
                 break
         }
         this.moveToBase(self)
+        this.drawAkari(self)
         self.publishToMap(Serialize.SetGameTeam(self))
         self.publish(Serialize.ModeData(this))
         self.send(Serialize.SystemMessage('<color=yellow>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
     }
 
     drawAkari(self) {
-        if (self.game.team === TeamType.BLUE)
-            self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
+        self.send(Serialize.SwitchLight(self.game.team === TeamType.RED))
     }
 
     drawEvents(self) {
@@ -150,6 +150,7 @@ module.exports = class HideMode {
         target.setGraphics(target.redGraphics)
         target.send(Serialize.SetGameTeam(target))
         target.send(Serialize.DeadAnimation())
+        this.drawAkari(target)
         this.redTeam.push(target)
         this.blueTeam.splice(this.blueTeam.indexOf(target), 1)
         self.send(Serialize.NoticeMessage(target.name + (pix.maker(target.name) ? '를' : '을') + ' 맛있게 냠냠!!'))
@@ -363,11 +364,11 @@ module.exports = class HideMode {
                             if (lotto.state === PlayerState.Tansu) {
                                 lotto.setState('Basic')
                                 lotto.send(Serialize.LeaveWardrobe())
-                                this.drawAkari(lotto)
                                 lotto.game.tansu.users.splice(lotto.game.tansu.users.indexOf(lotto), 1)
                                 lotto.game.tansu = null
                             }
                             lotto.send(Serialize.SetGameTeam(lotto))
+                            this.drawAkari(lotto)
                         }
                         this.change()
                         this.publishToRed(Serialize.NoticeMessage('사물로 변신한 인간을 모두 색출하라.'))

@@ -445,6 +445,7 @@ class BoxState {
             self.game.team = TeamType.BLUE
             self.setGraphics(self.blueGraphics)
             self.send(Serialize.SetGameTeam(self))
+            mode.drawAkari(self)
             mode.blueTeam.push(self)
             mode.redTeam.splice(mode.redTeam.indexOf(self), 1)
             // mode.moveToBase(self)
