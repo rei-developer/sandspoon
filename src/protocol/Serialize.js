@@ -289,7 +289,7 @@ my.LeaveWardrobe = function () {
 my.SwitchLight = function (active) {
     const packet = {}
     packet._head = ToClient.SWITCH_LIGHT
-    packet.active = active
+    packet.active = true//active
     return JSON.stringify(packet)
 }
 
