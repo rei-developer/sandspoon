@@ -15,6 +15,7 @@ module.exports = class GameMode {
 
     moveToBase(self) {
         self.teleport(42, 9, 7)
+        this.drawAkari(self)
     }
 
     join(self) {
@@ -29,7 +30,8 @@ module.exports = class GameMode {
     }
 
     drawAkari(self) {
-        self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
+        // self.send(Serialize.SwitchLight(this.room.places[self.place].akari))
+        self.send(Serialize.SwitchLight(false))
     }
 
     drawEvents(self) {
@@ -66,7 +68,7 @@ module.exports = class GameMode {
                 InfectMode,
                 HideMode,
                 EscapeMode,
-                
+
             ]
             const i = Math.floor(Math.random() * modes.length)
             return this.room.changeMode(modes[i])

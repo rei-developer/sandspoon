@@ -24,6 +24,7 @@ module.exports = class PlayGroundMode {
         self.game = {}
         self.setGraphics(self.blueGraphics)
         self.teleport(79, 36, 24)
+        this.drawAkari(self)
         self.send(Serialize.SystemMessage('<color=yellow>[확성기] 채팅 앞에 #를 붙이면 보석 20개로 확성기를 사용하실 수 있습니다.</color>'))
     }
 
@@ -32,7 +33,9 @@ module.exports = class PlayGroundMode {
         self.setGraphics(self.blueGraphics)
     }
 
-    drawAkari(self) { }
+    drawAkari(self) {
+        self.send(Serialize.SwitchLight(false))
+    }
 
     drawEvents(self) {
         const { events } = this.room.places[self.place]
