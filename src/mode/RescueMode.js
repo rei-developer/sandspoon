@@ -428,9 +428,9 @@ module.exports = class RescueMode {
                                 user.game.count = 0
                         }
                     }
-                    if (this.count === 10 || this.count % 40 === 5)
+                    if (this.count === 15 || this.count % 40 === 5)
                         this.room.publish(Serialize.InformMessage('<color=#B5E61D>잠시 후 인질 구출이 가능해집니다...</color>'))
-                    else if (this.count === 5 || this.count % 40 === 0) {
+                    else if (this.count === 10 || this.count % 40 === 0) {
                         this.caught = true
                         this.room.publish(Serialize.InformMessage('<color=#B5E61D>인질 구출이 가능합니다!</color>'))
                         this.room.publish(Serialize.PlaySound('thump'))
