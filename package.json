@@ -16,7 +16,7 @@
     "greenlock-express": "^2.6.7",
     "greenlock-koa": "^2.1.4",
     "https": "^1.0.0",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^9.0.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
